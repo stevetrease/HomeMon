@@ -4,16 +4,23 @@
 <title>
 MQTT
 </title>
-<link type="text/css" rel="stylesheet" href="/app.css" media="all">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
-<table id="messagetable" style="background-color: #CABFAF;">
-<tr><th>Topic</th><th>Value</th></tr>
-</table>
+<div class="container">
+	<div class="row">
+	    <div class="span6">
+			<table id="messagetable" class="table table-striped table-condensed">
+					<tr><th>Topic</th><th>Value</th></tr>
+			</table>
+	    </div>
+	</div>
+</div>
 <P>
 <div id="time" style="font-size:x-small"></div>
 <script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="http://www.trease.eu:8500/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <script>
 	ElementExists = function(id) {
     		return !!document.getElementById(id);
