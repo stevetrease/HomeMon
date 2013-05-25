@@ -1,0 +1,27 @@
+body {
+	font-family: Verdana,Tahoma,"DejaVu Sans",sans-serif;
+	color: #201E1C;
+	background-color: AntiqueWhite;
+}
+
+p {
+	width: 100%;
+}
+
+table, th, td {
+	border-spacing: 3px;
+	table-layout:fixed;
+	border-collapse: separate;
+	vertical-align: top;
+}
+#myTablePower, #myTableTemp, #myTableHumidity, #myTableNO2, #myTableCO {
+	border: 1px solid AntiqueWhite;
+	border-spacing: 3px;
+	table-layout: fixed;
+	vertical-align: top;
+	background-color: #CABFAF;
+}
+
+.clear {
+  clear: both;
+}
