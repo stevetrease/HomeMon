@@ -10,10 +10,8 @@
 <div class="container">
 	<div class="row">
 	    <div class="span3">
-	    	<P class="text-center">
-			<big><big><big>
+	    	<P class="text-center text-error">
 			<span id="sensors/power/0"> </span>W
-			</big></big></big>
 	    	</P>
 			<P class="text-center">
 			<span id="sensors/power/0/cumulative/daily"></span> KWh used today
@@ -23,7 +21,6 @@
 			</P>
 	    </div>
 	    <div class="span9">
-	    	<canvas id="mycanvas" width="500" height="150"></canvas>
 	    </div>
 	</div>
 	    
@@ -62,7 +59,6 @@
 <script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>    
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://www.trease.eu:8500/smoothie.js"></script>
         
 <script>
 	ElementExists = function(id) {
@@ -73,10 +69,6 @@
 	}
 
 
-	var smoothie = new SmoothieChart({millisPerPixel:1000,timestampFormatter:SmoothieChart.timeFormatter,minValue:0});
-	var line1 = new TimeSeries();
-	smoothie.streamTo(document.getElementById("mycanvas"));
-	smoothie.addTimeSeries(line1);
 
 	var socket = io.connect("http://192.168.1.103:8500/sensors");
 	socket.on('data', function(data) { 
@@ -137,10 +129,9 @@
 		// console.log("Setting target " + data.topic + " to " + data.value);
 		document.getElementById(data.topic).innerHTML= data.value;
 
-		// if data topic is 0 it is the overall power consumption, so update the graph and the counter at the top of the page
+		// if data topic is 0 it is the overall power consumption, so update the graph
 	 	// if (data.topic == "sensors/power/0") {	
 			// line1.append (new Date().getTime(), data.value);
-			// document.getElementById("sensors/power/00").innerHTML= data.value;
 		// }
 
 		// print the time the refresh happened
