@@ -3,7 +3,7 @@
 var config = require('./config.json');
 
 var redis = require('redis')
-  ,redisClient = redis.createClient();
+  ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 
 
 redisClient.on('connect'     , log('connect'));
@@ -34,7 +34,7 @@ console.log("Loading daily records from redis...");
 
 // connect to to MQTT
 var mqtt = require('mqtt');
-var mqttclient = mqtt.createClient(1883, config.mqtt.host, function(err, client) {
+var mqttclient = mqtt.createClient(parseInt(config.mqtt.port,10), config.mqtt.host, function(err, client) {
 		keepalive: 1000
 });
 
