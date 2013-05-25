@@ -36,16 +36,16 @@ MQTT Server Stats
 			var table=document.getElementById("messagetable");
 
 			// itertate through table to find out where to insert row in alpha order
-                        var count = 1;
-                        if (document.getElementById("messagetable").rows.length != 1) {
-                                for (i = 1; i < document.getElementById("messagetable").rows.length; i++) {
-                                        var row = table.rows[i];
-                                        var col = row.cells[0];
-                                        if (col.firstChild.nodeValue < data.topic) {
-                                                count++;
-                                        }
-                                }
-                        } 
+            var count = 1;
+			if (document.getElementById("messagetable").rows.length != 1) {   
+				for (i = 1; i < document.getElementById("messagetable").rows.length; i++) {
+	            	var row = table.rows[i];
+                    var col = row.cells[0];
+                    if (col.firstChild.nodeValue < data.topic) {
+                       	count++;
+                    }
+				}
+            } 
 
 			var row=table.insertRow(count);
 			var cell=row.insertCell(0);
