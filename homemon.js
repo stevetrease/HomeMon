@@ -36,7 +36,7 @@ console.log('listening on port 8500');
 io.of('/sensors').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(1883, config.mqtt.host, function(err, client) {
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
 		keepalive: 1000
 	});
 	mqttclient.on('connect', function() {
@@ -54,7 +54,7 @@ io.of('/sensors').on('connection', function (socket) {
 io.of('/mqtt').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(1883, config.mqtt.host, function(err, client) {
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
 		keepalive: 1000
 	});
 	mqttclient.on('connect', function() {
@@ -71,7 +71,7 @@ io.of('/mqtt').on('connection', function (socket) {
 io.of('/mqttstats').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(1883, config.mqtt.host, function(err, client) {
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
 			keepalive: 1000
 	});
 
