@@ -1,5 +1,4 @@
 // service settings file
-// ur
 var config = require('./config.json');
 
 var redis = require('redis')
