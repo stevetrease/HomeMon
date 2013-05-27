@@ -16,7 +16,6 @@ var mqttclient = mqtt.createClient(parseInt(config.mqtt.port,10), config.mqtt.ho
 
 function snmp_data () {
 	this.host = null;
-	this.community = null;	
 	this.oids = null;
 	this.lastTime = null;
 	this.lastUp = null;
@@ -48,7 +47,7 @@ snmp_data_array[10] = { name: 'gs108t-8', host: '192.168.1.248', oids: [ '1.3.6.
 
 for (var key in snmp_data_array) {
    	snmp_data_array[key].lastTime = new Date();
-	snmp_data_array[key].session = snmp.createSession (snmp_data_array[key].host, config.communty);
+	snmp_data_array[key].session = snmp.createSession (snmp_data_array[key].host, config.community);
 	
 	// using SetInterval to poll SNMP every poll milliseconds.
 	var pollPeriod = 666 + Math.floor(Math.random()*50);
