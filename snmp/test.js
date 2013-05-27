@@ -24,5 +24,6 @@ test.push(item);
 
 
 for (var key in test) {
+	
 	console.log(key, test[0].a, test[0].b);
 }
