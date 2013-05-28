@@ -17,7 +17,7 @@ var config = require('./config.json');
 //
 //	First of all log all connections
 app.use(express.logger());
-app.use(express.compress());
+// app.use(express.compress());
 
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/js'));
@@ -42,7 +42,7 @@ io.of('/sensors').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('sensors/power/0/cumulative/+');
-		// console.log('subscribing to sensors/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		console.log('subscribing to sensors/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -59,7 +59,7 @@ io.of('/mqtt').on('connection', function (socket) {
 	});
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('#');
-		// console.log('subscribing to everything on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		console.log('subscribing to everything on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -77,7 +77,7 @@ io.of('/mqttstats').on('connection', function (socket) {
 
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('$SYS/#');
-		// console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
