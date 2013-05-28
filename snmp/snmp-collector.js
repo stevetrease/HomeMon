@@ -84,6 +84,9 @@ function executeSNMP (x) {
 			// mqttclient.publish("sensors/bandwidth/" + x.name + "/down", mbpsDown.toFixed(2));
 			mqttclient.publish("sensors/bandwidth/" + x.name + "/total", mbpsTotal.toFixed(2));
 			
+			mqttclient.publish("sensors/snmp/" + x.name + "/up", up.toFixed(0));
+			mqttclient.publish("sensors/snmp/" + x.name + "/down", down.toFixed(0));
+			
 			x.lastTime = now;
 			x.lastUp = up;
 			x.lastDown = down;
