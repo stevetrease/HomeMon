@@ -65,27 +65,27 @@ function executeSNMP (x) {
 			// console.log(x.host, varbinds[0].value, varbinds[1].value);
 			
 			var now = new Date();
-			var period = now.getTime() - x.lastTime.getTime();
+			// var period = now.getTime() - x.lastTime.getTime();
 					
 			var up = varbinds[0].value;
 			var down = varbinds[1].value;
 			
-			var diffUp = up - x.lastUp;
-			var diffDown = down - x.lastDown;
+			// var diffUp = up - x.lastUp;
+			// var diffDown = down - x.lastDown;
 			
-			var mbpsUp = ((diffUp * 8.0) / 1000000.0) * (period / 1000.0);
-			var mbpsDown = ((diffDown * 8.0) / 1000000.0) * (period / 1000.0);
-			var mbpsTotal = (((diffUp + diffDown) * 8.0) / 1000000.0) * (period / 1000.0);
+			// var mbpsUp = ((diffUp * 8.0) / 1000000.0) * (period / 1000.0);
+			// var mbpsDown = ((diffDown * 8.0) / 1000000.0) * (period / 1000.0);
+			// var mbpsTotal = (((diffUp + diffDown) * 8.0) / 1000000.0) * (period / 1000.0);
 						
 			// console.log (period, "-", up, ":", down, "-", diffUp,":", diffDown);
 			// console.log (period, "-", mbpsTotal, "-", mbpsUp,":", mbpsDown);
 			
 			// mqttclient.publish("sensors/bandwidth/" + x.name + "/up", mbpsUp.toFixed(2));
 			// mqttclient.publish("sensors/bandwidth/" + x.name + "/down", mbpsDown.toFixed(2));
-			mqttclient.publish("sensors/bandwidth/" + x.name + "/total", mbpsTotal.toFixed(2));
+			// mqttclient.publish("sensors/bandwidth/" + x.name + "/total", mbpsTotal.toFixed(2));
 			
-			mqttclient.publish("sensors/snmp/" + x.name + "/up", up.toFixed(0));
-			mqttclient.publish("sensors/snmp/" + x.name + "/down", down.toFixed(0));
+			if (up.toFixed(0) > 0) mqttclient.publish("sensors/snmp/" + x.name + "/up", up.toFixed(0));
+			if (down.toFixed(0) > 0) mqttclient.publish("sensors/snmp/" + x.name + "/down", down.toFixed(0));
 			
 			x.lastTime = now;
 			x.lastUp = up;
