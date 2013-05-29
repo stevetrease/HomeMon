@@ -12,7 +12,7 @@
 	<div class="row">
 	    <div class="span4">
 	    	<H1 class="text-center text-warning">
-			<span id="sensors/power/0"> </span>W now</h1>
+			<span id="sensors/power/0"> </span>W now</h1>		
 	    </div>
 	    <div class="span4">
 	    	<H1 class="text-center">
@@ -96,7 +96,8 @@
 		return (haystack.substr(0, needle.length) == needle);
 	}
 
-
+	var myvalues = [];
+    
 
 	var socket = io.connect("http://www.trease.eu:8500/sensors");
 	socket.on('data', function(data) { 
@@ -145,21 +146,19 @@
 			cell.id = data.topic;
 			var cell=row.insertCell(0);
 			cell.id = data.topic + "name";
-			document.getElementById(data.topic).style.textAlign="right"
-			document.getElementById(data.topic).style.width="25%"
+
+			
+			document.getElementById(data.topic).style.textAlign="right";
+			document.getElementById(data.topic).style.width="25%";
 			document.getElementById(data.topic + "name").innerHTML= data.topic.slice(data.topic.lastIndexOf('/')+1);
-			document.getElementById(data.topic + "name").style.textAlign="left"
-			document.getElementById(data.topic + "name").style.width="75%"
+			document.getElementById(data.topic + "name").style.textAlign="left";
+			document.getElementById(data.topic + "name").style.width="75%";
 		}
 		// new we know there is a target, update it
 		// console.log("Setting target " + data.topic + " to " + data.value);
 		document.getElementById(data.topic).innerHTML= data.value;
 
-		// if data topic is 0 it is the overall power consumption, so update the graph
-	 	// if (data.topic == "sensors/power/0") {	
-			// line1.append (new Date().getTime(), data.value);
-		// }
-
+		
 		// print the time the refresh happened
 		var dt = new Date(); 
 		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
