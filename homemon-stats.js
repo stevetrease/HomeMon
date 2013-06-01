@@ -122,7 +122,8 @@ mqttclient.on('connect', function() {
 		if(topic == "sensors/power/0") {
 			var known = 0;
 			for (var key in records_lastvalue) {
-				if (key != "sensors/power/0" && key != "sensors/power/U") {
+				// only it it matches sensors/power/[0-9]
+				if (key.length == 15 && key != "sensors/power/0" && key != "sensors/power/U") {
 					// console.log(key, known, records_lastvalue[key]);
 					known += records_lastvalue[key]; 
 				}
