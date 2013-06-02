@@ -9,16 +9,16 @@ var fs = require('fs');
 
 
 var names = new Array();
-names["sensors/power/1"] = "one";
-names["sensors/power/2"] = "two";
-names["sensors/power/3"] = "three";
-names["sensors/power/4"] = "four";
-names["sensors/power/5"] = "five";
-names["sensors/power/6"] = "six";
-names["sensors/power/7"] = "seven";
-names["sensors/power/8"] = "eight";
-names["sensors/power/9"] = "nine";
-
+names["sensors/power/1"] = "IAM1";
+names["sensors/power/2"] = "server";
+names["sensors/power/3"] = "Steve's PC";
+names["sensors/power/4"] = "Julie's PC";
+names["sensors/power/5"] = "little lounge";
+names["sensors/power/6"] = "kitchen";
+names["sensors/power/7"] = "lounge";
+names["sensors/power/8"] = "IAM8";
+names["sensors/power/9"] = "IAM9";
+names["sensors/power/U"] = "unknown";
 
 
 
@@ -59,9 +59,9 @@ io.of('/sensors').on('connection', function (socket) {
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
+			// figure out "friendly name and emit if known
 			var name = null;
 			if (names[topic] != undefined) {
-				console.log(names[topic]);
 				name = names[topic];
 			}
   			socket.emit('data', { topic: topic, value: message, name: name });
