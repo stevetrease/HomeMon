@@ -148,7 +148,11 @@
 			
 			document.getElementById(data.topic).style.textAlign="right";
 			document.getElementById(data.topic).style.width="25%";
-			document.getElementById(data.topic + "name").innerHTML= data.topic.slice(data.topic.lastIndexOf('/')+1);
+			if(data.name != undefined) {  // label cell based on emitted friendly name
+				document.getElementById(data.topic + "name").innerHTML = data.name;
+			} else { // label ce;; based on topic name
+				document.getElementById(data.topic + "name").innerHTML = data.topic.slice(data.topic.lastIndexOf('/')+1);
+			}
 			document.getElementById(data.topic + "name").style.textAlign="left";
 			document.getElementById(data.topic + "name").style.width="75%";
 		}
