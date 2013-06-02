@@ -10,16 +10,20 @@ var fs = require('fs');
 
 var names = new Array();
 names["sensors/power/1"] = "IAM1";
-names["sensors/power/2"] = "server";
+names["sensors/power/2"] = "Server";
 names["sensors/power/3"] = "Steve's PC";
 names["sensors/power/4"] = "Julie's PC";
-names["sensors/power/5"] = "little lounge";
-names["sensors/power/6"] = "kitchen";
-names["sensors/power/7"] = "lounge";
+names["sensors/power/5"] = "Little lounge";
+names["sensors/power/6"] = "Kitchen";
+names["sensors/power/7"] = "Lounge";
 names["sensors/power/8"] = "IAM8";
 names["sensors/power/9"] = "IAM9";
-names["sensors/power/U"] = "unknown";
-
+names["sensors/power/U"] = "Unknown";
+names["sensors/humidity/jeenode-11"] = "Utility Room";
+names["sensors/temperature/jeenode-11"] = "Utility Room";
+names["sensors/temperature/garage"] = "Garage";
+names["sensors/temperature/attic"] = "Attic";
+names["sensors/pressure/attic"] = "Attic";
 
 
 // service settings file
