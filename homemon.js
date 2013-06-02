@@ -8,9 +8,22 @@ var fs = require('fs');
 // io.set("transports", ["xhr-polling", "jsonp-polling"]);
 
 
+var names = new Array();
+names["sensors/power/1"] = "one";
+names["sensors/power/2"] = "two";
+names["sensors/power/3"] = "three";
+names["sensors/power/4"] = "four";
+names["sensors/power/5"] = "five";
+names["sensors/power/6"] = "six";
+names["sensors/power/7"] = "seven";
+names["sensors/power/8"] = "eight";
+names["sensors/power/9"] = "nine";
+
+
+
+
 // service settings file
 var config = require('./config.json');
-
 
 //
 //	A whole load of very clumsy routing for static pages and js 
@@ -46,7 +59,12 @@ io.of('/sensors').on('connection', function (socket) {
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
-  			socket.emit('data', { topic: topic, value: message });
+			var name = null;
+			if (names[topic] != undefined) {
+				console.log(names[topic]);
+				name = names[topic];
+			}
+  			socket.emit('data', { topic: topic, value: message, name: name });
   		});
   	});
 });
