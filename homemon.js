@@ -24,6 +24,8 @@ names["sensors/temperature/jeenode-11"] = "Utility Room";
 names["sensors/temperature/garage"] = "Garage";
 names["sensors/temperature/attic"] = "Attic";
 names["sensors/pressure/attic"] = "Attic";
+names["sensors/pressure/egpd"] = "Aberdeen Airport";
+names["sensors/temperature/egpd"] = "Aberdeen Airport";
 
 
 // service settings file
