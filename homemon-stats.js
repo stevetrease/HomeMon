@@ -72,12 +72,19 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = 0;
 		}
 
+		
 		// different hour?
-		if (records_lasttime[topic].getHours() != currenttime.getHours()) {
+		if (records_lasttime[topic].getHours() != currenttime.getHours()) {					
+			// and historize
+			redisClient.zadd(topic + "hourly", currenttime.getTime(), JSON.stringify(records_hourly[topic]), redis.print);
+			// reset counter
 			records_hourly[topic] = 0;
 		}
 		// different day?
 		if (records_lasttime[topic].getDate() != currenttime.getDate()) {
+			// and historize
+			redisClient.zadd(topic + "daily", currenttime.getTime(), JSON.stringify(records_daily[topic]), redis.print);
+			// reset counter
 			records_daily[topic] = 0;
 		}
 
