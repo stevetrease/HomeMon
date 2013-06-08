@@ -8,13 +8,13 @@ var redis = require('redis')
 timeStart = new Date();
 timeEnd = new Date();
 
-redisClient.zrangebyscore("currentcost0", (timeStart.valueOf() / 1000) - (60), (timeEnd.valueOf() / 1000), function (err, members) {
-	// console.log(members.length);	
+redisClient.zrangebyscore("sensors/power/0_hourly", 0, timeEnd.valueOf(), function (err, members) {
+	console.log(members.length);	
+	console.log();
+	console.log(members);
 	// console.log();
-	// console.log(members);
-	// console.log();
-	Object.keys(members).forEach (function (item) {
-		console.log(members[item]);
-		console.log(match(members[item], {}));
-	})
+	// Object.keys(members).forEach (function (item) {
+		//console.log(members[item]);
+		// console.log(match(members[item], {}));
+	//})
 });
