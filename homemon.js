@@ -1,12 +1,15 @@
+// service settings file
+var config = require('./config.json');
+
 var express = require('express');
 var app = express()
   , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server, {'log level': 2});
 var fs = require('fs');
-
-// io.set("transports", ["xhr-polling", "jsonp-polling"]);
-
+var redis = require('redis')
+	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
+	
 
 var names = new Array();
 names["sensors/power/1"] = "IAM1";
@@ -28,22 +31,37 @@ names["sensors/pressure/egpd"] = "Aberdeen Airport";
 names["sensors/temperature/egpd"] = "Aberdeen Airport";
 
 
-// service settings file
-var config = require('./config.json');
+
 
 //
 //	A whole load of very clumsy routing for static pages and js 
 //
 //	First of all log all connections
 app.use(express.logger());
-// app.use(express.compress());
+app.use(express.compress());
 
+app.get('/about', function(req, res){
+	res.send("About.");
+});
+
+app.get('/chartdata', function(req, res){
+	timeStart = new Date();
+	timeEnd = new Date();
+
+	redisClient.zrangebyscore("sensors/power/0_hourly", 0, timeEnd.valueOf(), function (err, members) {
+		console.log(members.length);	
+		res.json(members);
+	});
+
+});
+
+// Static files
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/js'));
 
 // and finally a 404
 app.use(function(req, res, next){
-	res.send(404, 'Sorry cant find that!');
+	res.send(404, "This is not the webpage you are looking for.");
 });
 
 
