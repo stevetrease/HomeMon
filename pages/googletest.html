@@ -11,65 +11,73 @@ Google Charts Test
 
 <div class="container">
 	<div class="row">
-		<div class="span6">
-			<div id="chart_div"</div>
+	    <div class="span4">
+	    	<div id="chart_div_1">Chart</div>
 	    </div>
-	    <div class="span6">
-			Part II
+	    <div class="span4">
+	    	<div id="chart_div_2">Chart</div>
 	    </div>
-	</div>
-	<div class="row">
-	    <div class="span12">
-			<div id="time" style="font-size:x-small">Time</div>
+	    <div class="span4">
+	    	<div id="chart_div_3">Chart</div>
 	    </div>
 	</div>
-</div>
+</div>	
 
-<script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>
+
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script>
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
 
-	// Load the Visualization API library and the piechart library.
-	google.load('visualization', '1.0', {'packages':['corechart']});
+	// Set a callback to run when the Google Visualization API is loaded.
 	google.setOnLoadCallback(drawChart);
 
-	function drawChart() {
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.  
+    function drawChart() {
+		var jsonData1 = $.ajax({
+          		url: "/chartdata?node=0",
+		  		dataType:"json",
+		  		async: false
+		}).responseText;
+		var jsonData2 = $.ajax({
+          		url: "/chartdata?node=2",
+		  		dataType:"json",
+		  		async: false
+		}).responseText;
+		var jsonData3 = $.ajax({
+          		url: "/chartdata?node=3",
+		  		dataType:"json",
+		  		async: false
+		}).responseText;
 
-      // Create the data table.
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Topping');
-      data.addColumn('number', 'Slices');
-      data.addRows([
-        ['Mushrooms', 3],
-        ['Onions', 1],
-        ['Olives', 1], 
-        ['Zucchini', 1],
-        ['Pepperoni', 2]
-      ]);
+      
+        var data1 = new google.visualization.arrayToDataTable(JSON.parse(jsonData1));
+        data1.setColumnLabel(0, "Time");
+        data1.setColumnLabel(1, "Y");
+        var data2 = new google.visualization.arrayToDataTable(JSON.parse(jsonData2));
+        data2.setColumnLabel(0, "Time");
+        data2.setColumnLabel(1, "Y");
+		var data3 = new google.visualization.arrayToDataTable(JSON.parse(jsonData3));
+        data3.setColumnLabel(0, "Time");
+        data3.setColumnLabel(1, "Y");
+       
+        // var formatter = new google.visualization.DateFormat({formatType:'short'});
+		// formatter.format(data, 0);
 
-      // Set chart options
-      var options = {'title':'How Much Pizza I Ate Last Night',
-                     'width':100,
-                     'height':100};
-
-      // Instantiate and draw our chart, passing in some options.
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
+		// Instantiate and draw our chart, passing in some options.
+		var options = {height: 300, legend: {position: 'none'}};
+		var chart1 = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
+		chart1.draw(data1, options);
+		var chart2 = new google.visualization.LineChart  (document.getElementById('chart_div_2'));
+		chart2.draw(data2, options);
+		var chart3 = new google.visualization.LineChart  (document.getElementById('chart_div_3'));
+		chart3.draw(data3, options)
     }
-
-
-
-
-	var socket = io.connect("http://www.trease.eu:8500/mqtt");
-	socket.on('data', function(data) {
-		// chartdata[5] = parseInt(data.message, 10)
-		//		console.log(chartdata);		
-		var dt = new Date(); 
-		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
-	});
 </script>
 </body>
 </html>
