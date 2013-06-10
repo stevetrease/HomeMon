@@ -72,18 +72,38 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = 0;
 		}
 
+
+
+		if (BeginsWith("sensors/power/0", topic)) {
+			var messages = {
+				time: records_lasttime[topic].getTime(),
+				value: records_hourly[topic]	
+			}
+			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
+		}
+
+
 		
 		// different hour?
 		if (records_lasttime[topic].getHours() != currenttime.getHours()) {					
-			// and historize
-			redisClient.zadd(topic + "_hourly", currenttime.getTime(), records_lasttime[topic].getTime() + "," + records_hourly[topic]);
+			// and historize	
+			var messages = {
+				time: records_lasttime[topic].getTime(),
+				value: records_hourly[topic]	
+			}
+			redisClient.zadd(topic + "_hourly", currenttime.getTime(), JSON.stringify(messages));
+
 			// reset counter
 			records_hourly[topic] = 0;
 		}
 		// different day?
 		if (records_lasttime[topic].getDate() != currenttime.getDate()) {
 			// and historize
-			redisClient.zadd(topic + "_daily", currenttime.getTime(), records_lasttime[topic].getTime() + "," + records_daily[topic]);
+			var messages = {
+				time: records_lasttime[topic].getTime(),
+				value: records_daily[topic]	
+			}
+			redisClient.zadd(topic + "_daily", currenttime.getTime(), JSON.stringify(messages));
 			// reset counter
 			records_daily[topic] = 0;
 		}
