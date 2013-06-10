@@ -8,7 +8,6 @@ Google Charts Test
 
 </head>
 <body>
-
 <div class="container">
 	<div class="row">
 	    <div class="span4">
@@ -21,6 +20,17 @@ Google Charts Test
 	    	<div id="chart_div_3">Chart</div>
 	    </div>
 	</div>
+	<div class="row">
+	    <div class="span4">
+	    	<div id="table_div_1">Table</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="table_div_2">Table</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="table_div_3">Table</div>
+	    </div>
+	</div>
 </div>	
 
 
@@ -30,7 +40,8 @@ Google Charts Test
 
 <script>
     // Load the Visualization API and the piechart package.
-    google.load('visualization', '1.0', {'packages':['corechart']});
+    google.load('visualization', '1.0', {'packages':['corechart','table']});
+    // google.load('visualization', '1', {packages:['table']});
 
 	// Set a callback to run when the Google Visualization API is loaded.
 	google.setOnLoadCallback(drawChart);
@@ -56,15 +67,15 @@ Google Charts Test
 		}).responseText;
 
       
-        var data1 = new google.visualization.arrayToDataTable(JSON.parse(jsonData1));
+        var data1 = new google.visualization.arrayToDataTable(JSON.parse(jsonData1), true);
         data1.setColumnLabel(0, "Time");
-        data1.setColumnLabel(1, "Y");
-        var data2 = new google.visualization.arrayToDataTable(JSON.parse(jsonData2));
+        data1.setColumnLabel(1, "KWh");
+        var data2 = new google.visualization.arrayToDataTable(JSON.parse(jsonData2), true);
         data2.setColumnLabel(0, "Time");
-        data2.setColumnLabel(1, "Y");
-		var data3 = new google.visualization.arrayToDataTable(JSON.parse(jsonData3));
+        data2.setColumnLabel(1, "KWh");
+		var data3 = new google.visualization.arrayToDataTable(JSON.parse(jsonData3), true);
         data3.setColumnLabel(0, "Time");
-        data3.setColumnLabel(1, "Y");
+        data3.setColumnLabel(1, "KWh");
        
         // var formatter = new google.visualization.DateFormat({formatType:'short'});
 		// formatter.format(data, 0);
@@ -73,10 +84,18 @@ Google Charts Test
 		var options = {height: 300, legend: {position: 'none'}};
 		var chart1 = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
 		chart1.draw(data1, options);
-		var chart2 = new google.visualization.LineChart  (document.getElementById('chart_div_2'));
+		var chart2 = new google.visualization.ColumnChart(document.getElementById('chart_div_2'));
 		chart2.draw(data2, options);
-		var chart3 = new google.visualization.LineChart  (document.getElementById('chart_div_3'));
-		chart3.draw(data3, options)
+		var chart3 = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
+		chart3.draw(data3, options);
+
+		// Instantiate and draw our tables	
+		var table1 = new google.visualization.Table(document.getElementById('table_div_1'));
+        table1.draw(data1, {showRowNumber: true});
+        var table2 = new google.visualization.Table(document.getElementById('table_div_2'));
+        table2.draw(data2, {showRowNumber: true});
+        var table3 = new google.visualization.Table(document.getElementById('table_div_3'));
+        table3.draw(data3, {showRowNumber: true});
     }
 </script>
 </body>
