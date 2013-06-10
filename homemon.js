@@ -49,7 +49,7 @@ app.get('/chartdata', function(req, res){
 	timeEnd = new Date();
 
 	redisClient.zrangebyscore("sensors/power/0_hourly", 0, timeEnd.valueOf(), function (err, members) {
-		console.log(members.length);	
+		console.log("Returing", members.length. "items from Redis");	
 		res.json(members);
 	});
 
