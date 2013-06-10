@@ -45,12 +45,18 @@ app.get('/about', function(req, res){
 });
 
 app.get('/chartdata', function(req, res){
-	timeStart = new Date();
+	// use node= to select a particular device
+	timeStart = new Date() - (24 * 3600 * 1000);
 	timeEnd = new Date();
-
-	redisClient.zrangebyscore("sensors/power/0_hourly", 0, timeEnd.valueOf(), function (err, members) {
-		console.log("Returing", members.length. "items from Redis");	
-		res.json(members);
+	redisClient.zrangebyscore("sensors/power/" + req.param('node') + "_hourly", timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
+		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
+		
+		var parsedMembers = [];
+		for (var i = 0; i < members.length; i++) { 
+			var jsonData = JSON.parse(members[i]);
+			parsedMembers[i] = [ jsonData.time, jsonData.value ];			
+		}
+		res.json(parsedMembers);
 	});
 
 });
