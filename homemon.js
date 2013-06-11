@@ -46,9 +46,18 @@ app.get('/about', function(req, res){
 
 app.get('/chartdata', function(req, res){
 	// use node= to select a particular device
-	timeStart = new Date() - (24 * 3600 * 1000);
+	switch (req.param('period')) {
+		case 'daily':
+			timeStart = new Date() - (7 * 24 * 3600 * 1000); // 7 days
+			break;
+		case 'hourly':
+			timeStart = new Date() - (24 * 3600 * 1000); // 24 hours
+			break;
+		default:
+			console.log ("illegal value of", req.param('period'), "for period argument");
+	}
 	timeEnd = new Date();
-	redisClient.zrangebyscore("sensors/power/" + req.param('node') + "_hourly", timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
+	redisClient.zrangebyscore("sensors/power/" + req.param('node') + "_" + req.param('period'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
 		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
 		
 		var parsedMembers = [];
