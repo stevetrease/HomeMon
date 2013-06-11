@@ -63,7 +63,18 @@ app.get('/chartdata', function(req, res){
 		var parsedMembers = [];
 		for (var i = 0; i < members.length; i++) { 
 			var jsonData = JSON.parse(members[i]);
-			parsedMembers[i] = [ jsonData.time, jsonData.value ];			
+			var tDate = new Date(jsonData.time);
+			switch (req.param('period')) {
+				case 'daily':
+					var formattedDate = tDate.getDay();
+					break;
+				case 'hourly':
+					var formattedDate = tDate.getHours();
+					break;
+				default:
+					console.log ("illegal value of", req.param('period'), "for period argument");
+			}
+			parsedMembers[i] = [ formattedDate, jsonData.value ];			
 		}
 		res.json(parsedMembers);
 	});
