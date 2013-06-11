@@ -103,7 +103,7 @@ Power Charts
 			
 			// Instantiate and draw our chart	 
 			var options = {height: 300, legend: {position: 'none'}};
-			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + tag));
+			var chart = new google.visualization.SteppedAreaChart(document.getElementById('chart_div_' + tag));
 			chart.draw(data, options);
 
 			// Instantiate and draw our table
