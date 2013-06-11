@@ -11,7 +11,7 @@ Google Charts Test
 <div class="container">
 	<div class="row">
 	    <div class="span4">
-	    	<div id="chart_div_1">Chart</div>
+	    	<div id="chart_div_0">Chart</div>
 	    </div>
 	    <div class="span4">
 	    	<div id="chart_div_2">Chart</div>
@@ -22,7 +22,18 @@ Google Charts Test
 	</div>
 	<div class="row">
 	    <div class="span4">
-	    	<div id="table_div_1">Table</div>
+	    	<div id="chart_div_4">Chart</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="chart_div_5">Chart</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="chart_div_6">Chart</div>
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="span4">
+	    	<div id="table_div_0">Table</div>
 	    </div>
 	    <div class="span4">
 	    	<div id="table_div_2">Table</div>
@@ -31,6 +42,17 @@ Google Charts Test
 	    	<div id="table_div_3">Table</div>
 	    </div>
 	</div>
+	<div class="row">
+	    <div class="span4">
+	    	<div id="table_div_4">Table</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="table_div_5">Table</div>
+	    </div>
+	    <div class="span4">
+	    	<div id="table_div_6">Table</div>
+	    </div>
+	</div>	
 </div>	
 
 
@@ -50,54 +72,29 @@ Google Charts Test
     // instantiates the pie chart, passes in the data and
     // draws it.  
     function drawChart() {
-		var jsonData1 = $.ajax({
-          		url: "/chartdata?node=0",
-		  		dataType:"json",
-		  		async: false
-		}).responseText;
-		var jsonData2 = $.ajax({
-          		url: "/chartdata?node=2",
-		  		dataType:"json",
-		  		async: false
-		}).responseText;
-		var jsonData3 = $.ajax({
-          		url: "/chartdata?node=3",
-		  		dataType:"json",
-		  		async: false
-		}).responseText;
+    	var tags = new Array("0","2","3","4","5","6");
+		for (var i = 0; i < tags.length; i++) {	
+			var tag = tags[i];
+			var jsonData = $.ajax({
+          			url: "/chartdata?node=" + tag + "&period=hourly",
+		  				dataType:"json",
+		  				async: false
+		  	}).responseText;
+	
+            var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData), true);
+			data.setColumnLabel(0, "Date");
+			data.setColumnLabel(1, "KWh");
 
-      
-        var data1 = new google.visualization.arrayToDataTable(JSON.parse(jsonData1), true);
-        data1.setColumnLabel(0, "Time");
-        data1.setColumnLabel(1, "KWh");
-        var data2 = new google.visualization.arrayToDataTable(JSON.parse(jsonData2), true);
-        data2.setColumnLabel(0, "Time");
-        data2.setColumnLabel(1, "KWh");
-		var data3 = new google.visualization.arrayToDataTable(JSON.parse(jsonData3), true);
-        data3.setColumnLabel(0, "Time");
-        data3.setColumnLabel(1, "KWh");
-       
-        // var formatter = new google.visualization.DateFormat({formatType:'short'});
-		// formatter.format(data, 0);
+			// Instantiate and draw our chart	 
+			var options = {height: 300, legend: {position: 'none'}};
+			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + tag));
+			chart.draw(data, options);
 
-		// Instantiate and draw our chart, passing in some options.
-		var options = {height: 300, legend: {position: 'none'}};
-		var chart1 = new google.visualization.ColumnChart(document.getElementById('chart_div_1'));
-		chart1.draw(data1, options);
-		var chart2 = new google.visualization.ColumnChart(document.getElementById('chart_div_2'));
-		chart2.draw(data2, options);
-		var chart3 = new google.visualization.ColumnChart(document.getElementById('chart_div_3'));
-		chart3.draw(data3, options);
-
-		// Instantiate and draw our tables	
-		var table1 = new google.visualization.Table(document.getElementById('table_div_1'));
-        table1.draw(data1, {showRowNumber: true});
-        var table2 = new google.visualization.Table(document.getElementById('table_div_2'));
-        table2.draw(data2, {showRowNumber: true});
-        var table3 = new google.visualization.Table(document.getElementById('table_div_3'));
-        table3.draw(data3, {showRowNumber: true});
-    }
+			// Instantiate and draw our table
+			var table = new google.visualization.Table(document.getElementById('table_div_' + tag));
+			table.draw(data, {showRowNumber: false});
+		}
+	}
 </script>
 </body>
 </html>
-
