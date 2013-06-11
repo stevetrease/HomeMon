@@ -74,7 +74,7 @@ app.get('/chartdata', function(req, res){
 				default:
 					console.log ("illegal value of", req.param('period'), "for period argument");
 			}
-			parsedMembers[i] = [ formattedDate, jsonData.value ];			
+			parsedMembers[i] = [ formattedDate.toString(), jsonData.value ];			
 		}
 		res.json(parsedMembers);
 	});
