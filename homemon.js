@@ -11,7 +11,8 @@ var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 	
 
-var names = new Array();
+var names = {};
+// var names = new Array();
 names["sensors/power/1"] = "IAM1";
 names["sensors/power/2"] = "Server";
 names["sensors/power/3"] = "Steve's PC";
@@ -44,6 +45,14 @@ app.get('/about', function(req, res){
 	res.send("About.");
 });
 
+
+
+
+app.get('/names', function(req, res){
+	res.json(JSON.stringify(names));
+});
+
+
 app.get('/chartdata', function(req, res){
 	// use node= to select a particular device
 	switch (req.param('period')) {
@@ -74,12 +83,14 @@ app.get('/chartdata', function(req, res){
 				default:
 					console.log ("illegal value of", req.param('period'), "for period argument");
 			}
-			parsedMembers[i] = [ formattedDate.toString(), jsonData.value ];			
+			parsedMembers[i] = [ formattedDate.toString(), jsonData.value ];		
 		}
 		res.json(parsedMembers);
 	});
-
 });
+
+
+
 
 // Static files
 app.use(express.static(__dirname + '/pages'));
