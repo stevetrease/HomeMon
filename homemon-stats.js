@@ -129,7 +129,7 @@ mqttclient.on('connect', function() {
 		}
 		
 		// record is SNMP
-		if (BeginsWith("sensors/snmp/", topic)) {
+		if (BeginsWith("sensors/snmp", topic)) {
 			// console.log ("snmp - ", topic, duration);	
 			var snmp = parseInt(message, 10); 
 			var used = (snmp - records_lastvalue[topic]);
