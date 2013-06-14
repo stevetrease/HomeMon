@@ -14,7 +14,7 @@ client_uniq = str(os.getpid())
 mqttc = mosquitto.Mosquitto(client_uniq)
 
 
-mqttc.connect("127.0.0.1", 1883, 60, True)
+mqttc.connect("127.0.0.1", 1883, 60)
 
 
 
@@ -40,9 +40,11 @@ while mqttc.loop() == 0:
 	mbps_up = round((bytes_up_diff) * 8.0 / 1000000.0, 3)
 
 
-	mqttc.publish("sensors/network/up", str(mbps_up))
-	mqttc.publish("sensors/network/down", str(mbps_down))
-	mqttc.publish("sensors/network/total", str(mbps_total))
+	mqttc.publish("sensors/snmp/router/up", str(bytes_up_new))
+	mqttc.publish("sensors/snmp/router/down", str(bytes_down_new))
+	
+	# print current bandwidth on bottom line of LCD
+	mqttc.publish("LCD/1/line/0", "{:5.2f}".format(mbps_total))
 
 
 	bytes_up_old = bytes_up_new
