@@ -80,6 +80,7 @@ mqttclient.on('connect', function() {
 				value: records_hourly[topic]	
 			}
 			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
+			mqttclient.publish("LCD/1/line/0", message + " " + records_hourly[topic].toFixed(1) + " " + records_daily[topic].toFixed(1));
 		}
 
 
