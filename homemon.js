@@ -98,7 +98,8 @@ app.use(express.static(__dirname + '/pages/js'));
 
 // and finally a 404
 app.use(function(req, res, next){
-	res.send(404, "This is not the webpage you are looking for.");
+	res.sendfile("pages/404.jpg");
+	// res.send(404, "This is not the webpage you are looking for.");
 });
 
 
