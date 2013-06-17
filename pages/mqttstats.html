@@ -15,9 +15,14 @@ MQTT Server Stats
 			</table>
 	    </div>
 	</div>
-	
-	
-
+	<div class="row">
+	    <div class="span3">
+	    	<div id="time" style="font-size:x-small">Time</div>
+	    </div>
+	    <div class="span3">
+	    	<div id="updates" style="font-size:x-small" class="text-right">0</div>
+	    </div>
+	</div>
 </div>
 <P>
 <script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>
@@ -66,7 +71,7 @@ MQTT Server Stats
 		// print the time the refresh happened
 		var dt = new Date(); 
 		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
-		document.getElementById("updates").innerHTML= updates;
+		document.getElementById("updates").innerHTML= ++updates;
 	});
 </script>
 </body>
