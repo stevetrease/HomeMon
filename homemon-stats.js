@@ -134,6 +134,7 @@ mqttclient.on('connect', function() {
 			// console.log ("snmp - ", topic, duration);	
 			var snmp = parseInt(message, 10); 
 			var used = (snmp - records_lastvalue[topic]);
+			if (used < 0) used = 0;
 			var rate = used * 8.0 / 1000000 * (duration / 1000.0); // in Mbps
 			records_lasttime[topic] = currenttime;
 			records_hourly[topic] += used;
