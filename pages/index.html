@@ -83,8 +83,11 @@
 		
 	
 	<div class="row">
-	    <div class="span12">
-			<div id="time" style="font-size:x-small">Time</div>
+	    <div class="span6">
+	    	<div id="time" style="font-size:x-small">Time</div>
+	    </div>
+	    <div class="span6">
+	    	<div id="updates" style="font-size:x-small" class="text-right">0</div>
 	    </div>
 	</div>
 </div>
@@ -104,6 +107,7 @@
 	}
 
 	var myvalues = [];
+	var updates = 0;
     
 
 	var socket = io.connect("http://www.trease.eu:8500/sensors");
@@ -173,6 +177,7 @@
 		// print the time the refresh happened
 		var dt = new Date(); 
 		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
+		document.getElementById("updates").innerHTML= updates;
 	});
 </script>
     
