@@ -6,7 +6,7 @@ Cubism
 </title>
 <link href="cubism.css" rel="stylesheet">
 <style>
-#example1 { min-height: 155px; }
+#example1 { min-height: 310px; }
 </style>
 </head>
 <body>
@@ -16,47 +16,55 @@ Cubism
 
 <script src="d3.v2.js"></script>
 <script src="cubism.v1.js"></script>
+<script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script> 
 
 <script>
-	console.log("running");
-	function random(name) {
-	  var value = 0,
-	      values = [],
-	      i = 0,
-	      last;
-	  return context.metric(function(start, stop, step, callback) {
-	    start = +start, stop = +stop;
-	    if (isNaN(last)) last = start;
-	    while (last < stop) {
-	      last += step;
-	      value = Math.max(-10, Math.min(10, value + .8 * Math.random() - .4 + .2 * Math.cos(i += .2)));
-	      values.push(value);
-	    }
-	    callback(null, values = values.slice((start - stop) / step));
-	  }, name);
-	}
 
+
+function random(name) {
+  var value = 0,
+      values = [],
+      i = 0,
+      last;
+  return context.metric(function(start, stop, step, callback) {
+    start = +start, stop = +stop;
+    if (isNaN(last)) last = start;
+    while (last < stop) {
+      last += step;
+      value = Math.max(-10, Math.min(10, value + .8 * Math.random() - .4 + .2 * Math.cos(i += .2)));
+      values.push(value);
+    }
+    console.log(values.slice((start - stop) / step));
+    callback(null, values = values.slice((start - stop) / step));
+  }, name);
+}
 
 
 	var context = cubism.context()
 	    .serverDelay(0)
 	    .clientDelay(0)
-	    .step(1e3)
-	    .size(960);
+	    .step(1e3)        // one second
+	    .size(1920);
+
+	var bar = context.metric(function(start, stop, step, callback) {
+		data = [1,2,3];
+		callback(null, data);
+		// d3.json("/chartdata?node=0&period=daily", function(data) {
+			  // if (!data) return callback(new Error("unable to load data"));
+			  // callback(null, data);
+		// });
+	});
 	
-	var foo = random("foo"),
-	    bar = random("bar");
-	
-	console.log("d3.select");
+	var foo = random("foo");
+	    
+	    	
 	d3.select("#example1").call(function(div) {
-	  console.log("d3.selected");
-	
 	  div.append("div")
 	      .attr("class", "axis")
 	      .call(context.axis().orient("top"));
 	
 	  div.selectAll(".horizon")
-	      .data([foo, bar, foo.add(bar), foo.subtract(bar)])
+	      .data([bar])
 		  .enter().append("div")
 	      .attr("class", "horizon")
 	      .call(context.horizon().extent([-20, 20]));
@@ -65,6 +73,15 @@ Cubism
 	      .attr("class", "rule")
 	      .call(context.rule());
     });
+    
+    
+    
+    // var socket = io.connect("http://www.trease.eu:8500/sensors");
+	// socket.on('data', function(data) { 
+		// console.log("Message received " + data.topic + " of " + data.value);
+		// foo.push(data.value);
+	// });
+
 
 
 	// On mousemove, reposition the chart values to match the rule.
