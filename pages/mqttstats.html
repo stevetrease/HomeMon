@@ -17,11 +17,7 @@ MQTT Server Stats
 	</div>
 	
 	
-	<div class="row">
-	    <div class="span12">
-			<div id="time" style="font-size:x-small">Time</div>
-	    </div>
-	</div>
+
 </div>
 <P>
 <script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>
@@ -31,6 +27,8 @@ MQTT Server Stats
 	ElementExists = function(id) {
     		return !!document.getElementById(id);
 	};
+	
+	var updates = 0;
 
 	var socket = io.connect("http://192.168.1.103:8500/mqttstats");
 	socket.on('data', function(data) { 
@@ -68,6 +66,7 @@ MQTT Server Stats
 		// print the time the refresh happened
 		var dt = new Date(); 
 		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
+		document.getElementById("updates").innerHTML= updates;
 	});
 </script>
 </body>
