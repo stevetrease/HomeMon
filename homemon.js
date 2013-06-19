@@ -51,7 +51,14 @@ app.get('/about', function(req, res){
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
-
+app.get('/health', function(req, res){
+  res.send({
+    pid: process.pid,
+    versions: process.versions,
+    memory: process.memoryUsage(),
+    uptime: process.uptime()
+  })
+})
 
 app.get('/chartdata', function(req, res){
 	// use node= to select a particular device
