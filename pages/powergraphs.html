@@ -15,18 +15,18 @@ Power Charts
 	<div class="row">
 	    <div class="span3">
 	    </div>
-	    <div class="span6">
-			<div id="myCarousel" class="carousel slide well">
+	    <div class="span6 well">
+			<div id="myCarousel" class="carousel slide">
 			  <!-- Carousel items -->
 			  <div class="carousel-inner">
-			    <div class="active item"><div id="chart_div_0">Chart</div></div>
-			    <div class="item"><div id="chart_div_2">Chart</div></div>
-			    <div class="item"><div id="chart_div_3">Chart</div></div>
-			    <div class="item"><div id="chart_div_4">Chart</div></div>
-			    <div class="item"><div id="chart_div_5">Chart</div></div>
-			    <div class="item"><div id="chart_div_6">Chart</div></div>
-				<div class="item"><div id="chart_div_7">Chart</div></div>
-				<div class="item"><div id="chart_div_U">Chart</div></div>
+			    <div class="active item"><div id="chart_div_0">Chart</div><div id="table_div_0">Table</div></div>
+			    <div class="item"><div id="chart_div_2">Chart</div><div id="table_div_2">Table</div></div>
+			    <div class="item"><div id="chart_div_3">Chart</div><div id="table_div_3">Table</div></div>
+			    <div class="item"><div id="chart_div_4">Chart</div><div id="table_div_4">Table</div></div>
+			    <div class="item"><div id="chart_div_5">Chart</div><div id="table_div_5">Table</div></div>
+			    <div class="item"><div id="chart_div_6">Chart</div><div id="table_div_6">Table</div></div>
+				<div class="item"><div id="chart_div_7">Chart</div><div id="table_div_7">Table</div></div>
+				<div class="item"><div id="chart_div_U">Chart</div><div id="table_div_U">Table</div></div>
 			  </div>
 			  <!-- Carousel nav -->
 			  <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
@@ -36,37 +36,6 @@ Power Charts
 	    <div class="span3">    	
 	    </div>
 	</div>
-
-	<div class="row">
-	    <div class="span4">
-	    	<div id="table_div_0">Table</div>
-	    </div>
-	    <div class="span4">
-	    	<div id="table_div_2">Table</div>
-	    </div>
-	    <div class="span4">
-	    	<div id="table_div_3">Table</div>
-	    </div>
-	</div>
-	<div class="row">
-	    <div class="span4">
-	    	<div id="table_div_4">Table</div>
-	    </div>
-	    <div class="span4">
-	    	<div id="table_div_5">Table</div>
-	    </div>
-	    <div class="span4">
-	    	<div id="table_div_6">Table</div>
-	    </div>
-	</div>
-	<div class="row">
-	    <div class="span4">
-	    	<div id="table_div_7">Table</div>
-	    </div>
-	    <div class="span4">
-	    	<div id="table_div_U">Table</div>
-	    </div>
-	</div>		
 </div>	
 
 
@@ -94,7 +63,7 @@ Power Charts
 		for (var i = 0; i < tags.length; i++) {	
 			var tag = tags[i];
 			var jsonData = $.ajax({
-          			url: "/chartdata?node=" + tag + "&period=hourly",
+          			url: "/chartdata?node=" + tag + "&period=daily",
 		  				dataType:"json",
 		  				async: false
 		  	}).responseText;	
