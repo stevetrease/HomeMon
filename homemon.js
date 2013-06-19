@@ -51,6 +51,7 @@ app.get('/about', function(req, res){
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
+
 app.get('/health', function(req, res){
   res.send({
     pid: process.pid,
@@ -75,24 +76,7 @@ app.get('/chartdata', function(req, res){
 	timeEnd = new Date();
 	redisClient.zrangebyscore("sensors/power/" + req.param('node') + "_" + req.param('period'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
 		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
-		
-		var parsedMembers = [];
-		for (var i = 0; i < members.length; i++) { 
-			var jsonData = JSON.parse(members[i]);
-			var tDate = new Date(jsonData.time);
-			switch (req.param('period')) {
-				case 'daily':
-					var formattedDate = tDate.getDay();
-					break;
-				case 'hourly':
-					var formattedDate = tDate.getHours();
-					break;
-				default:
-					console.log ("illegal value of", req.param('period'), "for period argument");
-			}
-			parsedMembers[i] = [ formattedDate.toString(), jsonData.value ];		
-		}
-		res.json(parsedMembers);
+		res.json(members);
 	});
 });
 
