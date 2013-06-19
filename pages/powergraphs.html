@@ -97,9 +97,10 @@ Power Charts
           			url: "/chartdata?node=" + tag + "&period=hourly",
 		  				dataType:"json",
 		  				async: false
-		  	}).responseText;
-	
-            var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData), true);
+		  	}).responseText;		  	
+
+            var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData), true);	           
+            
 			data.setColumnLabel(0, "Date");
 			data.setColumnLabel(1, "KWh");
 			
