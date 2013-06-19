@@ -101,8 +101,6 @@ Power Charts
 		  	
 		  	var data = new google.visualization.DataTable();	           
 			
-			// data.setColumnLabel(0, "Date");
-			// data.setColumnLabel(1, "KWh");
 			data.addColumn('datetime', 'Time');
 			data.addColumn('number', 'KWh');
 		  	
@@ -110,15 +108,7 @@ Power Charts
 		  	for (var j = 0; j < receivedData.length; j++) {	
 		  		var x = JSON.parse(receivedData[j]);
 		  		data.addRow([ new Date(x.time), x.value]);
-		  		
-		  		console.log(x);
-		  		console.log(x.time); 
-		  		console.log(x.value); 
-		  		console.log("+++");
-
 		  	}
-		  	console.log(data);
-		  	console.log("======");
 
 			// Instantiate and draw our chart	 
 			var options = {height: 300, legend: {position: 'none'}};
