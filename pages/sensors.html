@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <link href="custom.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<P>
+<P>
+<div class="container">
+	<div class="row">
+	    <div class="span4">
+	    	<H1 class="text-center text-warning">
+			<span id="sensors/power/0"> </span>W now</h1>		
+	    </div>
+	    <div class="span4">
+	    	<H1 class="text-center">
+			<span id="sensors/power/0/cumulative/hour"></span> KWh hour
+			</H1>
+	    </div>
+	    <div class="span4">
+	    	<H1 class="text-center">
+			<span id="sensors/power/0/cumulative/daily"></span> KWh today
+			</H1>
+	    </div>
+	</div>
+	
+	
+	    
+    <div class="row">
+    	<div class="span2">
+    		<table id="myTablePower" class="table table-striped table-bordered table-condensed" style="width:100%">
+    		<caption><strong>Power</strong></caption></table> 
+	    </div>
+	    <div class="span2">
+	    	<table id="myTableHumidity" class="table table-striped table-bordered table-condensed" style="width:100%">
+	    	<caption><strong>Humidity</strong></caption></table>
+	    </div>
+	    <div class="span2">
+	   		<table id="myTableTemp" class="table table-striped table-bordered table-condensed" style="width:100%">
+	   		<caption><strong>Temperatures</strong></caption></table> 
+	    </div>
+	    <div class="span2">
+			<table id="myTableNO2" class="table table-striped table-bordered table-condensed" style="width:100%">
+			<caption><strong>NO2</strong></caption></table>	
+	    </div>
+	    <div class="span2">
+	    	<table id="myTableCO" class="table table-striped table-bordered table-condensed" style="width:100%">
+	    	<caption><strong>CO</strong></caption></table>	    
+	    </div>
+	    <div class="span2">  
+	    	<table id="myTablePressure" class="table table-striped table-bordered table-condensed" style="width:100%">
+	    	<caption><strong>Pressure</strong></caption></table>
+	    </div>
+	</div>
+	
+	
+	
+	<div class="row">
+		<div class="span4">
+			<div class="thumbnail">
+			<A HREF="http://www.trease.eu/rrdtool/currentcost.htm">
+			<img src="http://www.trease.eu/rrdtool/graphs/currentcost-1d.png" alt="">
+			</A>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="thumbnail">
+			<A HREF="http://www.trease.eu/rrdtool/humidity.htm">
+			<img src="http://www.trease.eu/rrdtool/graphs/humidity-1d.png" alt="">
+			</A>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="thumbnail">
+			<A HREF="http://www.trease.eu/rrdtool/temperature.htm">
+			<img src="http://www.trease.eu/rrdtool/graphs/temperature-1d.png" alt="">
+			</A>
+			</div>
+		</div>
+	</div>
+		
+	
+	<div class="row">
+	    <div class="span6">
+	    	<div id="time" style="font-size:x-small">Time</div>
+	    </div>
+	    <div class="span6">
+	    	<div id="updates" style="font-size:x-small" class="text-right">0</div>
+	    </div>
+	</div>
+</div>
+
+ 
+    
+<script src="http://www.trease.eu:8500/socket.io/socket.io.js"></script>    
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+        
+<script>
+	ElementExists = function(id) {
+    		return !!document.getElementById(id);
+	};
+	BeginsWith = function(needle, haystack) {
+		return (haystack.substr(0, needle.length) == needle);
+	}
+
+	var myvalues = [];
+	var updates = 0;
+    
+
+	var socket = io.connect("http://www.trease.eu:8500/sensors");
+	socket.on('data', function(data) { 
+		// console.log("Message received " + data.topic + " of " + data.value);
+
+		// check the target topic exisits & if not create a target table entry
+		if (!ElementExists (data.topic)) {
+			// console.log("Creating target " + data.topic);
+			var topictag = "sensors/power/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTablePower");
+			}
+			var topictag = "sensors/temperature/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTableTemp");
+			}
+			var topictag = "sensors/humidity/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTableHumidity");
+			}
+			var topictag = "sensors/co/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTableCO");
+			}
+			var topictag = "sensors/no2/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTableNO2");
+			}
+			var topictag = "sensors/pressure/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTablePressure");
+			}
+
+			// itertate through table to find out where to insert row in alpha order
+			var count = 0;
+			for (i = 0; i < table.rows.length; i++) {
+				var row = table.rows[i];
+				var col = row.cells[0];
+				if (col.firstChild.nodeValue < data.topic.slice(data.topic.lastIndexOf('/')+1)) {
+					count++;
+				}
+			} 
+
+			var row=table.insertRow(count);
+			var cell=row.insertCell(0);
+			cell.id = data.topic;
+			var cell=row.insertCell(0);
+			cell.id = data.topic + "name";
+
+			
+			document.getElementById(data.topic).style.textAlign="right";
+			document.getElementById(data.topic).style.width="25%";
+			if(data.name != undefined) {  // label cell based on emitted friendly name
+				document.getElementById(data.topic + "name").innerHTML = data.name;
+			} else { // label ce;; based on topic name
+				document.getElementById(data.topic + "name").innerHTML = data.topic.slice(data.topic.lastIndexOf('/')+1);
+			}
+			document.getElementById(data.topic + "name").style.textAlign="left";
+			document.getElementById(data.topic + "name").style.width="75%";
+		}
+		// new we know there is a target, update it
+		// console.log("Setting target " + data.topic + " to " + data.value);
+		document.getElementById(data.topic).innerHTML= data.value;
+
+		
+		// print the time the refresh happened
+		var dt = new Date(); 
+		document.getElementById("time").innerHTML= dt.toLocaleTimeString();
+		document.getElementById("updates").innerHTML= ++updates;
+	});
+</script>
+    
+</body>
+</html>
