@@ -1,0 +1,62 @@
+extends layout
+
+block content
+	script(src="/javascripts/jquery-2.0.2.min.js")
+	script(src='javascripts/bootstrap/js/bootstrap.min.js')
+	script(src="/socket.io/socket.io.js")
+	script(src="/javascripts/sensors.js")
+	
+	
+
+	div.container.well
+		div.row
+			div.span4
+				| <H1 class="text-center text-warning"><span id="sensors/power/0"> </span>W now</h1>
+			div.span4
+				| <H1 class="text-center"><span id="sensors/power/0/cumulative/hour"></span> KWh hour</H1>
+			div.span4
+				| <H1 class="text-center"><span id="sensors/power/0/cumulative/daily"></span> KWh today</H1>
+		div.row
+			div.span2
+				| <table id="myTablePower" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+			div.span2
+				| <table id="myTableHumidity" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+			div.span2
+				| <table id="myTableTemp" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+			div.span2
+				| <table id="myTableNO2" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+			div.span2
+				| <table id="myTableCO" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+			div.span2
+				| <table id="myTablePressure" class="table table-striped table-condensed table-bordered">
+				| <tr><th>Topic</th><th style="text-align: right">Value</th></tr>
+				| </table>
+		div.row
+			div.span4
+				div.thumbnail
+					| <A HREF="http://www.trease.eu/rrdtool/currentcost.htm"><img src="http://www.trease.eu/rrdtool/graphs/currentcost-1d.png" alt=""></A>
+			div.span4
+				div.thumbnail
+					| <A HREF="http://www.trease.eu/rrdtool/temperature.htm"><img src="http://www.trease.eu/rrdtool/graphs/temperature-1d.png" alt=""></A>
+			div.span4
+				div.thumbnail
+					| <A HREF="http://www.trease.eu/rrdtool/humidity.htm"><img src="http://www.trease.eu/rrdtool/graphs/humidity-1d.png" alt=""></A>
+		div.row
+			div.span6
+				#time
+			div.span6.text-right
+				#updates
+				
+				
+				
+		
