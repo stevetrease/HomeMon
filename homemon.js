@@ -1,17 +1,23 @@
 var config = require('./config.json');
 
+var fs = require('fs');
+
+// lines for https
+var privateKey = fs.readFileSync('sslcert/server.key');
+var certificate = fs.readFileSync('sslcert/server.crt');
+var sslCredentials = {key: privateKey, cert: certificate};
+
+
 
 var express = require('express')
 var app = express()
-var http = require('http')
-var server = http.createServer(app)
+var http = require('https')
+var server = http.createServer(sslCredentials, app)
 var io = require('socket.io').listen(server, {'log level': 2});
-var fs = require('fs');
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
  
-
 
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
