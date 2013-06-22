@@ -4,7 +4,7 @@
 	
 	var updates = 0;
 
-	var socket = io.connect("http://silver.trease.eu:3000/mqttstats");
+	var socket = io.connect("http://www.trease.eu:8500/mqttstats");
 	socket.on('data', function(data) { 
 		// console.log("Message received " + data.topic + " of " + data.value);
 
