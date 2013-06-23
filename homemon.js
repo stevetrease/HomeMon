@@ -25,6 +25,8 @@ var routes = require('./routes')
   , page_powercharts = require('./routes/page_powercharts')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
+  , page_redisstats = require('./routes/page_redisstats')
+
 
 
 // Friendly names 
@@ -76,6 +78,7 @@ app.get('/page2', pages2.page);
 app.get('/powercharts', page_powercharts.page)
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
+app.get('/redisstats', page_redisstats.page);
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
@@ -173,3 +176,22 @@ io.of('/mqttstats').on('connection', function (socket) {
   		});
   	});
 });
+
+io.of('/redisstats').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
+			keepalive: 1000
+	});
+
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('$SYS/#');
+		console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+
+  		mqttclient.on('message', function(topic, message) {
+			// console.log('emitting topic: ' + topic + ' payload: ' + message);
+  			socket.emit('data', { topic: topic, value: message });
+  		});
+  	});
+});
+
