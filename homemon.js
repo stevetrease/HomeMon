@@ -58,8 +58,8 @@ names["sensors/temperature/egpd"] = "Aberdeen Airport";
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
+app.use(express.favicon(__dirname + '/public/favicon.ico'));
+// app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret sgdf sdhafjlkas'));
@@ -178,20 +178,11 @@ io.of('/mqttstats').on('connection', function (socket) {
 });
 
 io.of('/redisstats').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-			keepalive: 1000
-	});
-
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('$SYS/#');
-		console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
-
-  		mqttclient.on('message', function(topic, message) {
-			// console.log('emitting topic: ' + topic + ' payload: ' + message);
-  			socket.emit('data', { topic: topic, value: message });
-  		});
+	var redis = require('redis')
+	   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
+	   
+	console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	   
+	redisClient.info(function (err, reply) {
+  		socket.emit('data', { topic: "info", value: reply}); // Not pretty!
   	});
 });
-
