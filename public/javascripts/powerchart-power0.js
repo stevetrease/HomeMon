@@ -1,8 +1,3 @@
-$(document).ready(function(){
-    $('.myCarousel').carousel();
-});
-
-
     // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages':['corechart','table']});
 
@@ -36,7 +31,14 @@ $(document).ready(function(){
 		var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
 
-		// Instantiate and draw our table
-		var table = new google.visualization.Table(document.getElementById('table_div'));
-		table.draw(data, {showRowNumber: false});
+		var updates = 0;
+		var socket = io.connect("https://www.trease.eu:8500/chartdata2");
+		socket.on('data', function(message) { 
+			data.addRow([ new Date(), parseInt(message.value, 10)]);
+			chart.draw(data, options);
+			
+			var dt = new Date(); 
+			document.getElementById("time").innerHTML= dt.toLocaleTimeString();
+			document.getElementById("updates").innerHTML= ++updates;
+		});
 	}
