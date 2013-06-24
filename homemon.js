@@ -43,6 +43,7 @@ names["sensors/power/9"] = "IAM9";
 names["sensors/power/U"] = "Unknown";
 names["sensors/humidity/jeenode-11"] = "Utility Room";
 names["sensors/temperature/jeenode-11"] = "Utility Room";
+names["sensors/temperature/jeenode-13"] = "Kitchen";
 names["sensors/temperature/garage"] = "Garage";
 names["sensors/temperature/attic"] = "Attic";
 names["sensors/pressure/attic"] = "Attic";
