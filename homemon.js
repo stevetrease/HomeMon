@@ -155,6 +155,25 @@ io.of('/sensors').on('connection', function (socket) {
   	});
 });
 
+
+io.of('/chartdata2').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
+		keepalive: 1000
+	});
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/power/0');
+		console.log('subscribing to sensors/power/0 on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+
+  		mqttclient.on('message', function(topic, message) {
+			// console.log('emitting topic: ' + topic + ' payload: ' + message);
+  			socket.emit('data', { topic: topic, value: message });
+  		});
+  	});
+});
+
+
 io.of('/mqtt').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
