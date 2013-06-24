@@ -91,16 +91,14 @@ mqttclient.on('connect', function() {
 		}
 
 
-
 		if (BeginsWith("sensors/power/0", topic)) {
 			var messages = {
-				time: records_lasttime[topic].getTime(),
+				time: currenttime.getTime(),
 				value: parseInt(message, 10)	
 			}
 			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
 			mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
-
 
 		
 		// different hour?
@@ -139,6 +137,7 @@ mqttclient.on('connect', function() {
 			records_daily[topic] = 0;
 		}
 
+
 		// Run this code for power records
 		// calculate cumulative power used in KWh
 		var duration = (currenttime - records_lasttime[topic]); // in milli seconds
@@ -161,8 +160,7 @@ mqttclient.on('connect', function() {
 			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(2));
 			mqttclient.publish(topic + "/cumulative/daily", records_daily[topic].toFixed(2));
 			mqttclient.publish(topic + "/cumulative/houry/max", records_hourly_max[topic].toFixed(0));
-			mqttclient.publish(topic + "/cumulative/houry/min", records_hourly_min[topic].toFixed(0));
-			
+			mqttclient.publish(topic + "/cumulative/houry/min", records_hourly_min[topic].toFixed(0));			
 		}
 		
 		// record is SNMP
@@ -200,6 +198,7 @@ mqttclient.on('connect', function() {
   	});
 });
 
+
 // frequently store cumulative date to preserve it across restarts, etc.
 var savePeriod = 65; // in seconds
 setInterval (function () {
@@ -210,5 +209,3 @@ setInterval (function () {
 	redisClient.set("records_daily", JSON.stringify(records_daily));
 	redisClient.set("records_lasttime", JSON.stringify(records_lasttime));
 }, savePeriod * 1000);
-
-
