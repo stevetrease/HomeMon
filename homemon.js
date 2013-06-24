@@ -13,7 +13,7 @@ var express = require('express')
 var app = express()
 var http = require('https')
 var server = http.createServer(sslCredentials, app)
-var io = require('socket.io').listen(server, {'log level': 2});
+var io = require('socket.io').listen(server, {'log level': 1});
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
@@ -76,7 +76,6 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
-app.get('/page2', pages2.page);
 app.get('/powercharts', page_powercharts.page);
 app.get('/powercharts-power0', page_powerchart_power0.page);
 app.get('/mqtt', page_mqtt.page);
