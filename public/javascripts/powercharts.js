@@ -17,7 +17,7 @@ $(document).ready(function(){
 		for (var i = 0; i < tags.length; i++) {	
 			var tag = tags[i];
 			var jsonData = $.ajax({
-          			url: "/chartdata?node=" + tag + "&period=daily",
+          			url: "/data/chartdata?node=" + tag + "&period=daily",
 		  				dataType:"json",
 		  				async: false
 		  	}).responseText;	
