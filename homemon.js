@@ -83,7 +83,8 @@ app.get('/redisstats', page_redisstats.page);
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
-app.get('/chartdata', function(req, res){
+// call to return either hourly or daily hourly power usagae stats
+app.get('/data/chartdata', function(req, res){
 	// use node= to select a particular device
 	switch (req.param('period')) {
 		case 'daily':
@@ -101,7 +102,16 @@ app.get('/chartdata', function(req, res){
 		res.json(members);
 	});
 });
-
+// call to return last 24 hours of redis time series data (currently only stored for power/0 
+app.get('/data/chartdata2', function(req, res){
+	// use node= to select a particular device
+	timeEnd = new Date();
+	timeStart = timeEnd - 1000 * 60 * 60 * 24;
+	redisClient.zrangebyscore("sensors/power/" + req.param('node'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
+		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
+		res.json(members);
+	});
+});
 // and finally a 404
 app.use(function(req, res, next){
 	// res.sendfile("pages/404.jpg");
