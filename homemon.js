@@ -23,6 +23,7 @@ var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , pages2 = require('./routes/page2')
   , page_powercharts = require('./routes/page_powercharts')
+  , page_powerchart_power0 = require('./routes/page_powerchart_power0')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
@@ -76,7 +77,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
 app.get('/page2', pages2.page);
-app.get('/powercharts', page_powercharts.page)
+app.get('/powercharts', page_powercharts.page);
+app.get('/powercharts-power0', page_powerchart_power0.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
 app.get('/redisstats', page_redisstats.page);
