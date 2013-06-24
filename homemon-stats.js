@@ -95,7 +95,7 @@ mqttclient.on('connect', function() {
 		if (BeginsWith("sensors/power/0", topic)) {
 			var messages = {
 				time: records_lasttime[topic].getTime(),
-				value: records_hourly[topic]	
+				value: parseInt(message, 10)	
 			}
 			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
 			mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
