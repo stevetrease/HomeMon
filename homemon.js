@@ -14,6 +14,7 @@ var app = express()
 var http = require('https')
 var server = http.createServer(sslCredentials, app)
 var io = require('socket.io').listen(server, {'log level': 1});
+    io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works via squid
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
