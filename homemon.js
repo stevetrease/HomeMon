@@ -223,6 +223,6 @@ io.of('/redisstats').on('connection', function (socket) {
 			socket.emit('data', { topic: t[0], value: t[1]});
 		}
   	});
-  	RedisClient.end();
+  	redisClient.end();
 });
 
