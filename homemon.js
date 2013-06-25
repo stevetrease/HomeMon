@@ -209,12 +209,20 @@ io.of('/mqttstats').on('connection', function (socket) {
   	});
 });
 
+// redis runtime stats
 io.of('/redisstats').on('connection', function (socket) {
 	var redis = require('redis')
 	   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 	   
-	console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	   
+	console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	  
 	redisClient.info(function (err, reply) {
-  		socket.emit('data', { topic: "info", value: reply}); // Not pretty!
+		// redis info command returns one long string - so split into lines and emit each one
+		var s = reply.split("\r\n");
+		for (var key in s) {
+			t = s[key].split(":")
+			socket.emit('data', { topic: t[0], value: t[1]});
+		}
   	});
+  	RedisClient.end();
 });
+
