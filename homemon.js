@@ -141,7 +141,7 @@ io.of('/sensors').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('sensors/power/0/cumulative/+');
-		console.log('subscribing to sensors/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		// console.log('subscribing to sensors/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -164,7 +164,7 @@ io.of('/chartdata2').on('connection', function (socket) {
 	});
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/power/0');
-		console.log('subscribing to sensors/power/0 on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		// console.log('subscribing to sensors/power/0 on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -182,7 +182,7 @@ io.of('/mqtt').on('connection', function (socket) {
 	});
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('#');
-		console.log('subscribing to everything on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		// console.log('subscribing to everything on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -200,7 +200,7 @@ io.of('/mqttstats').on('connection', function (socket) {
 
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('$SYS/#');
-		console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+		// console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 
   		mqttclient.on('message', function(topic, message) {
 			// console.log('emitting topic: ' + topic + ' payload: ' + message);
@@ -214,7 +214,7 @@ io.of('/redisstats').on('connection', function (socket) {
 	var redis = require('redis')
 	   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 	   
-	console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	  
+	// console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	  
 	redisClient.info(function (err, reply) {
 		// redis info command returns one long string - so split into lines and emit each one
 		var s = reply.split("\r\n");
