@@ -57,7 +57,6 @@ var mqttclient = mqtt.createClient(parseInt(config.mqtt.port,10), config.mqtt.ho
 });
 
 mqttclient.on('connect', function() {
-	var savecount = 0;
 	mqttclient.subscribe('sensors/power/+');
 	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
 	mqttclient.subscribe('sensors/snmp/+/+');
