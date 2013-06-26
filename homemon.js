@@ -5,14 +5,18 @@ var fs = require('fs');
 // lines for https
 var privateKey = fs.readFileSync('sslcert/server.key');
 var certificate = fs.readFileSync('sslcert/server.crt');
-var sslCredentials = {key: privateKey, cert: certificate};
+
+var sslOptions = {	key: privateKey,
+					cert: certificate,
+					ciphers: 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM',
+					honorCipherOrder: true };
 
 
 
 var express = require('express')
 var app = express()
 var http = require('https')
-var server = http.createServer(sslCredentials, app)
+var server = http.createServer(sslOptions, app)
 var io = require('socket.io').listen(server, {'log level': 1});
     io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works via squid
 var path = require('path');
