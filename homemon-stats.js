@@ -90,15 +90,19 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = 0;
 		}
 
-
+		
 		if (BeginsWith("sensors/power/0", topic)) {
+				mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
+		}
+		
+		if (BeginsWith("sensors/power/", topic)) {
 			var messages = {
 				time: currenttime.getTime(),
 				value: parseInt(message, 10)	
 			}
 			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
-			mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
+
 
 		
 		// different hour?
