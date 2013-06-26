@@ -58,9 +58,12 @@ var mqttclient = mqtt.createClient(parseInt(config.mqtt.port,10), config.mqtt.ho
 
 mqttclient.on('connect', function() {
 	mqttclient.subscribe('sensors/power/+');
-	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
 	mqttclient.subscribe('sensors/snmp/+/+');
-	console.log('subscribing to sensors/snmp/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
+	console.log('subscribing to sensors/snmp/+/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
+	mqttclient.subscribe('sensors/temperature/+');
+	console.log('subscribing to sensors/temperature/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
+
 
   	mqttclient.on('message', function(topic, message) {
 		var currenttime = new Date();
@@ -89,11 +92,12 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = 0;
 		}
 
-		
+		// publish current power stats for LCD display
 		if (BeginsWith("sensors/power/0", topic)) {
 				mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
 		
+		// save all power values to redis for timeseries
 		if (BeginsWith("sensors/power/", topic)) {
 			var messages = {
 				time: currenttime.getTime(),
@@ -101,6 +105,15 @@ mqttclient.on('connect', function() {
 			}
 			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
 		}
+		// save all temperature values to redis for timeseries
+		if (BeginsWith("sensors/temperature/", topic)) {
+			var messages = {
+				time: currenttime.getTime(),
+				value: parseInt(message, 10)	
+			}
+			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
+		}
+
 
 
 		
