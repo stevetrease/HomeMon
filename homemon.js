@@ -197,7 +197,7 @@ io.of('/mqttstats').on('connection', function (socket) {
 	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
 			keepalive: 1000
 	});
-
+		
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('$SYS/#');
 		// console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
@@ -223,6 +223,6 @@ io.of('/redisstats').on('connection', function (socket) {
 			socket.emit('data', { topic: t[0], value: t[1]});
 		}
   	});
-  	redisClient.end();
+  	// redisClient.end();
 });
 
