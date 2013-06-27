@@ -103,7 +103,7 @@ mqttclient.on('connect', function() {
 				time: currenttime.getTime(),
 				value: parseInt(message, 10)	
 			}
-			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
+			redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
 		}
 		// save all temperature values to redis for timeseries
 		if (BeginsWith("sensors/temperature/", topic)) {
@@ -111,7 +111,7 @@ mqttclient.on('connect', function() {
 				time: currenttime.getTime(),
 				value: parseInt(message, 10)	
 			}
-			redisClient.zadd(topic, currenttime.getTime(), JSON.stringify(messages));
+			redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
 		}
 
 
