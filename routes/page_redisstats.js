@@ -1,3 +1,3 @@
 exports.page = function(req, res){
-  res.render('redisstats', { title: 'Express' });
+  res.render('genericlist', { title: 'Express', myPath: 'redisstats' });
 };
