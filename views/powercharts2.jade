@@ -1,0 +1,19 @@
+extends layout
+
+
+block append head
+	script(type='text/javascript', src='http://www.google.com/jsapi')
+
+block content
+	script(src="/javascripts/jquery-2.0.2.min.js")
+	script(src='/javascripts/bootstrap/js/bootstrap.min.js')
+	script(src="/javascripts/powercharts2.js")
+	
+
+	
+	div.container
+		div.row
+			div.span2
+			div.span8.well
+				| <div class="item"><div id="chart_div_all"></div>
+			div.span2
