@@ -37,14 +37,20 @@
 		  	}
 
 			cols[i] = i + 1;
-			var tmp = google.visualization.data.join(allData, data, "right", [[0,0]], cols, [1]);
+			var tmp = google.visualization.data.join(allData, data, "full", [[0,0]], cols, [1]);
 			allData = tmp;
-			allData.setColumnLabel(i + 2, tags[i])
+			allData.setColumnLabel(i + 2, tags[i]);
 		}
 		
 		allData.removeColumn(1);
 		// Instantiate and draw our overall graph
-		var options = {height: 600, isStacked: true, vAxis: {title: "KWh"} };
-		var chart = new google.visualization.LineChart(document.getElementById('chart_div_all'));
+		var options = {height: 600, vAxis: {title: "Watts"} };
+		var chart = new google.visualization.AreaChart(document.getElementById('chart_div_all'));
 		chart.draw(allData, options);
+		
+		
+		// Instantiate and draw our table
+		// var table = new google.visualization.Table(document.getElementById('table_div_all'));
+		// table.draw(allData, {showRowNumber: false});
+
 	}
