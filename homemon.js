@@ -18,7 +18,7 @@ var app = express()
 var http = require('https')
 var server = http.createServer(sslOptions, app)
 var io = require('socket.io').listen(server, {'log level': 1});
-    io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works via squid
+    io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
@@ -28,6 +28,7 @@ var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , pages2 = require('./routes/page2')
   , page_powercharts = require('./routes/page_powercharts')
+  , page_powercharts2 = require('./routes/page_powercharts2')
   , page_powerchart_power0 = require('./routes/page_powerchart_power0')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
@@ -83,6 +84,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
 app.get('/powercharts', page_powercharts.page);
+app.get('/powercharts2', page_powercharts2.page);
 app.get('/powercharts-power0', page_powerchart_power0.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
@@ -113,8 +115,8 @@ app.get('/data/chartdata', function(req, res){
 app.get('/data/chartdata2', function(req, res){
 	// use node= to select a particular device
 	timeEnd = new Date();
-	timeStart = timeEnd - 1000 * 60 * 60 * 24;
-	redisClient.zrangebyscore("sensors/power/" + req.param('node'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
+	timeStart = timeEnd - (1000 * 60 * 60);
+	redisClient.zrangebyscore("timeseries-sensors/power/" + req.param('node'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
 		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
 		res.json(members);
 	});
