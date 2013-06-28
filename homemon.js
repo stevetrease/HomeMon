@@ -115,7 +115,7 @@ app.get('/data/chartdata', function(req, res){
 app.get('/data/chartdata2', function(req, res){
 	// use node= to select a particular device
 	timeEnd = new Date();
-	timeStart = timeEnd - (1000 * 60 * 60);
+	timeStart = timeEnd - (1000 * 60);
 	redisClient.zrangebyscore("timeseries-sensors/power/" + req.param('node'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
 		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
 		res.json(members);
