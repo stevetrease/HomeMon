@@ -9,17 +9,18 @@ div.navbar.navbar-inverse.navbar-fixed-top
                 | HomeMon2
             div.nav-collapse.collapse
                 ul.nav
-                    li
+                    li(class=(title === 'Sensors' ? 'active' : ''))
                         a(href="sensors") Sensors
-                    li
+                    li(class=(title === 'Chart 1' ? 'active' : ''))
                         a(href="powercharts") Chart 1
-                    li
+                    li(class=(title === 'Chart 2' ? 'active' : ''))
                         a(href="powercharts2") Chart 2
-                    li
+                    li(class=(title === 'Chart X' ? 'active' : ''))
                         a(href="powercharts-power0") Chart X
-                    li
+                    li(class=(title === 'MQTT' ? 'active' : ''))
                         a(href="mqtt") MQTT
-                    li
+                    li(class=(title === 'MQTT Stats' ? 'active' : ''))
                         a(href="mqttstats") MQTT Stats
-                    li
+                    li(class=(title === 'Redis Stats' ? 'active' : ''))
                         a(href="redisstats") Redis Stats
+                        
