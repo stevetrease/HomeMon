@@ -208,6 +208,7 @@ mqttclient.on('connect', function() {
 				}
 			}
 			var unknown = records_lastvalue["sensors/power/0"] - known;
+			if (unknown < 0) unknown = 0;
 			// console.log("unknown power calulated to be ", unknown);
 			mqttclient.publish("sensors/power/U", unknown.toFixed(0));
 		}
