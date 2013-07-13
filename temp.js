@@ -23,7 +23,18 @@ redisClient.on('ready', function () {
 
 
 	timeEnd = new Date();
-	timeStart = timeEnd - (1000 * 3600 * 24);
+	timeStart = new Date(timeEnd - (1000 * 3600 * 24));
+	
+	console.log("Start: ", timeStart);
+	console.log("End:   ", timeEnd);
+	
+	timeEnd.setMilliseconds(0);
+	timeEnd.setSeconds(0);
+	timeEnd.setMinutes(0);
+	timeStart = new Date(timeEnd - (1000 * 3600 * 24));
+	
+	console.log("Start: ", timeStart);
+	console.log("End:   ", timeEnd);
 
 	redisClient.zrangebyscore("timeseries-sensors/power/0", timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
 		console.log("Returning", members.length, "items from Redis");	
@@ -50,5 +61,6 @@ redisClient.on('ready', function () {
 			i++;
 		} while (i < timeseries.length)
 		console.log((energyCum / 3600).toFixed(1), energyMin, energyMax);
+		process.exit(1);
 	});
 });
