@@ -92,7 +92,7 @@ app.get('/redisstats', page_redisstats.page);
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
-// call to return either hourly or daily hourly power usagae stats
+// call to return either hourly or daily hourly power usage stats
 app.get('/data/chartdata', function(req, res){
 	// use node= to select a particular device
 	switch (req.param('period')) {
@@ -111,7 +111,7 @@ app.get('/data/chartdata', function(req, res){
 		res.json(members);
 	});
 });
-// call to return last 24 hours of redis time series data (currently only stored for power/0 
+// call to return last 1 hour of redis time series data (currently only stored for power/0 
 app.get('/data/chartdata2', function(req, res){
 	// use node= to select a particular device
 	timeEnd = new Date();
@@ -148,15 +148,10 @@ io.of('/sensors').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('sensors/power/0/cumulative/+');
-		// console.log('subscribing to sensors/+/+ on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
-
   		mqttclient.on('message', function(topic, message) {
-			// console.log('emitting topic: ' + topic + ' payload: ' + message);
 			// figure out "friendly name and emit if known
 			var name = null;
-			if (names[topic] != undefined) {
-				name = names[topic];
-			}
+			if (names[topic] != undefined) name = names[topic];
   			socket.emit('data', { topic: topic, value: message, name: name });
   		});
   	});
@@ -171,10 +166,7 @@ io.of('/chartdata2').on('connection', function (socket) {
 	});
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/power/0');
-		// console.log('subscribing to sensors/power/0 on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
-
   		mqttclient.on('message', function(topic, message) {
-			// console.log('emitting topic: ' + topic + ' payload: ' + message);
   			socket.emit('data', { topic: topic, value: message });
   		});
   	});
@@ -189,10 +181,7 @@ io.of('/mqtt').on('connection', function (socket) {
 	});
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('#');
-		// console.log('subscribing to everything on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
-
   		mqttclient.on('message', function(topic, message) {
-			// console.log('emitting topic: ' + topic + ' payload: ' + message);
   			socket.emit('data', { topic: topic, value: message });
   		});
   	});
@@ -207,10 +196,7 @@ io.of('/mqttstats').on('connection', function (socket) {
 		
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('$SYS/#');
-		// console.log('subscribing to $SYS on ' + config.mqtt.host + '(' + config.mqtt.port + ')');
-
   		mqttclient.on('message', function(topic, message) {
-			// console.log('emitting topic: ' + topic + ' payload: ' + message);
   			socket.emit('data', { topic: topic, value: message });
   		});
   	});
@@ -220,16 +206,13 @@ io.of('/mqttstats').on('connection', function (socket) {
 io.of('/redisstats').on('connection', function (socket) {
 	var redis = require('redis')
 	   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
-	   
-	// console.log('getting redis server information from ' + config.redis.host + '(' + config.redis.port + ')');	  
 	redisClient.info(function (err, reply) {
-		// redis info command returns one long string - so split into lines and emit each one
 		var s = reply.split("\r\n");
 		for (var key in s) {
 			t = s[key].split(":")
 			socket.emit('data', { topic: t[0], value: t[1]});
 		}
   	});
-  	// redisClient.end();
+
 });
 
