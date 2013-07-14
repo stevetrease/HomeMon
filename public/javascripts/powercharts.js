@@ -34,8 +34,12 @@ $(document).ready(function(){
 		  	}
 
 			// Instantiate and draw our chart	 
-			var options = {height: 300, legend: {position: 'none'}};
-			var chart = new google.visualization.AreaChart(document.getElementById('chart_div_' + tag));
+			var options = {
+					height: 300,
+					legend: {position: 'none'},
+					vAxis: {minValue: 0},
+			};
+			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + tag));
 			chart.draw(data, options);
 
 			// Instantiate and draw our table
