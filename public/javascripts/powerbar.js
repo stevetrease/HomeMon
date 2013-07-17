@@ -21,7 +21,7 @@
 		// Instantiate and draw our chart	 
 		var options = {height: 300,
 		               legend: {position: 'none'},
-		               animation: { duration: 250, easing: 'in'},
+		               animation: { duration: 250, easing: 'linear'},
 		               isStacked: true};
 		
 		var chart = new google.visualization.BarChart(document.getElementById('powerbar'));
