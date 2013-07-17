@@ -26,6 +26,7 @@ var redis = require('redis')
 
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
+  , page_powerbar = require('./routes/page_powerbar')
   , pages2 = require('./routes/page2')
   , page_powercharts = require('./routes/page_powercharts')
   , page_powercharts2 = require('./routes/page_powercharts2')
@@ -83,6 +84,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
+app.get('/powerbar', page_powerbar.page);
 app.get('/powercharts', page_powercharts.page);
 app.get('/powercharts2', page_powercharts2.page);
 app.get('/powercharts-power0', page_powerchart_power0.page);
@@ -171,6 +173,21 @@ io.of('/chartdata2').on('connection', function (socket) {
   		});
   	});
 });
+
+io.of('/powerbar').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
+		keepalive: 1000
+	});
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/power/+');
+  		mqttclient.on('message', function(topic, message) {
+  			socket.emit('data', { topic: topic, value: message });
+  		});
+  	});
+});
+
 
 
 io.of('/mqtt').on('connection', function (socket) {
