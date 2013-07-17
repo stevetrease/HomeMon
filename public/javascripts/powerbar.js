@@ -34,21 +34,18 @@
 			
 			var done = false; 
 			for (var i = 0; i < data.getNumberOfColumns(); i++) {
-				if (data.getColumnLabel(i) == message.topic) {
+				if (data.getColumnLabel(i) == message.name) {
 					data.setCell(0, i, parseInt(message.value, 10));
 					done = true;
 				}
 			}
 			if (done == false) {
-				data.addColumn('number', message.topic);
+				data.addColumn('number', message.name);
 			}					
 			chart.draw(data, options);
 			
 			var dt = new Date(); 
 			document.getElementById("time").innerHTML= dt.toLocaleTimeString();
 			document.getElementById("updates").innerHTML= ++updates;
-
-			table.draw(data, {showRowNumber: false});
-			
 		});
 	}
