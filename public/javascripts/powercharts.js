@@ -37,6 +37,7 @@ $(document).ready(function(){
 			var options = {
 					height: 300,
 					legend: {position: 'none'},
+					// hAxis: {viewWindowMode: 'pretty'},
 					vAxis: {minValue: 0},
 			};
 			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + tag));
