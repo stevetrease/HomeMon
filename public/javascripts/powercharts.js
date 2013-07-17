@@ -32,6 +32,10 @@ $(document).ready(function(){
 		  		var x = JSON.parse(receivedData[j]);
 		  		data.addRow([ new Date(x.time), x.value]);
 		  	}
+		  	
+		  	// format dates
+		  	var formatter = new google.visualization.DateFormat({formatType:'long'});
+		  	formatter.format(data, 0);
 
 			// Instantiate and draw our chart	 
 			var options = {
