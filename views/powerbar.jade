@@ -1,0 +1,27 @@
+extends layout
+
+block append head
+	script(type='text/javascript', src='http://www.google.com/jsapi')
+
+
+block content
+	script(src="/javascripts/jquery-2.0.2.min.js")
+	script(src='javascripts/bootstrap/js/bootstrap.min.js')
+	script(src="/socket.io/socket.io.js")
+	script(src="/javascripts/powerbar.js")
+	
+	
+
+	div.container.well
+		div.row
+			div.span12
+				#powerbar
+
+		div.row
+			div.span12
+				#powertable
+		div.row
+			div.span6
+				#time
+			div.span6.text-right
+				#updates
