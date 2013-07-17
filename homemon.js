@@ -183,7 +183,11 @@ io.of('/powerbar').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/power/+');
   		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message });
+  			// figure out "friendly name and emit if known
+			var name = null;
+			if (names[topic] != undefined) name = names[topic];
+  			if (topic != "sensors/power/0")
+  				socket.emit('data', { topic: topic, value: message, name: name });
   		});
   	});
 });
