@@ -37,10 +37,17 @@
 				if (data.getColumnLabel(i) == message.name) {
 					data.setCell(0, i, parseInt(message.value, 10));
 					done = true;
+					break;
 				}
 			}
 			if (done == false) {
 				data.addColumn('number', message.name);
+				for (var i = 0; i < data.getNumberOfColumns(); i++) {
+					if (data.getColumnLabel(i) == message.name) {
+						data.setCell(0, i, parseInt(message.value, 10));
+						break;
+					}
+				}
 			}					
 			chart.draw(data, options);
 			
