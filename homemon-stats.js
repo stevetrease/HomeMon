@@ -228,3 +228,4 @@ savestate = function() {
 // frequently store cumulative date to preserve it across restarts, etc.
 var savePeriod = 65; // in seconds
 setInterval (savestate, savePeriod * 1000);
+process.on('SIGUSR1', savestate);					// and save on signal
