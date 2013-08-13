@@ -216,13 +216,15 @@ mqttclient.on('connect', function() {
 });
 
 
-// frequently store cumulative date to preserve it across restarts, etc.
-var savePeriod = 65; // in seconds
-setInterval (function () {
-	// console.log("saving to redis...");
+savestate = function() {
+	console.log("saving to redis...");
 	redisClient.set("records_hourly", JSON.stringify(records_hourly));
 	redisClient.set("records_hourly_min", JSON.stringify(records_hourly_min));
 	redisClient.set("records_hourly_max", JSON.stringify(records_hourly_max));
 	redisClient.set("records_daily", JSON.stringify(records_daily));
 	redisClient.set("records_lasttime", JSON.stringify(records_lasttime));
-}, savePeriod * 1000);
+};
+
+// frequently store cumulative date to preserve it across restarts, etc.
+var savePeriod = 65; // in seconds
+setInterval (savestate, savePeriod * 1000);
