@@ -94,7 +94,8 @@ mqttclient.on('connect', function() {
 
 		// publish current power stats for LCD display
 		if (BeginsWith("sensors/power/0", topic)) {
-				mqttclient.publish("LCD/1/line/0", message + "  " + records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
+				mqttclient.publish("LCD/1/line/0", message + "  " + 
+			records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
 		
 		// save all power values to redis for timeseries
@@ -175,6 +176,19 @@ mqttclient.on('connect', function() {
 			// publish new data
 			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(2));
 			mqttclient.publish(topic + "/cumulative/daily", records_daily[topic].toFixed(2));
+			
+			
+			var v = powerused.toFixed(10);
+			if (!isNaN(v)) {	
+				var time = currenttime;
+				time.setMinutes(0);
+				time.setSeconds(0);
+				time.setMilliseconds(0);
+				redisClient.hincrbyfloat("hourly-" + topic, time, v, redis.print);
+				time.setHours(0);
+				redisClient.hincrbyfloat("daily-" + topic, time, v, redis.print);		
+			}
+			
 			// mqttclient.publish(topic + "/cumulative/houry/max", records_hourly_max[topic].toFixed(0));
 			// mqttclient.publish(topic + "/cumulative/houry/min", records_hourly_min[topic].toFixed(0));			
 		}
