@@ -13,6 +13,12 @@ var sslOptions = {	key: privateKey,
 
 
 
+require('nodetime').profile({
+    accountKey: config.nodetime, 
+    appName: 'Node.js Application'
+  });
+
+
 var express = require('express')
 var app = express()
 var http = require('https')
@@ -70,8 +76,8 @@ names["sensors/temperature/egpd"] = "Aberdeen Airport";
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.use(express.logger());
 app.use(express.favicon(__dirname + '/public/favicon.ico'));
-// app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret sgdf sdhafjlkas'));
@@ -83,6 +89,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
 
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
