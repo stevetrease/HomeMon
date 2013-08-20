@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "express": "3.2.6",
-    "jade": "*",
+    "jade": "latest",
     "execSync": "*",
     "nodemon": "*",
     "socket.io": "*",
