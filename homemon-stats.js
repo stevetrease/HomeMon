@@ -23,8 +23,8 @@ function log(type) {
 }
 
 var records_hourly = {};
-var records_hourly_max = {};
-var records_hourly_min = {};
+// var records_hourly_max = {};
+// var records_hourly_min = {};
 var records_daily = {};
 var records_lasttime = {};
 var records_lastvalue = {};
@@ -40,13 +40,13 @@ result = execSync.exec('redis-cli get records_daily');
 records_daily = JSON.parse(result.stdout);
 console.log("Loading daily records from redis...");
 //
-result = execSync.exec('redis-cli get records_hourly_max');
-records_hourly_max = JSON.parse(result.stdout);
-console.log("Loading hourly maximum records from redis...");
+// result = execSync.exec('redis-cli get records_hourly_max');
+// records_hourly_max = JSON.parse(result.stdout);
+// console.log("Loading hourly maximum records from redis...");
 //
-result = execSync.exec('redis-cli get records_hourly_min');
-records_hourly_min = JSON.parse(result.stdout);
-console.log("Loading hourly minimum records from redis...");
+// result = execSync.exec('redis-cli get records_hourly_min');
+// records_hourly_min = JSON.parse(result.stdout);
+// console.log("Loading hourly minimum records from redis...");
 
 
 
@@ -170,8 +170,8 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = parseInt(message, 10);
 			// console.log("topic:", topic, " duration ", duration, " period ", powerused, " hour ", records_hourly[topic], "daily ", records_daily[topic]);
 			
-			if (parseInt(message, 10) > records_hourly_max[topic]) records_hourly_max[topic] = parseInt(message, 10);
-			if (parseInt(message, 10) < records_hourly_min[topic]) records_hourly_min[topic] = parseInt(message, 10);
+			// if (parseInt(message, 10) > records_hourly_max[topic]) records_hourly_max[topic] = parseInt(message, 10);
+			// if (parseInt(message, 10) < records_hourly_min[topic]) records_hourly_min[topic] = parseInt(message, 10);
 			
 			// publish new data
 			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(2));
@@ -233,8 +233,8 @@ mqttclient.on('connect', function() {
 savestate = function() {
 	console.log("saving to redis...");
 	redisClient.set("records_hourly", JSON.stringify(records_hourly));
-	redisClient.set("records_hourly_min", JSON.stringify(records_hourly_min));
-	redisClient.set("records_hourly_max", JSON.stringify(records_hourly_max));
+	// redisClient.set("records_hourly_min", JSON.stringify(records_hourly_min));
+	// redisClient.set("records_hourly_max", JSON.stringify(records_hourly_max));
 	redisClient.set("records_daily", JSON.stringify(records_daily));
 	redisClient.set("records_lasttime", JSON.stringify(records_lasttime));
 };
