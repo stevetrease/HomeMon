@@ -70,25 +70,21 @@ mqttclient.on('connect', function() {
 
 		// have we seen this mesage before? 
 		if(records_lasttime[topic] == undefined) {
-			// console.log("initialising lasttime: "  + topic);
 			records_lasttime[topic] = new Date();
 		}
 		if(records_hourly[topic] == undefined) {
-			// console.log("initialising records_hourly:" + topic);
 			records_hourly[topic] = 0;
 		}
-		if(records_hourly_max[topic] == undefined) {
-			records_hourly_max[topic] = 0;
-		}
-		if(records_hourly_min[topic] == undefined) {
-			records_hourly_min[topic] = 0;
-		}
+		// if(records_hourly_max[topic] == undefined) {
+		// 	records_hourly_max[topic] = 0;
+		// }
+		// if(records_hourly_min[topic] == undefined) {
+		// 	records_hourly_min[topic] = 0;
+		//}
 		if(records_daily[topic] == undefined) {
-			// console.log("initialising records_daily: " + topic);
 			records_daily[topic] = 0;
 		}
 		if(records_lastvalue[topic] == undefined) {
-			// console.log("initialising lastvalue: " + topic);
 			records_lastvalue[topic] = 0;
 		}
 
@@ -128,19 +124,19 @@ mqttclient.on('connect', function() {
 			redisClient.zadd(topic + "_hourly", currenttime.getTime(), JSON.stringify(messages));
 			records_hourly[topic] = 0;
 			
-			var messages = {
-				time: records_lasttime[topic].getTime(),
-				value: records_hourly_max[topic]	
-			}
+			// var messages = {
+			//	time: records_lasttime[topic].getTime(),
+			// 	value: records_hourly_max[topic]	
+			//}
 			// redisClient.zadd(topic + "_hourly_max", currenttime.getTime(), JSON.stringify(messages));
-			records_hourly_max[topic] = parseInt(message, 10);
+			// records_hourly_max[topic] = parseInt(message, 10);
 			
-			var messages = {
-				time: records_lasttime[topic].getTime(),
-				value: records_hourly_min[topic]	
-			}
+			// var messages = {
+			// 	time: records_lasttime[topic].getTime(),
+			//	value: records_hourly_min[topic]	
+			//}
 			// redisClient.zadd(topic + "_hourly_min", currenttime.getTime(), JSON.stringify(messages));
-			records_hourly_min[topic] = parseInt(message, 10);			
+			// records_hourly_min[topic] = parseInt(message, 10);			
 		}
 		// different day?
 		if (records_lasttime[topic].getDate() != currenttime.getDate()) {
@@ -184,9 +180,9 @@ mqttclient.on('connect', function() {
 				time.setMinutes(0);
 				time.setSeconds(0);
 				time.setMilliseconds(0);
-				redisClient.hincrbyfloat("hourly-" + topic, time, v, redis.print);
+				redisClient.hincrbyfloat("hourly-" + topic, time, v);
 				time.setHours(0);
-				redisClient.hincrbyfloat("daily-" + topic, time, v, redis.print);		
+				redisClient.hincrbyfloat("daily-" + topic, time, v);		
 			}
 			
 			// mqttclient.publish(topic + "/cumulative/houry/max", records_hourly_max[topic].toFixed(0));
@@ -208,7 +204,6 @@ mqttclient.on('connect', function() {
 			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(0));
 			mqttclient.publish(topic + "/cumulative/daily", records_daily[topic].toFixed(0));
 			mqttclient.publish(topic + "/rate", rate.toFixed(2));
-
 		}
 		
 		// each time we get power/0 caculate then publish the "unknown power draw" and publish to power/U
@@ -223,7 +218,6 @@ mqttclient.on('connect', function() {
 			}
 			var unknown = records_lastvalue["sensors/power/0"] - known;
 			if (unknown < 0) unknown = 0;
-			// console.log("unknown power calulated to be ", unknown);
 			mqttclient.publish("sensors/power/U", unknown.toFixed(0));
 		}
   	});
@@ -231,7 +225,7 @@ mqttclient.on('connect', function() {
 
 
 savestate = function() {
-	console.log("saving to redis...");
+	// console.log("saving to redis...");
 	redisClient.set("records_hourly", JSON.stringify(records_hourly));
 	// redisClient.set("records_hourly_min", JSON.stringify(records_hourly_min));
 	// redisClient.set("records_hourly_max", JSON.stringify(records_hourly_max));
