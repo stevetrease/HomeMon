@@ -176,7 +176,7 @@ mqttclient.on('connect', function() {
 			
 			var v = powerused.toFixed(10);
 			if (!isNaN(v)) {	
-				var time = currenttime;
+				var time = new Date();
 				time.setMinutes(0);
 				time.setSeconds(0);
 				time.setMilliseconds(0);
