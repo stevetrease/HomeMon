@@ -95,21 +95,21 @@ mqttclient.on('connect', function() {
 		}
 		
 		// save all power values to redis for timeseries
-		if (BeginsWith("sensors/power/", topic)) {
-			var messages = {
-				time: currenttime.getTime(),
-				value: parseInt(message, 10)	
-			}
-			redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
-		}
+		// if (BeginsWith("sensors/power/", topic)) {
+		//	var messages = {
+		//		time: currenttime.getTime(),
+		//		value: parseInt(message, 10)	
+		//	}
+		// 	redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
+		// }
 		// save all temperature values to redis for timeseries
-		if (BeginsWith("sensors/temperature/", topic)) {
-			var messages = {
-				time: currenttime.getTime(),
-				value: parseInt(message, 10)	
-			}
-			redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
-		}
+		// if (BeginsWith("sensors/temperature/", topic)) {
+		// 	var messages = {
+		// 		time: currenttime.getTime(),
+		// 		value: parseInt(message, 10)	
+		// 	}
+		//	redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
+		// }
 
 
 
