@@ -26,6 +26,9 @@
 		
 		var chart = new google.visualization.BarChart(document.getElementById('powerbar'));
 		var table = new google.visualization.Table(document.getElementById('powertable'));
+		
+		data.addColumn('number', 'Unknown');
+		data.setCell(0, 1, 0);
 
 
 		var updates = 0;
