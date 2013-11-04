@@ -46,6 +46,8 @@ while mqttc.loop() == 0:
 
 	mqttc.publish("sensors/snmp/router/up", str(bytes_up_new))
 	mqttc.publish("sensors/snmp/router/down", str(bytes_down_new))
+	mqttc.publish("sensors/snmp/router/total", str(bytes_down_new + bytes_down_new))
+
 	
 	# print current bandwidth on bottom line of LCD
 	mqttc.publish("LCD/1/line/1", "{:5.2f}".format(mbps_total))
