@@ -20,7 +20,11 @@
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTablePower");
 			}
-			var topictag = "sensors/temperature/";
+			var topictag = "sensors/boiler/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myTableTemp");
+			}
+						var topictag = "sensors/temperature/";
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTableTemp");
 			}
@@ -57,6 +61,7 @@
 			var cell=row.insertCell(0);
 			cell.id = data.topic + "name";
 
+
 			
 			document.getElementById(data.topic).style.textAlign="right";
 			document.getElementById(data.topic).style.width="25%";
@@ -70,7 +75,7 @@
 		}
 		// new we know there is a target, update it
 		// console.log("Setting target " + data.topic + " to " + data.value);
-		document.getElementById(data.topic).innerHTML= data.value;
+		if (ElementExists (data.topic)) document.getElementById(data.topic).innerHTML= data.value;
 
 		
 		// print the time the refresh happened
