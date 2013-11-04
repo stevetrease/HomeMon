@@ -159,6 +159,10 @@ io.of('/sensors').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('sensors/power/0/cumulative/+');
+		mqttclient.subscribe('sensors/snmp/router/total/rate');
+		mqttclient.subscribe('sensors/snmp/router/total/cumulative/+');
+
+
   		mqttclient.on('message', function(topic, message) {
 			// figure out "friendly name and emit if known
 			var name = null;
