@@ -4,6 +4,12 @@
 	BeginsWith = function(needle, haystack) {
 		return (haystack.substr(0, needle.length) == needle);
 	}
+	
+	function readablizeBytes(bytes) {
+    	var s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+		var e = Math.floor(Math.log(bytes) / Math.log(1024));
+		return (bytes / Math.pow(1024, e)).toFixed(2) + " " + s[e];
+	}
 
 	var myvalues = [];
 	var updates = 0;
@@ -75,7 +81,13 @@
 		}
 		// new we know there is a target, update it
 		// console.log("Setting target " + data.topic + " to " + data.value);
-		if (ElementExists (data.topic)) document.getElementById(data.topic).innerHTML= data.value;
+		var fvalue = data.value;
+		var topictag = "sensors/snmp/router/total/cumulative/";
+		if (data.topic.substring(0,topictag.length) == topictag) {
+			fvalue = readablizeBytes(data.value);
+		}
+		
+		if (ElementExists (data.topic)) document.getElementById(data.topic).innerHTML= fvalue;
 
 		
 		// print the time the refresh happened
