@@ -11,14 +11,6 @@ var sslOptions = {	key: privateKey,
 					ciphers: 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM',
 					honorCipherOrder: true };
 
-
-
-// require('nodetime').profile({
-//     accountKey: config.nodetime, 
-//     appName: 'Node.js Application'
-// });
-
-
 var express = require('express')
 var app = express()
 var http = require('https')
