@@ -26,9 +26,6 @@ var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , page_powerbar = require('./routes/page_powerbar')
   , pages2 = require('./routes/page2')
-  , page_powercharts = require('./routes/page_powercharts')
-  , page_powercharts2 = require('./routes/page_powercharts2')
-  , page_powerchart_power0 = require('./routes/page_powerchart_power0')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
@@ -86,43 +83,11 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
 app.get('/powerbar', page_powerbar.page);
-app.get('/powercharts', page_powercharts.page);
-app.get('/powercharts2', page_powercharts2.page);
-app.get('/powercharts-power0', page_powerchart_power0.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
 app.get('/redisstats', page_redisstats.page);
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
-});
-// call to return either hourly or daily hourly power usage stats
-app.get('/data/chartdata', function(req, res){
-	// use node= to select a particular device
-	switch (req.param('period')) {
-		case 'daily':
-			timeStart = new Date() - (7 * 24 * 3600 * 1000); // 7 days
-			break;
-		case 'hourly':
-			timeStart = new Date() - (24 * 3600 * 1000); // 24 hours
-			break;
-		default:
-			console.log ("illegal value of", req.param('period'), "for period argument");
-	}
-	timeEnd = new Date();
-	redisClient.zrangebyscore("sensors/power/" + req.param('node') + "_" + req.param('period'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
-		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
-		res.json(members);
-	});
-});
-// call to return last 1 hour of redis time series data (currently only stored for power/0 
-app.get('/data/chartdata2', function(req, res){
-	// use node= to select a particular device
-	timeEnd = new Date();
-	timeStart = timeEnd - (1000 * 60);
-	redisClient.zrangebyscore("timeseries-sensors/power/" + req.param('node'), timeStart.valueOf(), timeEnd.valueOf(), function (err, members) {
-		console.log("Returning", members.length, "items from Redis for deviceid", req.param('node'));	
-		res.json(members);
-	});
 });
 // and finally a 404
 app.use(function(req, res, next){
@@ -165,19 +130,6 @@ io.of('/sensors').on('connection', function (socket) {
 });
 
 
-io.of('/chartdata2').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('sensors/power/0');
-  		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message });
-  		});
-  	});
-});
 
 io.of('/powerbar').on('connection', function (socket) {
 	// subscribe to MQTT
