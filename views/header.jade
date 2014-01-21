@@ -1,22 +1,21 @@
 div.navbar.navbar-inverse.navbar-fixed-top
-    div.navbar-inner
-        div.container
-            a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+    .container
+        .navbar-header
+            button.navbar-toggle(type='button',data-toggle="collapse",data-target=".navbar-collapse")
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-            a.brand(href="/")
-                | HomeMon2
-            div.nav-collapse.collapse
-                ul.nav
-                    li(class=(title === 'Sensors' ? 'active' : ''))
-                        a(href="sensors") Sensors
-                    li(class=(title === 'Power Bar' ? 'active' : ''))
-                        a(href="powerbar") Power Bar
-                    li.divider-vertical
-                    li(class=(title === 'MQTT' ? 'active' : ''))
-                        a(href="mqtt") MQTT
-                    li(class=(title === 'MQTT Stats' ? 'active' : ''))
-                        a(href="mqttstats") MQTT Stats
-                    li(class=(title === 'Redis Stats' ? 'active' : ''))
-                        a(href="redisstats") Redis Stats
+            a.navbar-brand(href="/") HomeMon2
+        .navbar-collapse.collapse
+            ul.nav.navbar-nav
+                li(class=(title === 'Sensors' ? 'active' : ''))
+                    a(href="sensors") Sensors
+                li(class=(title === 'Power Bar' ? 'active' : ''))
+                    a(href="powerbar") Power Bar
+                li.divider-vertical
+                li(class=(title === 'MQTT' ? 'active' : ''))
+                    a(href="mqtt") MQTT
+                li(class=(title === 'MQTT Stats' ? 'active' : ''))
+                    a(href="mqttstats") MQTT Stats
+                li(class=(title === 'Redis Stats' ? 'active' : ''))
+                    a(href="redisstats") Redis Stats
