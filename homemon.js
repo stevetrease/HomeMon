@@ -189,7 +189,6 @@ io.of('/redisstats').on('connection', function (socket) {
 			t = s[key].split(":")
 			if (t[0] != "" && typeof(t[1]) != "undefined") {
 				socket.emit('data', { topic: t[0], value: t[1]});
-				console.log('data', { topic: t[0], value: t[1]});
 			}
 		}
   	});
