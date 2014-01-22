@@ -187,7 +187,10 @@ io.of('/redisstats').on('connection', function (socket) {
 		var s = reply.split("\r\n");
 		for (var key in s) {
 			t = s[key].split(":")
-			socket.emit('data', { topic: t[0], value: t[1]});
+			if (t[0] != "" && typeof(t[1]) != "undefined") {
+				socket.emit('data', { topic: t[0], value: t[1]});
+				console.log('data', { topic: t[0], value: t[1]});
+			}
 		}
   	});
 
