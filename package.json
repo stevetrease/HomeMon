@@ -12,6 +12,8 @@
     "nodemon": "*",
     "socket.io": "*",
     "redis": "*",
-    "mqtt": "*"
+    "mqtt": "*",
+    "passport": "*",
+    "passport-google": "*"
   }
 }
