@@ -31,6 +31,7 @@ var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , page_powerbar = require('./routes/page_powerbar')
   , page_mqtt = require('./routes/page_mqtt')
+  , page_profile = require('./routes/page_profile')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
 
@@ -88,11 +89,13 @@ if ('development' == app.get('env')) {
 
 
 app.get('/', routes.index);
-app.get('/sensors', page_sensors.page);
-app.get('/powerbar', page_powerbar.page);
-app.get('/mqtt', page_mqtt.page);
-app.get('/mqttstats', page_mqttstats.page);
+app.get('/sensors', ensureAuthenticated, page_sensors.page);
+app.get('/powerbar', ensureAuthenticated, page_powerbar.page);
+app.get('/mqtt', ensureAuthenticated, page_mqtt.page);
+app.get('/mqttstats', ensureAuthenticated, page_mqttstats.page);
 app.get('/redisstats', ensureAuthenticated, page_redisstats.page);
+app.get('/profile', ensureAuthenticated, page_profile.page);
+
 
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
@@ -107,6 +110,11 @@ app.get('/auth/google/return',
 	function(req, res) {
     	res.redirect('/');
 });
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 // and finally a 404
 app.use(function(req, res, next){
 	// res.sendfile("pages/404.jpg");

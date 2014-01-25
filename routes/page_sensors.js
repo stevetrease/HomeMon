@@ -1,3 +1,3 @@
 exports.page = function(req, res){
-  res.render('sensors', { title: 'Sensors' });
+  res.render('sensors', { title: 'Sensors', user: req.user });
 };
