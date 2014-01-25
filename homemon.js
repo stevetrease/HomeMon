@@ -105,7 +105,6 @@ app.get('/auth/google',
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/login' }),
 	function(req, res) {
-		console.log('/auth/google/return');
     	res.redirect('/');
 });
 // and finally a 404
@@ -132,8 +131,6 @@ passport.use(new GoogleStrategy({
 	function(identifier, profile, done) {
   		// asynchronous verification, for effect...
   		process.nextTick(function () {
-    		console.log(identifier);
-			console.log(profile.displayName);
 			profile.identifier = identifier;
 			return done(null, profile);
 		});  
@@ -239,12 +236,12 @@ io.of('/redisstats').on('connection', function (socket) {
 
 // function to check if user is logged in
 function ensureAuthenticated(req, res, next) {
-	console.log(req.isAuthenticated());
 	if (req.isAuthenticated()) {
-		console.log("request is authenticated");
+		// console.log("request is authenticated");
 	  	return next();
 	}
+	// console.log("request is not authenticated");
 	res.redirect('/');
-	console.log("request is not authenticated");
+	
 }
 
