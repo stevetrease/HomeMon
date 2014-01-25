@@ -20,5 +20,11 @@ div.navbar.navbar-inverse.navbar-fixed-top
                 li(class=(title === 'Redis Stats' ? 'active' : ''))
                     a(href="redisstats") Redis Stats
             ul.nav.navbar-nav.navbar-right
-                li(class=(title === 'Login' ? 'active' : ''))
-                    a(href="/auth/google") Login
+                - if (user)
+                    li(class=(title === 'Profile' ? 'active' : ''))
+                        a(href="profile") Profile
+                    li
+                        a(href="/logout") Logout
+                - else
+                    li
+                        a(href="/auth/google") Login
