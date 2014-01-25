@@ -16,11 +16,16 @@ var app = express()
 var http = require('https')
 var server = http.createServer(sslOptions, app)
 var io = require('socket.io').listen(server, {'log level': 1});
-    io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
+io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
- 
+var passport = require('passport')
+  , GoogleStrategy = require('passport-google').Strategy;
+  
+
+
+
 
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
@@ -28,6 +33,7 @@ var routes = require('./routes')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
+
 
 
 
@@ -68,8 +74,10 @@ app.use(express.logger());
 app.use(express.favicon(__dirname + '/public/favicon.ico'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret sgdf sdhafjlkas'));
-app.use(express.session());
+app.use(express.cookieParser('cookie secret key 71f9fdb0-85df-11e3-920a-6cf049deda8a'));
+app.use(express.session({ secret: 'session secret key 790055d2-85df-11e3-85b0-6cf049deda8a' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -84,23 +92,57 @@ app.get('/sensors', page_sensors.page);
 app.get('/powerbar', page_powerbar.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
-app.get('/redisstats', page_redisstats.page);
+app.get('/redisstats', ensureAuthenticated, page_redisstats.page);
+
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
+});
+app.get('/auth/google', 
+	passport.authenticate('google', { failureRedirect: '/login' }),
+	function(req, res) {
+		res.redirect('/');
+});
+app.get('/auth/google/return', 
+	passport.authenticate('google', { failureRedirect: '/login' }),
+	function(req, res) {
+		console.log('/auth/google/return');
+    	res.redirect('/');
 });
 // and finally a 404
 app.use(function(req, res, next){
 	// res.sendfile("pages/404.jpg");
 	res.send(404, "This is not the webpage you are looking for.");
+	// res.redirect('/404');
 });
+
+
+
+passport.serializeUser(function(user, done) {
+	done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+	done(null, obj);
+});
+
+
+passport.use(new GoogleStrategy({
+    	returnURL: 'https://www.trease.eu:8500/auth/google/return',
+    	realm: 'https://www.trease.eu:8500/'
+	},
+	function(identifier, profile, done) {
+  		// asynchronous verification, for effect...
+  		process.nextTick(function () {
+    		console.log(identifier);
+			console.log(profile.displayName);
+			profile.identifier = identifier;
+			return done(null, profile);
+		});  
+	}
+));
 
 
 server.listen(8500);
 console.log('listening on port 8500');
-
-
-
-
 
 
 
@@ -194,4 +236,15 @@ io.of('/redisstats').on('connection', function (socket) {
   	});
 
 });
+
+// function to check if user is logged in
+function ensureAuthenticated(req, res, next) {
+	console.log(req.isAuthenticated());
+	if (req.isAuthenticated()) {
+		console.log("request is authenticated");
+	  	return next();
+	}
+	res.redirect('/');
+	console.log("request is not authenticated");
+}
 
