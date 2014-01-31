@@ -1,9 +1,13 @@
 // service settings file
 var config = require('./config.json');
 
+var TimeSeries = require('redis-timeseries');
 var redis = require('redis')
-  ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
+   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 
+
+
+var ts = new TimeSeries(redisClient, "stats");
 
 
 BeginsWith = function(needle, haystack) {
@@ -112,7 +116,8 @@ mqttclient.on('connect', function() {
 		// }
 
 
-
+		ts.recordHit('another_stats_key');
+		ts.exec();
 		
 		// different hour?
 		if (records_lasttime[topic].getHours() != currenttime.getHours()) {					
