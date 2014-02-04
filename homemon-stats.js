@@ -175,8 +175,8 @@ mqttclient.on('connect', function() {
 			// if (parseInt(message, 10) < records_hourly_min[topic]) records_hourly_min[topic] = parseInt(message, 10);
 			
 			// publish new data
-			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(2));
-			mqttclient.publish(topic + "/cumulative/daily", records_daily[topic].toFixed(2));
+			mqttclient.publish("cumulative/hour/" + topic, records_hourly[topic].toFixed(2));
+			mqttclient.publish("cumulative/daily/" + topic, records_daily[topic].toFixed(2));
 			
 			
 			var v = powerused.toFixed(10);
@@ -206,9 +206,9 @@ mqttclient.on('connect', function() {
 			records_daily[topic] += used;
 			records_lastvalue[topic] = parseInt(message, 10);
 			// publish new data
-			mqttclient.publish(topic + "/cumulative/hour", records_hourly[topic].toFixed(0));
-			mqttclient.publish(topic + "/cumulative/daily", records_daily[topic].toFixed(0));
-			mqttclient.publish(topic + "/rate", rate.toFixed(2));
+			mqttclient.publish("cumulative/hour/" + topic, records_hourly[topic].toFixed(0));
+			mqttclient.publish("cumulative/daily/" + topic, records_daily[topic].toFixed(0));
+			mqttclient.publish("rate/" + topic, rate.toFixed(2));
 		}
 		
 		// each time we get power/0 caculate then publish the "unknown power draw" and publish to power/U
