@@ -274,7 +274,7 @@ function ensureAuthenticated(req, res, next) {
 	  	return next();
 	}
 	// console.log("request is not authenticated");
-	res.redirect('/');
+	res.redirect('/auth/google');
 	
 }
 
