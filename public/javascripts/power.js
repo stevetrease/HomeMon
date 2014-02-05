@@ -16,7 +16,7 @@
 		if (!ElementExists (data.topic)) {
 			var topictag = "cumulative/";
 			if (!(data.topic.substring(0,topictag.length) == topictag)) {
-				console.log("Creating target " + data.topic);
+				// console.log("Creating target " + data.topic);
 
 				var table=document.getElementById("myTablePower");
 	
@@ -53,10 +53,10 @@
 		}
 		
 		if (ElementExists (data.topic)) {
-			console.log("Setting target " + data.topic + " to " + data.value);
+			// console.log("Setting target " + data.topic + " to " + data.value);
 			document.getElementById(data.topic).innerHTML= data.value;
-		} else {
-				console.log("Target " + data.topic + " does not exit");		
+		// } else {
+		// 		console.log("Target " + data.topic + " does not exit");		
 		}
 
 		
