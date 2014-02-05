@@ -29,11 +29,13 @@ var passport = require('passport')
 
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
+  , page_power = require('./routes/page_power')
   , page_powerbar = require('./routes/page_powerbar')
   , page_mqtt = require('./routes/page_mqtt')
   , page_profile = require('./routes/page_profile')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
+
 
 
 
@@ -90,6 +92,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/sensors', ensureAuthenticated, page_sensors.page);
+app.get('/power', ensureAuthenticated, page_power.page);
 app.get('/powerbar', ensureAuthenticated, page_powerbar.page);
 app.get('/mqtt', ensureAuthenticated, page_mqtt.page);
 app.get('/mqttstats', ensureAuthenticated, page_mqttstats.page);
@@ -166,6 +169,27 @@ io.of('/sensors').on('connection', function (socket) {
 		// mqttclient.subscribe('sensors/snmp/router/total/rate');
 		// mqttclient.subscribe('sensors/snmp/router/total/cumulative/+');
 
+
+  		mqttclient.on('message', function(topic, message) {
+			// figure out "friendly name and emit if known
+			var name = null;
+			if (names[topic] != undefined) name = names[topic];
+  			socket.emit('data', { topic: topic, value: message, name: name });
+  		});
+  	});
+});
+
+
+
+io.of('/power').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
+		keepalive: 1000
+	});
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/power/+');
+		mqttclient.subscribe('cumulative/+/sensors/power/+');
 
   		mqttclient.on('message', function(topic, message) {
 			// figure out "friendly name and emit if known
