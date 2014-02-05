@@ -125,6 +125,7 @@ app.use(function(req, res, next){
 
 
 passport.serializeUser(function(user, done) {
+	console.log("serializing user: " + user.emails[0].value);
 	done(null, user);
 });
 passport.deserializeUser(function(obj, done) {
