@@ -3,4 +3,5 @@ extends layout
 block content
 	div.container.well
 		h2 #{user.displayName} 
+		h4 #{user.emails[0].value}
 		h4 #{user.identifier}
