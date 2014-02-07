@@ -106,7 +106,7 @@ app.get('/names', function(req, res){
 app.get('/auth/google', 
 	passport.authenticate('google', { failureRedirect: '/login' }),
 	function(req, res) {
-		res.redirect('/');
+		res.redirect('/profile');
 });
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/login' }),
