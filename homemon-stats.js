@@ -165,6 +165,10 @@ mqttclient.on('connect', function() {
 		if (BeginsWith("sensors/power/", topic)) {	
 			// console.log ("power - ", topic, duration);	
 			var powerused = parseInt(message, 10) * ((duration / 1000.0) / 3600.0) / 1000.0; // convert to KWh
+			if (isNaN(powerused)) {
+				console.log ("NAN powerused: " + topic);
+				powerused = 0;
+			}
 			records_lasttime[topic] = currenttime;
 			records_hourly[topic] += powerused;
 			records_daily[topic] += powerused;
