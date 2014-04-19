@@ -15,6 +15,7 @@
     "redis-timeseries": "*",
     "mqtt": "*",
     "passport": "*",
-    "passport-google": "*"
+    "passport-google": "*",
+    "mdns": "*"
   }
 }
