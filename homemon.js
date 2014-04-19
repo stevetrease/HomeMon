@@ -24,6 +24,10 @@ var passport = require('passport')
   , GoogleStrategy = require('passport-google').Strategy;
   
 
+// Advertise the service with Bonjour so that it can be found on the LAN
+//var mdns = require('mdns')
+  // , ad = mdns.createAdvertisement(mdns.tcp('http'), 8500);
+// ad.start();
 
 
 
