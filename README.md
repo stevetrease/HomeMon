@@ -6,10 +6,10 @@ Based on using mosquitto to push MMQT messages from sensors. A pair of node.js p
 
 
 Requires:
-	Express
-	Socket.io
-	Jade
-	MQTT
-	Redis
-	Twitter Bootstrap
+- Express
+- Socket.io
+- Jade
+- MQTT
+- Redis
+- Twitter Bootstrap
 	
