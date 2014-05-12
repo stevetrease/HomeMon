@@ -23,8 +23,6 @@ function log(type) {
 }
 
 var records_hourly = {};
-// var records_hourly_max = {};
-// var records_hourly_min = {};
 var records_daily = {};
 var records_lasttime = {};
 var records_lastvalue = {};
@@ -39,14 +37,6 @@ console.log("Loading hourly records from redis...");
 result = execSync.exec('redis-cli get records_daily');
 records_daily = JSON.parse(result.stdout);
 console.log("Loading daily records from redis...");
-//
-// result = execSync.exec('redis-cli get records_hourly_max');
-// records_hourly_max = JSON.parse(result.stdout);
-// console.log("Loading hourly maximum records from redis...");
-//
-// result = execSync.exec('redis-cli get records_hourly_min');
-// records_hourly_min = JSON.parse(result.stdout);
-// console.log("Loading hourly minimum records from redis...");
 
 
 
@@ -75,12 +65,6 @@ mqttclient.on('connect', function() {
 		if(records_hourly[topic] == undefined) {
 			records_hourly[topic] = 0;
 		}
-		// if(records_hourly_max[topic] == undefined) {
-		// 	records_hourly_max[topic] = 0;
-		// }
-		// if(records_hourly_min[topic] == undefined) {
-		// 	records_hourly_min[topic] = 0;
-		//}
 		if(records_daily[topic] == undefined) {
 			records_daily[topic] = 0;
 		}
@@ -94,23 +78,6 @@ mqttclient.on('connect', function() {
 			records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
 		
-		// save all power values to redis for timeseries
-		// if (BeginsWith("sensors/power/", topic)) {
-		//	var messages = {
-		//		time: currenttime.getTime(),
-		//		value: parseInt(message, 10)	
-		//	}
-		// 	redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
-		// }
-		// save all temperature values to redis for timeseries
-		// if (BeginsWith("sensors/temperature/", topic)) {
-		// 	var messages = {
-		// 		time: currenttime.getTime(),
-		// 		value: parseInt(message, 10)	
-		// 	}
-		//	redisClient.zadd("timeseries-" + topic, currenttime.getTime(), JSON.stringify(messages));
-		// }
-
 
 		// different hour?
 		if (records_lasttime[topic].getHours() != currenttime.getHours()) {					
@@ -121,20 +88,6 @@ mqttclient.on('connect', function() {
 			}
 			redisClient.zadd(topic + "_hourly", currenttime.getTime(), JSON.stringify(messages));
 			records_hourly[topic] = 0;
-			
-			// var messages = {
-			//	time: records_lasttime[topic].getTime(),
-			// 	value: records_hourly_max[topic]	
-			//}
-			// redisClient.zadd(topic + "_hourly_max", currenttime.getTime(), JSON.stringify(messages));
-			// records_hourly_max[topic] = parseInt(message, 10);
-			
-			// var messages = {
-			// 	time: records_lasttime[topic].getTime(),
-			//	value: records_hourly_min[topic]	
-			//}
-			// redisClient.zadd(topic + "_hourly_min", currenttime.getTime(), JSON.stringify(messages));
-			// records_hourly_min[topic] = parseInt(message, 10);			
 		}
 		// different day?
 		if (records_lasttime[topic].getDate() != currenttime.getDate()) {
@@ -144,7 +97,7 @@ mqttclient.on('connect', function() {
 				value: records_daily[topic]	
 			}
 			redisClient.zadd(topic + "_daily", currenttime.getTime(), JSON.stringify(messages));
-			// reset counter
+			// reset accumulator
 			records_daily[topic] = 0;
 		}
 
@@ -168,9 +121,6 @@ mqttclient.on('connect', function() {
 			records_lastvalue[topic] = parseInt(message, 10);
 			// console.log("topic:", topic, " duration ", duration, " period ", powerused, " hour ", records_hourly[topic], "daily ", records_daily[topic]);
 			
-			// if (parseInt(message, 10) > records_hourly_max[topic]) records_hourly_max[topic] = parseInt(message, 10);
-			// if (parseInt(message, 10) < records_hourly_min[topic]) records_hourly_min[topic] = parseInt(message, 10);
-			
 			// publish new data
 			mqttclient.publish("cumulative/hour/" + topic, records_hourly[topic].toFixed(2));
 			mqttclient.publish("cumulative/daily/" + topic, records_daily[topic].toFixed(2));
@@ -186,9 +136,6 @@ mqttclient.on('connect', function() {
 				time.setHours(0);
 				redisClient.hincrbyfloat("daily-" + topic, time, v);		
 			}
-			
-			// mqttclient.publish(topic + "/cumulative/houry/max", records_hourly_max[topic].toFixed(0));
-			// mqttclient.publish(topic + "/cumulative/houry/min", records_hourly_min[topic].toFixed(0));			
 		}
 		
 		// record is SNMP
@@ -229,8 +176,6 @@ mqttclient.on('connect', function() {
 savestate = function() {
 	// console.log("saving to redis...");
 	redisClient.set("records_hourly", JSON.stringify(records_hourly));
-	// redisClient.set("records_hourly_min", JSON.stringify(records_hourly_min));
-	// redisClient.set("records_hourly_max", JSON.stringify(records_hourly_max));
 	redisClient.set("records_daily", JSON.stringify(records_daily));
 	redisClient.set("records_lasttime", JSON.stringify(records_lasttime));
 };
