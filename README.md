@@ -12,4 +12,3 @@ Requires:
 - MQTT
 - Redis
 - Twitter Bootstrap
-	
