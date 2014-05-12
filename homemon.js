@@ -24,13 +24,6 @@ var passport = require('passport')
   , GoogleStrategy = require('passport-google').Strategy;
   
 
-// Advertise the service with Bonjour so that it can be found on the LAN
-//var mdns = require('mdns')
-  // , ad = mdns.createAdvertisement(mdns.tcp('http'), 8500);
-// ad.start();
-
-
-
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , page_power = require('./routes/page_power')
@@ -170,9 +163,6 @@ io.of('/sensors').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
-		// mqttclient.subscribe('sensors/snmp/router/total/rate');
-		// mqttclient.subscribe('sensors/snmp/router/total/cumulative/+');
-
 
   		mqttclient.on('message', function(topic, message) {
 			// figure out "friendly name and emit if known
