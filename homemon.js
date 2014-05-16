@@ -20,8 +20,6 @@ io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker v
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
-// var passport = require('passport')
-//  , GoogleStrategy = require('passport-google').Strategy;
   
 
 var routes = require('./routes')
@@ -29,7 +27,6 @@ var routes = require('./routes')
   , page_power = require('./routes/page_power')
   , page_powerbar = require('./routes/page_powerbar')
   , page_mqtt = require('./routes/page_mqtt')
-//  , page_profile = require('./routes/page_profile')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
 
@@ -76,8 +73,6 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('cookie secret key 71f9fdb0-85df-11e3-920a-6cf049deda8a'));
 app.use(express.session({ secret: 'session secret key 790055d2-85df-11e3-85b0-6cf049deda8a' }));
-// app.use(passport.initialize());
-// app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -94,26 +89,12 @@ app.get('/powerbar', page_powerbar.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
 app.get('/redisstats', page_redisstats.page);
-// app.get('/profile', page_profile.page);
 
 
 app.get('/names', function(req, res){
 	res.json(JSON.stringify(names));
 });
-//app.get('/auth/google', 
-// 	passport.authenticate('google', { failureRedirect: '/login' }),
-//	function(req, res) {
-//		res.redirect('/profile');
-//});
-//app.get('/auth/google/return', 
-//	passport.authenticate('google', { failureRedirect: '/login' }),
-//	function(req, res) {
-//    	res.redirect('/');
-//});
-//app.get('/logout', function(req, res){
-//  req.logout();
-//  res.redirect('/');
-//});
+
 
 // and finally a 404
 app.use(function(req, res, next){
@@ -123,28 +104,6 @@ app.use(function(req, res, next){
 });
 
 
-
-// passport.serializeUser(function(user, done) {
-// 	console.log("serializing user: " + user.emails[0].value);
-// 	done(null, user);
-// });
-// passport.deserializeUser(function(obj, done) {
-// 	done(null, obj);
-// });
-
-
-// passport.use(new GoogleStrategy({
-//     	returnURL: 'https://www.trease.eu:8500/auth/google/return',
-//     	realm: 'https://www.trease.eu:8500/'
-// 	},
-// 	function(identifier, profile, done) {
-//   		// asynchronous verification, for effect...
-//  		process.nextTick(function () {
-//			profile.identifier = identifier;
-//			return done(null, profile);
-//		});  
-//	}
-// ));
 
 
 server.listen(8500);
@@ -260,15 +219,3 @@ io.of('/redisstats').on('connection', function (socket) {
   	});
 
 });
-
-// function to check if user is logged in
-// function ensureAuthenticated(req, res, next) {
-//	if (req.isAuthenticated()) {
-//		// console.log("request is authenticated");
-//	  	return next();
-//	}
-//	// console.log("request is not authenticated");
-//	res.redirect('/auth/google');
-//	
-//}
-
