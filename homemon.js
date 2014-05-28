@@ -98,9 +98,7 @@ app.get('/names', function(req, res){
 
 // and finally a 404
 app.use(function(req, res, next){
-	// res.sendfile("pages/404.jpg");
 	res.send(404, "This is not the webpage you are looking for.");
-	// res.redirect('/404');
 });
 
 
@@ -112,7 +110,6 @@ console.log('listening on port 8500');
 
 
 // sockert.io emitters
-//
 io.of('/sensors').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
@@ -217,5 +214,12 @@ io.of('/redisstats').on('connection', function (socket) {
 			}
 		}
   	});
-
 });
+
+
+
+
+// Advertise the service with Bonjour so that it can be found on the LAN
+// var mdns = require('mdns');
+// var ad = mdns.createAdvertisement(mdns.tcp('http'), 8500);
+// ad.start();
