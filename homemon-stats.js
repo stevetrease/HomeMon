@@ -30,11 +30,11 @@ var records_lastvalue = {};
 // get last stored values from Redis
 // needs to be blocking to get everything initialised nicely when starting
 var execSync = require('execSync');
-var result = execSync.exec('redis-cli get records_hourly');
+var result = execSync.exec('redis-cli -h ' + config.redis.host + ' get records_hourly');
 records_hourly = JSON.parse(result.stdout);
 console.log("Loading hourly records from redis...");
 //
-result = execSync.exec('redis-cli get records_daily');
+result = execSync.exec('redis-cli -h ' + config.redis.host + ' get records_daily');
 records_daily = JSON.parse(result.stdout);
 console.log("Loading daily records from redis...");
 
