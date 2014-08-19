@@ -32,6 +32,7 @@
 			var cell=row.insertCell(0);
 			cell.id = data.topic + "name";
 			document.getElementById(data.topic).style.textAlign="right"
+			document.getElementById(data.topic).style.wordWrap="normal"
 			document.getElementById(data.topic + "name").innerHTML= data.topic;
 		}
 		// new we know there is a target, update it
