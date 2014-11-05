@@ -182,7 +182,7 @@ io.of('/pushmessage').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('push/alert');
   		mqttclient.on('message', function(topic, message) {
-	  		console.log (message);
+	  		// console.log (message);
   			socket.emit('data', { topic: message, });
   		});
   	});
