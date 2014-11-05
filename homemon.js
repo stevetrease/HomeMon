@@ -26,6 +26,7 @@ var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
   , page_power = require('./routes/page_power')
   , page_powerbar = require('./routes/page_powerbar')
+  , page_pushmessage = require('./routes/page_pushmessage')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
@@ -86,6 +87,7 @@ app.get('/', routes.index);
 app.get('/sensors', page_sensors.page);
 app.get('/power', page_power.page);
 app.get('/powerbar', page_powerbar.page);
+app.get('/pushmessage', page_pushmessage.page);
 app.get('/mqtt', page_mqtt.page);
 app.get('/mqttstats', page_mqttstats.page);
 app.get('/redisstats', page_redisstats.page);
@@ -170,6 +172,21 @@ io.of('/powerbar').on('connection', function (socket) {
   	});
 });
 
+
+io.of('/pushmessage').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
+		keepalive: 1000
+	});
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('push/alert');
+  		mqttclient.on('message', function(topic, message) {
+	  		console.log (message);
+  			socket.emit('data', { topic: message, });
+  		});
+  	});
+});
 
 
 io.of('/mqtt').on('connection', function (socket) {
