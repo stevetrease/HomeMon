@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /home/steve/homemon
-nodemon homemon.js
+nodemon homemon-server.js
