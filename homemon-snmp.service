@@ -1,0 +1,13 @@
+[Unit]
+Description=homemon SNMP collection
+After=redis.service mosquitto.service
+Requires=redis.service mosquitto.service
+
+[Service]
+ExecStart=/home/steve/homemon/run-homemon-snmp.sh
+Type=simple
+User=steve
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
