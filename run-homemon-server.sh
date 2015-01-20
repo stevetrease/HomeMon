@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /home/steve/homemon
-nodemon homemon-server.js
+NODE_ENV=production nodemon homemon-server.js
