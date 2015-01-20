@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /home/steve/homemon
-nodemon homemon-stats.js
+NODE_ENV=production nodemon homemon-stats.js
