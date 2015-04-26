@@ -12,10 +12,7 @@
     "nodemon": "*",
     "socket.io": "*",
     "redis": "*",
-    "redis-timeseries": "*",
     "mqtt": "*",
-    "passport": "*",
-    "passport-google": "*",
     "mdns": "*"
   }
 }

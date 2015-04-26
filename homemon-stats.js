@@ -54,18 +54,15 @@ console.log("Loading daily records from redis...");
 
 // connect to to MQTT
 var mqtt = require('mqtt');
-var mqttclient = mqtt.createClient(parseInt(config.mqtt.port,10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-});
+var mqttclient = mqtt.connect(config.mqtt.host);
 
 mqttclient.on('connect', function() {
 	mqttclient.subscribe('sensors/power/+');
-	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
+	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host);
 	mqttclient.subscribe('sensors/snmp/+/+');
-	console.log('subscribing to sensors/snmp/+/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
+	console.log('subscribing to sensors/snmp/+/+ on ' + config.mqtt.host);
 	mqttclient.subscribe('sensors/temperature/+');
-	console.log('subscribing to sensors/temperature/+ on ' + config.mqtt.host + ' (' + config.mqtt.port + ')');
-
+	console.log('subscribing to sensors/temperature/+ on ' + config.mqtt.host);
 
   	mqttclient.on('message', function(topic, message) {
 		var currenttime = new Date();

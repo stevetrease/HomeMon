@@ -28,7 +28,7 @@ var app = express()
 var http = require('https')
 var server = http.createServer(sslOptions, app)
 var io = require('socket.io').listen(server, {'log level': 1});
-io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
+// io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
 var path = require('path');
 var redis = require('redis')
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
@@ -127,9 +127,7 @@ console.log('listening on port 8500');
 io.of('/sensors').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
@@ -138,7 +136,7 @@ io.of('/sensors').on('connection', function (socket) {
 			// figure out "friendly name and emit if known
 			var name = null;
 			if (names[topic] != undefined) name = names[topic];
-  			socket.emit('data', { topic: topic, value: message, name: name });
+  			socket.emit('data', { topic: topic, value: message.toString(), name: name });
   		});
   	});
 });
@@ -148,9 +146,7 @@ io.of('/sensors').on('connection', function (socket) {
 io.of('/power').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/power/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/+');
@@ -159,7 +155,7 @@ io.of('/power').on('connection', function (socket) {
 			// figure out "friendly name and emit if known
 			var name = null;
 			if (names[topic] != undefined) name = names[topic];
-  			socket.emit('data', { topic: topic, value: message, name: name });
+  			socket.emit('data', { topic: topic, value: message.toString(), name: name });
   		});
   	});
 });
@@ -169,9 +165,7 @@ io.of('/power').on('connection', function (socket) {
 io.of('/powerbar').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/power/+');
   		mqttclient.on('message', function(topic, message) {
@@ -179,7 +173,7 @@ io.of('/powerbar').on('connection', function (socket) {
 			var name = null;
 			if (names[topic] != undefined) name = names[topic];
   			if (topic != "sensors/power/0")
-  				socket.emit('data', { topic: topic, value: message, name: name });
+  				socket.emit('data', { topic: topic, value: message.toString(), name: name });
   		});
   	});
 });
@@ -188,14 +182,12 @@ io.of('/powerbar').on('connection', function (socket) {
 io.of('/pushmessage').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('push/alert');
   		mqttclient.on('message', function(topic, message) {
 	  		// console.log (message);
-  			socket.emit('data', { topic: message, });
+  			socket.emit('data', { topic: message.toString() });
   		});
   	});
 });
@@ -204,13 +196,11 @@ io.of('/pushmessage').on('connection', function (socket) {
 io.of('/mqtt').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-		keepalive: 1000
-	});
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('#');
   		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message });
+  			socket.emit('data', { topic: topic, value: message.toString() });
   		});
   	});
 });
@@ -218,14 +208,11 @@ io.of('/mqtt').on('connection', function (socket) {
 io.of('/mqttstats').on('connection', function (socket) {
 	// subscribe to MQTT
 	var mqtt = require('mqtt');
-	var mqttclient = mqtt.createClient(parseInt(config.mqtt.port, 10), config.mqtt.host, function(err, client) {
-			keepalive: 1000
-	});
-		
+	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('$SYS/#');
   		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message });
+  			socket.emit('data', { topic: topic, value: message.toString() });
   		});
   	});
 });

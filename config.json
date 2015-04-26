@@ -1,12 +1,11 @@
 {
     "mqtt":
     {
-        "host": "192.168.1.103",
-        "port": "1883"
+        "host": "mqtt://mqtt.trease.eu"
     },
     "redis":
     {
-        "host": "192.168.1.103",
+        "host": "redis.trease.eu",
         "port": "6379"
     },
     "community": "public"
