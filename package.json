@@ -9,10 +9,8 @@
     "express": "3.2.6",
     "jade": "latest",
     "execSync": "*",
-    "nodemon": "*",
     "socket.io": "*",
     "redis": "*",
-    "mqtt": "*",
-    "mdns": "*"
+    "mqtt": "*"
   }
 }
