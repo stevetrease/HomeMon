@@ -31,7 +31,6 @@ oldtime = datetime.datetime.now()
 
 while mqttc.loop() == 0:
 	
-	
 	bytes_up_new = int(session.get(vars1)[0])
 	bytes_down_new = int(session.get(vars2)[0])
 	bytes_up_diff = bytes_up_new - bytes_up_old
@@ -48,12 +47,11 @@ while mqttc.loop() == 0:
 	mqttc.publish("sensors/snmp/router/down", str(bytes_down_new))
 	mqttc.publish("sensors/snmp/router/total", str(bytes_down_new + bytes_down_new))
 
-	
 	# print current bandwidth on bottom line of LCD
 	mqttc.publish("LCD/1/line/1", "{:5.2f}".format(mbps_total))
 
 	bytes_up_old = bytes_up_new
 	bytes_down_old = bytes_down_new
 	oldtime = newtime
-	
-	# time.sleep(1)
+
+	print
