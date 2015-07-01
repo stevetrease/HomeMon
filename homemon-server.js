@@ -59,7 +59,9 @@ names["sensors/power/7"] = "Lounge";
 names["sensors/power/8"] = "IAM8";
 names["sensors/power/9"] = "IAM9";
 names["sensors/power/U"] = "Unknown";
-names["sensors/power/WeMo Insight B"] = "Little Lounge";
+names["sensors/power/WeMo Insight A"] = "Kitchen kettle (WeMo A)";
+names["sensors/power/WeMo Insight B"] = "Little Lounge (WeMo B)";
+names["sensors/power/WeMo Insight C"] = "WeMo Insight C";
 names["sensors/humidity/jeenode-11"] = "Utility Room";
 names["sensors/humidity/jeenode-15"] = "AQE";
 names["sensors/humidity/egpd"] = "Aberdeen Airport";
@@ -137,7 +139,20 @@ io.of('/sensors').on('connection', function (socket) {
 			// figure out "friendly name and emit if known
 			var name = null;
 			if (names[topic] != undefined) name = names[topic];
-  			socket.emit('data', { topic: topic, value: message.toString(), name: name });
+			
+			// section to allow formatting of numbers for display
+			var value = Number(message);
+			messageString = value.toString();
+			var topictag = "sensors/humidity/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(0) + "%";	
+			}
+			var topictag = "sensors/temperature/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(1);	
+			}
+				
+  			socket.emit('data', { topic: topic, value: messageString, name: name });
   		});
   	});
 });

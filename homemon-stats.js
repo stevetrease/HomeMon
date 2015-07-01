@@ -83,7 +83,7 @@ mqttclient.on('connect', function() {
 
 		// publish current power stats for LCD display
 		if (BeginsWith("sensors/power/0", topic)) {
-				mqttclient.publish("LCD/1/line/0", message + "  " + 
+			mqttclient.publish("LCD/1/line/0", message + "  " + 
 			records_hourly[topic].toFixed(1) + "  " + records_daily[topic].toFixed(1));
 		}
 		
