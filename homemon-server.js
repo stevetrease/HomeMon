@@ -47,7 +47,7 @@ var routes = require('./routes')
 
 
 
-// Friendly names 
+// Friendly n 
 var names = {};
 names["sensors/power/1"] = "IAM1";
 names["sensors/power/2"] = "Server";
@@ -64,8 +64,8 @@ names["sensors/power/WeMo Insight B"] = "Little Lounge (WeMo B)";
 names["sensors/power/WeMo Insight C"] = "WeMo Insight C";
 names["sensors/humidity/jeenode-11"] = "Utility Room";
 names["sensors/humidity/jeenode-15"] = "AQE";
-ames["sensors/co/jeenode-15"] = "AQE";
-ames["sensors/no2/jeenode-15"] = "AQE";
+names["sensors/co/jeenode-15"] = "AQE";
+names["sensors/no2/jeenode-15"] = "AQE";
 names["sensors/humidity/egpd"] = "Aberdeen Airport";
 names["sensors/temperature/jeenode-11"] = "Utility Room";
 names["sensors/temperature/jeenode-13"] = "Kitchen";
