@@ -73,6 +73,7 @@ names["sensors/temperature/attic"] = "Attic";
 names["sensors/pressure/attic"] = "Attic";
 names["sensors/pressure/egpd"] = "Aberdeen Airport";
 names["sensors/temperature/egpd"] = "Aberdeen Airport";
+names["sensors/boiler/in"] = "Boiler";
 
 
 
