@@ -154,6 +154,11 @@ io.of('/sensors').on('connection', function (socket) {
 			if (topic.substring(0,topictag.length) == topictag) {
 				messageString = value.toFixed(1);	
 			}
+			var topictag = "sensors/boiler/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(1);	
+			}
+
 				
   			socket.emit('data', { topic: topic, value: messageString, name: name });
   		});
