@@ -133,6 +133,7 @@ io.of('/sensors').on('connection', function (socket) {
 	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
+		mqttclient.subscribe('sensors/snmp/router/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
 
   		mqttclient.on('message', function(topic, message) {

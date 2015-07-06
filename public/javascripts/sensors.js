@@ -24,6 +24,10 @@
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTableTemp");
 			}
+			var topictag = "sensors/snmp/router/";
+			if (data.topic.substring(0,topictag.length) == topictag) {
+				var table=document.getElementById("myRouter");
+			}
 			var topictag = "sensors/temperature/";
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTableTemp");
