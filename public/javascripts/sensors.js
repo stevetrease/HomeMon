@@ -24,9 +24,9 @@
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTableTemp");
 			}
-			var topictag = "sensors/snmp/router/";
+			var topictag = "rate/sensors/snmp/router/";
 			if (data.topic.substring(0,topictag.length) == topictag) {
-				var table=document.getElementById("myRouter");
+				var table=document.getElementById("myRouterRate");
 			}
 			var topictag = "sensors/temperature/";
 			if (data.topic.substring(0,topictag.length) == topictag) {

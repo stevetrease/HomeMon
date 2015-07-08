@@ -136,8 +136,7 @@ io.of('/sensors').on('connection', function (socket) {
 	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('sensors/+/+');
-		mqttclient.subscribe('sensors/snmp/router/up');
-		mqttclient.subscribe('sensors/snmp/router/down');
+		mqttclient.subscribe('rate/sensors/snmp/router/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
 
   		mqttclient.on('message', function(topic, message) {
@@ -160,7 +159,6 @@ io.of('/sensors').on('connection', function (socket) {
 			if (topic.substring(0,topictag.length) == topictag) {
 				messageString = value.toFixed(1);	
 			}
-
 				
   			socket.emit('data', { topic: topic, value: messageString, name: name });
   		});
