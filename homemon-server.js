@@ -11,17 +11,17 @@ switch (process.env.NODE_ENV) {
 }
 
 
-
+var names = require('./names.json');
 var fs = require('fs');
 
 // lines for https
 var privateKey = fs.readFileSync('sslcert/server.key');
 var certificate = fs.readFileSync('sslcert/server.crt');
-
 var sslOptions = {	key: privateKey,
 					cert: certificate,
 					ciphers: 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM',
 					honorCipherOrder: true };
+
 
 var express = require('express')
 var app = express()
@@ -31,8 +31,7 @@ var io = require('socket.io').listen(server, {'log level': 1});
 // io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
 var path = require('path');
 var redis = require('redis')
-	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
-  
+	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);  
 
 var routes = require('./routes')
   , page_sensors = require('./routes/page_sensors')
@@ -42,41 +41,6 @@ var routes = require('./routes')
   , page_mqtt = require('./routes/page_mqtt')
   , page_mqttstats = require('./routes/page_mqttstats')
   , page_redisstats = require('./routes/page_redisstats')
-
-
-
-
-
-// Friendly n 
-var names = {};
-names["sensors/power/1"] = "IAM1";
-names["sensors/power/2"] = "Server";
-names["sensors/power/3"] = "Steve's PC";
-names["sensors/power/4"] = "Julie's PC";
-names["sensors/power/5"] = "Study network";
-names["sensors/power/6"] = "Kitchen";
-names["sensors/power/7"] = "Lounge";
-names["sensors/power/8"] = "IAM8";
-names["sensors/power/9"] = "IAM9";
-names["sensors/power/U"] = "Unknown";
-names["sensors/power/WeMo Insight A"] = "Kitchen kettle (WeMo A)";
-names["sensors/power/WeMo Insight B"] = "Little Lounge (WeMo B)";
-names["sensors/power/WeMo Insight C"] = "WeMo Insight C";
-names["sensors/humidity/jeenode-11"] = "Utility Room";
-names["sensors/humidity/jeenode-15"] = "AQE";
-names["sensors/co/jeenode-15"] = "AQE";
-names["sensors/no2/jeenode-15"] = "AQE";
-names["sensors/humidity/egpd"] = "Aberdeen Airport";
-names["sensors/temperature/jeenode-11"] = "Utility Room";
-names["sensors/temperature/jeenode-13"] = "Kitchen";
-names["sensors/temperature/jeenode-15"] = "AQE";
-names["sensors/temperature/garage"] = "Garage";
-names["sensors/temperature/attic"] = "Attic";
-names["sensors/pressure/attic"] = "Attic";
-names["sensors/pressure/egpd"] = "Aberdeen Airport";
-names["sensors/temperature/egpd"] = "Aberdeen Airport";
-names["sensors/boiler/in"] = "Boiler";
-
 
 
 
@@ -142,7 +106,7 @@ io.of('/sensors').on('connection', function (socket) {
   		mqttclient.on('message', function(topic, message) {
 			// figure out "friendly name and emit if known
 			var name = null;
-			if (names[topic] != undefined) name = names[topic];
+			if (names[topic] != undefined) name = names[topic].name;
 			
 			// section to allow formatting of numbers for display
 			var value = Number(message);
@@ -178,7 +142,7 @@ io.of('/power').on('connection', function (socket) {
   		mqttclient.on('message', function(topic, message) {
 			// figure out "friendly name and emit if known
 			var name = null;
-			if (names[topic] != undefined) name = names[topic];
+			if (names[topic] != undefined) name = names[topic].name;
   			socket.emit('data', { topic: topic, value: message.toString(), name: name });
   		});
   	});
@@ -195,7 +159,7 @@ io.of('/powerbar').on('connection', function (socket) {
   		mqttclient.on('message', function(topic, message) {
   			// figure out "friendly name and emit if known
 			var name = null;
-			if (names[topic] != undefined) name = names[topic];
+			if (names[topic] != undefined) name = names[topic].name;
   			if (topic != "sensors/power/0")
   				socket.emit('data', { topic: topic, value: message.toString(), name: name });
   		});
