@@ -21,8 +21,8 @@
 				var table=document.getElementById("myTablePower");
 	
 				// itertate through table to find out where to insert row in alpha order
-				var count = 1;
-				for (i = 1; i < table.rows.length; i++) {
+				var count = 3;
+				for (i = 3; i < table.rows.length; i++) {
 					var row = table.rows[i];
 					var col = row.cells[0];
 					if (col.firstChild.nodeValue < data.topic.slice(data.topic.lastIndexOf('/')+1)) {
