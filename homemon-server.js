@@ -55,7 +55,7 @@ app.use(express.favicon(__dirname + '/public/favicon.ico'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('cookie secret key 71f9fdb0-85df-11e3-920a-6cf049deda8a'));
-app.use(express.session({ secret: 'session secret key 790055d2-85df-11e3-85b0-6cf049deda8a' }));
+// app.use(express.session({ secret: 'session secret key 790055d2-85df-11e3-85b0-6cf049deda8a' }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
