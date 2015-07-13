@@ -182,6 +182,29 @@ mqttclient.on('connect', function() {
 });
 
 
+
+var mqtt2 = require('mqtt');
+var mqttclient2 = mqtt2.connect(config.mqtt.host);
+
+mqttclient2.on('connect', function() {
+	mqttclient2.subscribe('sensors/#');
+	console.log('subscribing to sensors/# on ' + config.mqtt.host);
+
+  	mqttclient2.on('message', function(topic, message) {
+	  	var time = new Date();
+	  	var jsonMessage = {
+		  	topic: topic,
+		  	value: message.toString(),
+		  	timeStamp: time
+	  	};
+		mqttclient2.publish("jsonsensors", JSON.stringify(jsonMessage)); 	
+	});
+});
+	  
+	  	
+
+
+
 savestate = function() {
 	// console.log("saving to redis...");
 	redisClient.set("records_hourly", JSON.stringify(records_hourly));
