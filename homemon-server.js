@@ -194,7 +194,9 @@ io.of('/mqtt').on('connection', function (socket) {
 	mqttclient.on('connect', function() {
 		mqttclient.subscribe('#');
   		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message.toString() });
+	  		if (topic != "jsonsensors") {
+  				socket.emit('data', { topic: topic, value: message.toString() });
+  			}
   		});
   	});
 });
