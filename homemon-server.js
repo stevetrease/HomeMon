@@ -1,4 +1,5 @@
-console.log("process.env.NODE_ENV:" + process.env.NODE_ENV);
+
+nsole.log("process.env.NODE_ENV:" + process.env.NODE_ENV);
 switch (process.env.NODE_ENV) {
 	case 'development':
 		console.log ("development mode");
@@ -93,126 +94,117 @@ console.log('listening on port 8500');
 
 
 
-var sensors_nsp = io.of('/sensors');
-sensors_nsp.on('connection', function (socket) {
-	console.log ("connection to /sensors");
-});
-var sensors_mqtt = require('mqtt');
-var sensors_mqttclient = sensors_mqtt.connect(config.mqtt.host);
-sensors_mqttclient.on('connect', function() {
-	sensors_mqttclient.subscribe('sensors/+/+');
-	sensors_mqttclient.subscribe('rate/sensors/snmp/router/+');
-	sensors_mqttclient.subscribe('cumulative/+/sensors/power/0');
+// sockert.io emitters
+io.of('/sensors').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/+/+');
+		mqttclient.subscribe('rate/sensors/snmp/router/+');
+		mqttclient.subscribe('cumulative/+/sensors/power/0');
 
-  	sensors_mqttclient.on('message', function(topic, message) {
-		// figure out "friendly name and emit if known
-		var name = null;
-		if (names[topic] != undefined) name = names[topic].name;
-		
-		// section to allow formatting of numbers for display
-		var value = Number(message);
-		messageString = value.toString();
-		var topictag = "sensors/humidity/";
-		if (topic.substring(0,topictag.length) == topictag) {
-			messageString = value.toFixed(0) + "%";	
-		}
-		var topictag = "sensors/temperature/";
-		if (topic.substring(0,topictag.length) == topictag) {
-			messageString = value.toFixed(1);	
-		}
-		var topictag = "sensors/boiler/";
-		if (topic.substring(0,topictag.length) == topictag) {
-			messageString = value.toFixed(1);	
-		}
+  		mqttclient.on('message', function(topic, message) {
+			// figure out "friendly name and emit if known
+			var name = null;
+			if (names[topic] != undefined) name = names[topic].name;
 			
-  		sensors_nsp.emit('data', { topic: topic, value: messageString, name: name });
-  	});
-});
-
-
-	
-var power_nsp = io.of('/power');
-power_nsp.on('connection', function (socket) {
-	console.log ("connection to /power");
-});
-var power_mqtt = require('mqtt');
-var power_mqttclient = power_mqtt.connect(config.mqtt.host);
-power_mqttclient.on('connect', function() {
-	power_mqttclient.subscribe('sensors/power/+');
-	power_mqttclient.subscribe('cumulative/+/sensors/power/+');
- 	power_mqttclient.on('message', function(topic, message) {
-		// figure out "friendly name and emit if known
-		var name = null;
-		if (names[topic] != undefined) name = names[topic].name;
-  			power_nsp.emit('data', { topic: topic, value: message.toString(), name: name });
-  	});
-});
-
-
-
-var powerbar_nsp = io.of('/powerbar');
-powerbar_nsp.on('connection', function (socket) {
-	console.log ("connection to /powerbar");
-});
-var powerbar_mqtt = require('mqtt');
-var powerbar_mqttclient = powerbar_mqtt.connect(config.mqtt.host);
-powerbar_mqttclient.on('connect', function() {
-	powerbar_mqttclient.subscribe('sensors/power/+');
-  	powerbar_mqttclient.on('message', function(topic, message) {
-  		// figure out "friendly name and emit if known
-		var name = null;
-		if (names[topic] != undefined) name = names[topic].name;
-  		if (topic != "sensors/power/0")
-  			powerbar_nsp.emit('data', { topic: topic, value: message.toString(), name: name });
+			// section to allow formatting of numbers for display
+			var value = Number(message);
+			messageString = value.toString();
+			var topictag = "sensors/humidity/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(0) + "%";	
+			}
+			var topictag = "sensors/temperature/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(1);	
+			}
+			var topictag = "sensors/boiler/";
+			if (topic.substring(0,topictag.length) == topictag) {
+				messageString = value.toFixed(1);	
+			}
+				
+  			socket.emit('data', { topic: topic, value: messageString, name: name });
+  		});
   	});
 });
 
 
 
-var pushmessage_nsp = io.of('/pushmessage');
-pushmessage_nsp.on('connection', function (socket) {
-	console.log ("connection to /pushmessage");
-});
-var pushmessage_mqtt = require('mqtt');
-var pushmessage_mqttclient = pushmessage_mqtt.connect(config.mqtt.host);
-pushmessage_mqttclient.on('connect', function() {
-	pushmessage_mqttclient.subscribe('push/alert');
-  	pushmessage_mqttclient.on('message', function(topic, message) {
-		pushmessage_nsp.emit('data', { topic: message.toString() });
+io.of('/power').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/power/+');
+		mqttclient.subscribe('cumulative/+/sensors/power/+');
+
+  		mqttclient.on('message', function(topic, message) {
+			// figure out "friendly name and emit if known
+			var name = null;
+			if (names[topic] != undefined) name = names[topic].name;
+  			socket.emit('data', { topic: topic, value: message.toString(), name: name });
+  		});
   	});
 });
 
 
 
-var mqtt_nsp = io.of('/mqtt');
-mqtt_nsp.on('connection', function (socket) {
-	console.log ("connection to /mqtt");
-});
-var mqtt_mqtt = require('mqtt');
-var mqtt_mqttclient = mqtt_mqtt.connect(config.mqtt.host);
-mqtt_mqttclient.on('connect', function() {
-	mqtt_mqttclient.subscribe('#');
-  	mqtt_mqttclient.on('message', function(topic, message) {
-		mqtt_nsp.emit('data', { topic: topic, value: message.toString() });
+io.of('/powerbar').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('sensors/power/+');
+  		mqttclient.on('message', function(topic, message) {
+  			// figure out "friendly name and emit if known
+			var name = null;
+			if (names[topic] != undefined) name = names[topic].name;
+  			if (topic != "sensors/power/0")
+  				socket.emit('data', { topic: topic, value: message.toString(), name: name });
+  		});
   	});
 });
 
 
-
-var mqttstats_nsp = io.of('/mqttstats');
-mqttstats_nsp.on('connection', function (socket) {
-	console.log ("connection to /mqttstats");
-});
-var mqttstats_mqtt = require('mqtt');
-var mqttstats_mqttclient = mqttstats_mqtt.connect(config.mqtt.host);
-mqttstats_mqttclient.on('connect', function() {
-	mqttstats_mqttclient.subscribe('$SYS/#');
-  	mqttstats_mqttclient.on('message', function(topic, message) {
-		mqttstats_nsp.emit('data', { topic: topic, value: message.toString() });
+io.of('/pushmessage').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('push/alert');
+  		mqttclient.on('message', function(topic, message) {
+	  		// console.log (message);
+  			socket.emit('data', { topic: message.toString() });
+  		});
   	});
 });
 
 
+io.of('/mqtt').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('#');
+  		mqttclient.on('message', function(topic, message) {
+  			socket.emit('data', { topic: topic, value: message.toString() });
+  		});
+  	});
+});
+
+io.of('/mqttstats').on('connection', function (socket) {
+	// subscribe to MQTT
+	var mqtt = require('mqtt');
+	var mqttclient = mqtt.connect(config.mqtt.host);
+	mqttclient.on('connect', function() {
+		mqttclient.subscribe('$SYS/#');
+  		mqttclient.on('message', function(topic, message) {
+  			socket.emit('data', { topic: topic, value: message.toString() });
+  		});
+  	});
+});
 
 // redis runtime stats
 io.of('/redisstats').on('connection', function (socket) {
