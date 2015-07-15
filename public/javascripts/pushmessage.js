@@ -1,6 +1,6 @@
 	ElementExists = function(id) {
-    		return !!document.getElementById(id);
-	};
+    		return !document.getElementById(id);
+	}
 		
 	var updates = 0;
 
