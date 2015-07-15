@@ -48,7 +48,7 @@
 			if (data.topic.substring(0,topictag.length) == topictag) {
 				var table=document.getElementById("myTablePressure");
 			}
-
+			
 			// itertate through table to find out where to insert row in alpha order
 			var count = 1;
 			for (i = 1; i < table.rows.length; i++) {
@@ -64,8 +64,6 @@
 			cell.id = data.topic;
 			var cell=row.insertCell(0);
 			cell.id = data.topic + "name";
-
-
 			
 			document.getElementById(data.topic).style.textAlign="right";
 			document.getElementById(data.topic).style.width="25%";

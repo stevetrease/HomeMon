@@ -99,7 +99,13 @@ io.of('/sensors').on('connection', function (socket) {
 	var mqtt = require('mqtt');
 	var mqttclient = mqtt.connect(config.mqtt.host);
 	mqttclient.on('connect', function() {
-		mqttclient.subscribe('sensors/+/+');
+		mqttclient.subscribe('sensors/power/+');
+		mqttclient.subscribe('sensors/temperature/+');
+		mqttclient.subscribe('sensors/boiler/+');
+		mqttclient.subscribe('sensors/humidity/+');
+		mqttclient.subscribe('sensors/co/+');
+		mqttclient.subscribe('sensors/no2/+');
+		mqttclient.subscribe('sensors/pressure/+');
 		mqttclient.subscribe('rate/sensors/snmp/router/+');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
 
