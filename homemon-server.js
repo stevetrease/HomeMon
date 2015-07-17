@@ -88,8 +88,8 @@ app.use(function(req, res, next){
 
 
 
-server.listen(8500);
-console.log('listening on port 8500');
+server.listen(config.port);
+console.log("listening on port " + config.port);
 
 
 
@@ -106,7 +106,7 @@ io.of('/sensors').on('connection', function (socket) {
 		mqttclient.subscribe('sensors/co/+');
 		mqttclient.subscribe('sensors/no2/+');
 		mqttclient.subscribe('sensors/pressure/+');
-		mqttclient.subscribe('rate/sensors/snmp/router/+');
+		mqttclient.subscribe('rate/sensors/snmp/router/total');
 		mqttclient.subscribe('cumulative/+/sensors/power/0');
 
   		mqttclient.on('message', function(topic, message) {
