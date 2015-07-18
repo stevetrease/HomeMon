@@ -1,5 +1,6 @@
 {
-	"port": 8500,
+    "host_url": "http://www.trease.eu",
+    "host_port": "8500",
     "mqtt":
     {
         "host": "mqtt://mqtt.trease.eu"
@@ -8,7 +9,5 @@
     {
         "host": "redis.trease.eu",
         "port": "6379"
-    },
-    "community": "public"
+    }
 }
-

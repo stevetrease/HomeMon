@@ -11,227 +11,165 @@ switch (process.env.NODE_ENV) {
 }
 
 
+// function to if a string starts with nother one
+String.prototype.beginsWith = function (string) {
+    return(this.indexOf(string) === 0);
+};
+
 var names = require('./names.json');
+
+
 var fs = require('fs');
-
-// lines for https
-var privateKey = fs.readFileSync('sslcert/server.key');
-var certificate = fs.readFileSync('sslcert/server.crt');
-var sslOptions = {	key: privateKey,
-					cert: certificate,
-					ciphers: 'ECDHE-RSA-AES256-SHA:AES256-SHA:RC4-SHA:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM',
-					honorCipherOrder: true };
-
-
-var express = require('express')
-var app = express()
-var http = require('https')
-var server = http.createServer(sslOptions, app)
-var io = require('socket.io').listen(server, {'log level': 1});
-// io.set("transports", ["xhr-polling", "jsonp-polling"]); // so it works quicker via squid
 var path = require('path');
-var redis = require('redis')
-	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);  
+var express = require('express');
+var app = express();
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server, {'log level': 1});
 
-var routes = require('./routes')
-  , page_sensors = require('./routes/page_sensors')
-  , page_power = require('./routes/page_power')
-  , page_powerbar = require('./routes/page_powerbar')
-  , page_pushmessage = require('./routes/page_pushmessage')
-  , page_mqtt = require('./routes/page_mqtt')
-  , page_mqttstats = require('./routes/page_mqttstats')
-  , page_redisstats = require('./routes/page_redisstats')
-
-
-
-
-
-// all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.host_port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.logger());
 app.use(express.favicon(__dirname + '/public/favicon.ico'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser('cookie secret key 71f9fdb0-85df-11e3-920a-6cf049deda8a'));
-// app.use(express.session({ secret: 'session secret key 790055d2-85df-11e3-85b0-6cf049deda8a' }));
-app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-
+var routes = require('./routes');
+var page_mqtt = require('./routes/page_mqtt');
+var page_mqttstats = require('./routes/page_mqttstats');
+var page_power = require('./routes/page_power');
+var page_powerbar = require('./routes/page_powerbar');
+var page_pushmessage = require('./routes/page_pushmessage');
+var page_redisstats = require('./routes/page_redisstats');
+var page_sensors = require('./routes/page_sensors');
 
 app.get('/', routes.index);
-app.get('/sensors', page_sensors.page);
+app.get('/mqtt', page_mqtt.page);
+app.get('/pushmessage', page_pushmessage.page);
+app.get('/mqttstats', page_mqttstats.page);
 app.get('/power', page_power.page);
 app.get('/powerbar', page_powerbar.page);
 app.get('/pushmessage', page_pushmessage.page);
-app.get('/mqtt', page_mqtt.page);
-app.get('/mqttstats', page_mqttstats.page);
 app.get('/redisstats', page_redisstats.page);
-
-
-app.get('/names', function(req, res){
-	res.json(JSON.stringify(names));
-});
+app.get('/sensors', page_sensors.page);
 
 
 // and finally a 404
 app.use(function(req, res, next){
 	res.send(404, "This is not the webpage you are looking for.");
 });
+server.listen(config.host_port);
+console.log('listening on port ' + config.host_port);
+
+
+io.sockets.on('connection', function (socket) {
+	console.log(socket.id + " connected");
+	socket.on('subscribe', function(data) {
+		console.log (socket.id + " subscribed to room " + data.room );
+		socket.join(data.room);
+	});
+});
+
+
+var nsp = io.of('/');
+	nsp.on('connection', function(socket){
+	console.log(socket.id + " connected connected to /");
+});
 
 
 
+var mqtt = require('mqtt');
+var mqttclient = mqtt.connect(config.mqtt.host);
 
-server.listen(config.port);
-console.log("listening on port " + config.port);
-
-
-
-// sockert.io emitters
-io.of('/sensors').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('sensors/power/+');
-		mqttclient.subscribe('sensors/temperature/+');
-		mqttclient.subscribe('sensors/boiler/+');
-		mqttclient.subscribe('sensors/humidity/+');
-		mqttclient.subscribe('sensors/co/+');
-		mqttclient.subscribe('sensors/no2/+');
-		mqttclient.subscribe('sensors/pressure/+');
-		mqttclient.subscribe('rate/sensors/snmp/router/total');
-		mqttclient.subscribe('cumulative/+/sensors/power/0');
-
-  		mqttclient.on('message', function(topic, message) {
-			// figure out "friendly name and emit if known
-			var name = null;
-			if (names[topic] != undefined) name = names[topic].name;
+mqttclient.on('connect', function() {
+        // mqttclient.subscribe('jsonsensors');
+        mqttclient.subscribe('#');
+        mqttclient.subscribe('$SYS/#');
+        mqttclient.on('message', function(topic, message) {
+	        var value = Number(message);
+	        messageString = value.toString();
+	        // console.log (topic + "     " + message.toString());
+	        if (topic == "push/alert") {
+				io.sockets.in("pushmessage").emit('data', { topic: message.toString() });	        
+		    }
+		    
+	        if (topic == "jsonsensors") {
+		        // var messageData = JSON.parse(message.toString());
+				//io.sockets.in("mqtt").emit('data', { topic: messageData.topic, value: messageData.value });				
+			}
 			
-			// section to allow formatting of numbers for display
-			var value = Number(message);
-			messageString = value.toString();
-			var topictag = "sensors/humidity/";
-			if (topic.substring(0,topictag.length) == topictag) {
-				messageString = value.toFixed(0) + "%";	
+			if (topic.beginsWith("$SYS/")) {
+				io.sockets.in("mqttstats").emit('data', { topic: topic, value: messageString });	
 			}
-			var topictag = "sensors/temperature/";
-			if (topic.substring(0,topictag.length) == topictag) {
-				messageString = value.toFixed(1);	
+			
+			if (topic.beginsWith("sensors/power")) {
+				var name = null;
+				if (names[topic] != undefined) name = names[topic].name;
+				io.sockets.in("power").emit('data', { topic: topic, value: messageString, name: name });	
 			}
-			var topictag = "sensors/boiler/";
-			if (topic.substring(0,topictag.length) == topictag) {
-				messageString = value.toFixed(1);	
+			
+			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/")
+			|| topic.beginsWith("sensors/power") || topic.beginsWith("sensors/co/")
+			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
+				var name = null;
+				if (names[topic] != undefined) name = names[topic].name;
+				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
 			}
-				
-  			socket.emit('data', { topic: topic, value: messageString, name: name });
-  		});
-  	});
+
+			if (topic.beginsWith("sensors/humidity")) {
+				var name = null;
+				if (names[topic] != undefined) name = names[topic].name;
+				messageString = value.toFixed(0) + "%";
+				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
+			}
+			
+			if (topic.beginsWith("sensors/temperature") || topic.beginsWith("sensors/boiler")) {
+				var name = null;
+				if (names[topic] != undefined) name = names[topic].name;
+				messageString = value.toFixed(1);
+				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
+			}
+			
+			if (topic == "cumulative/hour/sensors/power/0" || topic == "cumulative/daily/sensors/power/0") {
+				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString });
+			}
+			
+			if (topic.beginsWith("cumulative/hour/sensors/power/") || topic.beginsWith("cumulative/daily/sensors/power/")) {
+				io.sockets.in("power_cumulative").emit('data', { topic: topic, value: messageString });
+			}
+
+			// emit everything to the mqtt room
+			io.sockets.in("mqtt").emit('data', { topic: topic, value: message.toString() });			
+       });
 });
 
 
 
-io.of('/power').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('sensors/power/+');
-		mqttclient.subscribe('cumulative/+/sensors/power/+');
-
-  		mqttclient.on('message', function(topic, message) {
-			// figure out "friendly name and emit if known
-			var name = null;
-			if (names[topic] != undefined) name = names[topic].name;
-  			socket.emit('data', { topic: topic, value: message.toString(), name: name });
-  		});
-  	});
-});
-
-
-
-io.of('/powerbar').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('sensors/power/+');
-  		mqttclient.on('message', function(topic, message) {
-  			// figure out "friendly name and emit if known
-			var name = null;
-			if (names[topic] != undefined) name = names[topic].name;
-  			if (topic != "sensors/power/0")
-  				socket.emit('data', { topic: topic, value: message.toString(), name: name });
-  		});
-  	});
-});
-
-
-io.of('/pushmessage').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('push/alert');
-  		mqttclient.on('message', function(topic, message) {
-	  		// console.log (message);
-  			socket.emit('data', { topic: message.toString() });
-  		});
-  	});
-});
-
-
-io.of('/mqtt').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('#');
-  		mqttclient.on('message', function(topic, message) {
-	  		if (topic != "jsonsensors") {
-  				socket.emit('data', { topic: topic, value: message.toString() });
-  			}
-  		});
-  	});
-});
-
-io.of('/mqttstats').on('connection', function (socket) {
-	// subscribe to MQTT
-	var mqtt = require('mqtt');
-	var mqttclient = mqtt.connect(config.mqtt.host);
-	mqttclient.on('connect', function() {
-		mqttclient.subscribe('$SYS/#');
-  		mqttclient.on('message', function(topic, message) {
-  			socket.emit('data', { topic: topic, value: message.toString() });
-  		});
-  	});
-});
-
-// redis runtime stats
-io.of('/redisstats').on('connection', function (socket) {
-	var redis = require('redis')
-	   ,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
+// emit redis stats periodically
+var redis = require('redis');
+var redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);	
+redisStats = function() {
 	redisClient.info(function (err, reply) {
 		var s = reply.split("\r\n");
 		for (var key in s) {
 			t = s[key].split(":")
 			if (t[0] != "" && typeof(t[1]) != "undefined") {
-				socket.emit('data', { topic: t[0], value: t[1]});
+				io.sockets.in("redisstats").emit('data', { topic: t[0], value: t[1]});
 			}
 		}
   	});
-});
+};
+var redisStatsPeriod = 14; // in seconds
+setInterval (redisStats, redisStatsPeriod * 1000);
 
 
 
 
-// Advertise the service with Bonjour so that it can be found on the LAN
-// var mdns = require('mdns');
-// var ad = mdns.createAdvertisement(mdns.tcp('http'), 8500);
-// ad.start();
+
+
+
+// listClients = function() {
+// 	console.log ("Currently connected clients: " + Object.keys(io.engine.clients));
+// };
+// var listClientsPeriod = 61; // in seconds
+// setInterval (listClients, listClientsPeriod * 1000);

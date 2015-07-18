@@ -1,3 +1,3 @@
 exports.page = function(req, res){
-  res.render('genericlist', { title: 'MQTT', myPath: 'mqtt', user: req.user });
+  res.render('genericlist', { title: 'MQTT', myPath: 'mqtt' });
 };

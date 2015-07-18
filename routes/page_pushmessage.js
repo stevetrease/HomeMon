@@ -1,3 +1,3 @@
 exports.page = function(req, res){
-  res.render('pushmessage', { title: 'Push message', user: req.user });
+  res.render('pushmessage', { title: 'Push message', myPath: 'pushmessage' });
 };
