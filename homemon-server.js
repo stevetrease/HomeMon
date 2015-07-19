@@ -108,7 +108,7 @@ mqttclient.on('connect', function() {
 				io.sockets.in("power").emit('data', { topic: topic, value: messageString, name: name });	
 			}
 			
-			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/")
+			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/total")
 			|| topic.beginsWith("sensors/power") || topic.beginsWith("sensors/co/")
 			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
 				var name = null;
