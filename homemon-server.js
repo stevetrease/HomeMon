@@ -63,17 +63,16 @@ console.log('listening on port ' + config.host_port);
 
 
 io.sockets.on('connection', function (socket) {
-	console.log(socket.id + " connected");
 	socket.on('subscribe', function(data) {
-		console.log (socket.id + " subscribed to room " + data.room );
+		console.log (socket.id + " on " + socket.request.connection.remoteAddress + " subscribed to room " + data.room );
 		socket.join(data.room);
 	});
 });
 
 
 var nsp = io.of('/');
-	nsp.on('connection', function(socket){
-	console.log(socket.id + " connected connected to /");
+nsp.on('connection', function(socket){
+	console.log(socket.id + " on " + socket.request.connection.remoteAddress + " connected connected to /");
 });
 
 
