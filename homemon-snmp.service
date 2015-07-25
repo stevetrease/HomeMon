@@ -4,7 +4,7 @@ After=redis.service mosquitto.service
 Requires=redis.service mosquitto.service
 
 [Service]
-ExecStart=/home/steve/homemon/node/homemon-snmp.sh
+ExecStart=/home/steve/node/homemon/homemon-snmp.sh
 Type=simple
 User=steve
 Restart=always
