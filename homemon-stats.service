@@ -4,8 +4,8 @@ After=redis.service mosquitto.service
 Requires=redis.service mosquitto.service
 
 [Service]
-ExecStart=/home/steve/homemon/run-homemon-stats.sh
-WorkingDirectory=/home/steve/homemon
+ExecStart=/home/steve/node/homemon/homemon-stats.sh
+WorkingDirectory=/home/steve/node/homemon
 Environment=NODE_ENV=production
 Type=simple
 User=steve

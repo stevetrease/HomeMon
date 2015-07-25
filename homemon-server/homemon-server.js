@@ -2,12 +2,12 @@ console.log("process.env.NODE_ENV:" + process.env.NODE_ENV);
 switch (process.env.NODE_ENV) {
 	case 'development':
 		console.log ("development mode");
-		var config = require('./config.json');
+		var config = require('../config.json');
 		break;
 	case 'production':
 	default:	
 		console.log ("production mode");
-		var config = require('./config.json');
+		var config = require('../config.json');
 }
 
 
@@ -16,7 +16,7 @@ String.prototype.beginsWith = function (string) {
     return(this.indexOf(string) === 0);
 };
 
-var names = require('./names.json');
+var names = require('../names.json');
 
 
 var fs = require('fs');
