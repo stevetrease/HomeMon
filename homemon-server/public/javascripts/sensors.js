@@ -1,9 +1,12 @@
 ElementExists = function(id) {
 		return !!document.getElementById(id);
 };
-BeginsWith = function(needle, haystack) {
-	return (haystack.substr(0, needle.length) == needle);
-}
+
+// function to if a string starts with nother one
+String.prototype.beginsWith = function (string) {
+    return(this.indexOf(string) === 0);
+};
+
 
 var myvalues = [];
 var updates = 0;
@@ -17,41 +20,26 @@ socket.on('data', function(data) {
 	// check the target topic exisits & if not create a target table entry
 	if (!ElementExists (data.topic)) {
 		// console.log("Creating target " + data.topic);
-		var topictag = "sensors/power/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		if (data.topic.beginsWith("sensors/power/")) {
 			var table=document.getElementById("myTablePower");
-		}
-		var topictag = "sensors/boiler/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/boiler/")) {
 			var table=document.getElementById("myTableTemp");
-		}
-		var topictag = "rate/sensors/snmp/router/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("rate/sensors/snmp/router/")) {
 			var table=document.getElementById("myRouterRate");
-		}
-		var topictag = "sensors/iosbattery/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/iosbattery/")) {
 			var table=document.getElementById("myBattery");
-		}
-		var topictag = "sensors/temperature/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/temperature/")) {
 			var table=document.getElementById("myTableTemp");
-		}
-		var topictag = "sensors/humidity/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/humidity/")) {
 			var table=document.getElementById("myTableHumidity");
-		}
-		var topictag = "sensors/co/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/co/")) {
 			var table=document.getElementById("myTableCO");
-		}
-		var topictag = "sensors/no2/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/no2/")) {
 			var table=document.getElementById("myTableNO2");
-		}
-		var topictag = "sensors/pressure/";
-		if (data.topic.substring(0,topictag.length) == topictag) {
+		} else if (data.topic.beginsWith("sensors/pressure/")) {
 			var table=document.getElementById("myTablePressure");
+		} else {
+			console.log ("topic " + data.topic + " not known");
 		}
 		
 		// itertate through table to find out where to insert row in alpha order
