@@ -67,11 +67,15 @@ io.sockets.on('connection', function (socket) {
 	socket.on('subscribe', function(data) {
 		console.log (socket.id + " on " + socket.request.connection.remoteAddress + " subscribed to room " + data.room );
 		socket.join(data.room);
+		
+		var length = 0;		
 		// since this is a new subscription, emit all historised messages to setup client with initial values
 		for (i in topicHistory) {
+			length++;
 			// console.log(i + " " + topicHistory[i]);
 			mqttclient.publish(i, topicHistory[i]);
-		}	
+		}
+		console.log ("emited " + length + " messages");
 	});
 });
 
