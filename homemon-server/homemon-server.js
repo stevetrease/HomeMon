@@ -17,6 +17,7 @@ String.prototype.beginsWith = function (string) {
 };
 
 var names = require('../names.json');
+var topicHistory = {};
 
 
 var fs = require('fs');
@@ -66,6 +67,11 @@ io.sockets.on('connection', function (socket) {
 	socket.on('subscribe', function(data) {
 		console.log (socket.id + " on " + socket.request.connection.remoteAddress + " subscribed to room " + data.room );
 		socket.join(data.room);
+		// since this is a new subscription, emit all historised messages to setup client with initial values
+		for (i in topicHistory) {
+			// console.log(i + " " + topicHistory[i]);
+			mqttclient.publish(i, topicHistory[i]);
+		}	
 	});
 });
 
@@ -84,7 +90,7 @@ mqttclient.on('connect', function() {
         // mqttclient.subscribe('jsonsensors');
         mqttclient.subscribe('#');
         mqttclient.subscribe('$SYS/#');
-        mqttclient.on('message', function(topic, message) {
+        mqttclient.on('message', function(topic, message) {    
 	        var value = Number(message);
 	        messageString = value.toString();
 	        // console.log (topic + "     " + message.toString());
@@ -100,6 +106,11 @@ mqttclient.on('connect', function() {
 			if (topic.beginsWith("$SYS/")) {
 				io.sockets.in("mqttstats").emit('data', { topic: topic, value: messageString });	
 			}
+			
+			// retain messages so that we have starting data for new clients
+			if (topic.beginsWith("sensors/")) {
+				topicHistory[topic] = message;
+			}	        
 			
 			if (topic.beginsWith("sensors/power")) {
 				var name = null;
