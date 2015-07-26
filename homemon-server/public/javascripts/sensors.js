@@ -29,6 +29,10 @@ socket.on('data', function(data) {
 		if (data.topic.substring(0,topictag.length) == topictag) {
 			var table=document.getElementById("myRouterRate");
 		}
+		var topictag = "sensors/iosbattery/";
+		if (data.topic.substring(0,topictag.length) == topictag) {
+			var table=document.getElementById("myBattery");
+		}
 		var topictag = "sensors/temperature/";
 		if (data.topic.substring(0,topictag.length) == topictag) {
 			var table=document.getElementById("myTableTemp");
