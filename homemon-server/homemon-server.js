@@ -18,6 +18,7 @@ String.prototype.beginsWith = function (string) {
 
 var names = require('../names.json');
 var topicHistory = {};
+var topicHistoryTimeStamp = {};
 
 
 var fs = require('fs');
@@ -43,6 +44,7 @@ var page_powerbar = require('./routes/page_powerbar');
 var page_pushmessage = require('./routes/page_pushmessage');
 var page_redisstats = require('./routes/page_redisstats');
 var page_sensors = require('./routes/page_sensors');
+var page_snmp = require('./routes/page_snmp');
 
 app.get('/', routes.index);
 app.get('/mqtt', page_mqtt.page);
@@ -53,6 +55,7 @@ app.get('/powerbar', page_powerbar.page);
 app.get('/pushmessage', page_pushmessage.page);
 app.get('/redisstats', page_redisstats.page);
 app.get('/sensors', page_sensors.page);
+app.get('/snmp', page_snmp.page);
 
 
 // and finally a 404
@@ -68,14 +71,20 @@ io.sockets.on('connection', function (socket) {
 		console.log (socket.id + " on " + socket.request.connection.remoteAddress + " subscribed to room " + data.room );
 		socket.join(data.room);
 		
+		var time = new Date ();
 		var length = 0;		
+		var emitted = 0;		
 		// since this is a new subscription, emit all historised messages to setup client with initial values
 		for (i in topicHistory) {
 			length++;
-			// console.log(i + " " + topicHistory[i]);
-			mqttclient.publish(i, topicHistory[i]);
+			// only emit if less that 30 seconds old
+			if (((time - topicHistoryTimeStamp[i]) / 1000) < 30) { 
+				emitted++;
+				mqttclient.publish(i, topicHistory[i]);
+				// console.log(i + " " + topicHistory[i]);
+			}
 		}
-		console.log ("emited " + length + " messages");
+		console.log ("emited " + emitted + " of " + length + " messages");
 	});
 });
 
@@ -113,6 +122,8 @@ mqttclient.on('connect', function() {
 			
 			// retain messages so that we have starting data for new clients
 			if (topic.beginsWith("sensors/")) {
+				var time = new Date();
+				topicHistoryTimeStamp[topic] = time;
 				topicHistory[topic] = message;
 			}	        
 			
