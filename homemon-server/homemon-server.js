@@ -117,7 +117,11 @@ mqttclient.on('connect', function() {
 			}
 			
 			if (topic.beginsWith("$SYS/")) {
-				io.sockets.in("mqttstats").emit('data', { topic: topic, value: messageString });	
+				io.sockets.in("mqttstats").emit('data', { topic: topic, value: message });	
+			}
+			
+			if (topic.beginsWith("snmp")) {
+				io.sockets.in("snmp").emit('data', { message: messageString });	
 			}
 			
 			// retain messages so that we have starting data for new clients
