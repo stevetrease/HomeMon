@@ -45,7 +45,7 @@ socket.on('data', function(data) {
 	 		} 
 	 		
 	 		// create the row
-	 		console.log ("creating row for " + decodedData.device + " " + decodedData.interface);
+	 		// console.log ("creating row for " + decodedData.device + " " + decodedData.interface);
 	 		var c, r, t;
 	 		
 	 		t = document.getElementById(decodedData.device);
