@@ -55,12 +55,14 @@ socket.on('data', function(data) {
 	 		c = r.insertCell (0);
 		 	c.id = decodedData.device + "-" + decodedData.interface + "-out";
 		 	c.style.width = "20%";
-		 	c.innerHTML = decodedData.out;
+		 	c.style.textAlign="right";
+		 	c.innerHTML = readablizeBytes(parseInt(decodedData.out));
 		 	
 		 	c = r.insertCell (0);
 		 	c.id = decodedData.device + "-" + decodedData.interface + "-in";
 		 	c.style.width = "20%";
-		 	c.innerHTML = decodedData.in;
+		 	c.style.textAlign="right";
+		 	c.innerHTML = readablizeBytes(parseInt(decodedData.in));
 
 		 	c = r.insertCell (0);
 		 	c.id = decodedData.device + "-" + decodedData.interface + "-description";
@@ -70,6 +72,7 @@ socket.on('data', function(data) {
 		 	c = r.insertCell (0);
 		 	c.id = decodedData.device + "-" + decodedData.interface + "-interface";
 		 	c.style.width = "10%";
+		 	c.style.textAlign="center";
 		 	c.innerHTML = decodedData.interface;
 
  		}
@@ -77,9 +80,9 @@ socket.on('data', function(data) {
  		// since the row exists, update it
  		// console.log("updating " + decodedData.device + " " + decodedData.interface);
         var cell = document.getElementById(decodedData.device + "-" + decodedData.interface + "-out");
-        cell.innerHTML = decodedData.out;
+        cell.innerHTML = readablizeBytes(parseInt(decodedData.out));
  		cell = document.getElementById(decodedData.device + "-" + decodedData.interface + "-in");
-        cell.innerHTML = decodedData.in;       
+        cell.innerHTML = readablizeBytes(parseInt(decodedData.in));       
         
         
         // print the time the refresh happened
