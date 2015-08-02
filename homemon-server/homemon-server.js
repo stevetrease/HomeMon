@@ -107,6 +107,7 @@ mqttclient.on('connect', function() {
 	        var value = Number(message);
 	        messageString = value.toString();
 	        // console.log (topic + "     " + message.toString());
+	        
 	        if (topic == "push/alert") {
 				io.sockets.in("pushmessage").emit('data', { topic: message.toString() });	        
 		    }
@@ -121,7 +122,8 @@ mqttclient.on('connect', function() {
 			}
 			
 			if (topic.beginsWith("snmp")) {
-				io.sockets.in("snmp").emit('data', { message: messageString });	
+				// console.log(message.toString());
+				io.sockets.in("snmp").emit('data', { message: message.toString() });	
 			}
 			
 			// retain messages so that we have starting data for new clients
