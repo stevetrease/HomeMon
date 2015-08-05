@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {
 		for (i in topicHistory) {
 			length++;
 			// only emit if less that 30 seconds old
-			if (((time - topicHistoryTimeStamp[i]) / 1000) < 30) { 
+			if (((time - topicHistoryTimeStamp[i]) / 1000) < 300) { 
 				emitted++;
 				mqttclient.publish(i, topicHistory[i]);
 				// console.log(i + " " + topicHistory[i]);
