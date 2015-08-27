@@ -12,7 +12,7 @@ var myvalues = [];
 var updates = 0;
 
 
-var socket = io.connect("http://www.trease.eu:8500");
+var socket = io.connect("http://homemon.trease.eu:8500");
 socket.emit("subscribe", { room: "sensors" });
 socket.on('data', function(data) { 
 	// console.log("Message received " + data.topic + " of " + data.value);

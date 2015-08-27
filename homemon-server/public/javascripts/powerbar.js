@@ -32,7 +32,7 @@ function drawChart() {
 
 
 	var updates = 0;
-	var socket = io.connect("http://www.trease.eu:8500/");
+	var socket = io.connect("http://homemon.trease.eu:8500/");
 	socket.emit("subscribe", { room: "power" });
 	socket.on('data', function(message) { 
 		
