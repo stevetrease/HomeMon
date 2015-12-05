@@ -41,10 +41,13 @@ var page_mqtt = require('./routes/page_mqtt');
 var page_mqttstats = require('./routes/page_mqttstats');
 var page_power = require('./routes/page_power');
 var page_powerbar = require('./routes/page_powerbar');
+var page_temphumichart = require('./routes/page_temphumichart');
 var page_pushmessage = require('./routes/page_pushmessage');
 var page_redisstats = require('./routes/page_redisstats');
 var page_sensors = require('./routes/page_sensors');
 var page_snmp = require('./routes/page_snmp');
+
+
 
 app.get('/', routes.index);
 app.get('/mqtt', page_mqtt.page);
@@ -52,6 +55,7 @@ app.get('/pushmessage', page_pushmessage.page);
 app.get('/mqttstats', page_mqttstats.page);
 app.get('/power', page_power.page);
 app.get('/powerbar', page_powerbar.page);
+app.get('/temphumichart', page_temphumichart.page);
 app.get('/pushmessage', page_pushmessage.page);
 app.get('/redisstats', page_redisstats.page);
 app.get('/sensors', page_sensors.page);
@@ -151,7 +155,7 @@ mqttclient.on('connect', function() {
 				var name = null;
 				if (names[topic] != undefined) name = names[topic].name;
 				var p = value * 100;
-				messageString = p.toFixed(0) + "%";
+				messageString = p.toFixed(0);
 				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
 			}
 
@@ -160,6 +164,7 @@ mqttclient.on('connect', function() {
 				if (names[topic] != undefined) name = names[topic].name;
 				messageString = value.toFixed(0) + "%";
 				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
+				io.sockets.in("humidity").emit('data', { topic: topic, value: messageString, name: name });	
 			}
 			
 			if (topic.beginsWith("sensors/temperature") || topic.beginsWith("sensors/boiler")) {
@@ -167,6 +172,7 @@ mqttclient.on('connect', function() {
 				if (names[topic] != undefined) name = names[topic].name;
 				messageString = value.toFixed(1);
 				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
+				io.sockets.in("temperature").emit('data', { topic: topic, value: messageString, name: name });	
 			}
 			
 			if (topic == "cumulative/hour/sensors/power/0" || topic == "cumulative/daily/sensors/power/0") {

@@ -1,0 +1,21 @@
+extends layout
+
+block append head
+	script(type='text/javascript', src='https://www.google.com/jsapi')
+
+
+block content
+	script(src="/socket.io/socket.io.js")
+	script(src="/javascripts/temphumichart.js")
+	
+	
+
+	div.container
+		div.row
+			div.span12.well
+				#temphumichart
+		div.row
+			div.span6
+				#time
+			div.span6.text-right
+				#updates
