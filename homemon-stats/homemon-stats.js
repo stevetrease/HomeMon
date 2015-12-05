@@ -24,16 +24,6 @@ BeginsWith = function(needle, haystack) {
 
 
 
-redisClient.on('connect'     , log('connect'));
-redisClient.on('ready'       , log('ready'));
-redisClient.on('reconnecting', log('reconnecting'));
-redisClient.on('error'       , log('error'));
-function log(type) {
-    return function() {
-        console.log(type, arguments);
-    }
-}
-
 var records_hourly = {};
 var records_daily = {};
 var records_lasttime = {};
@@ -42,13 +32,24 @@ var records_lastvalue = {};
 // get last stored values from Redis
 // needs to be blocking to get everything initialised nicely when starting
 var execSync = require('execSync');
+
 var result = execSync.exec('redis-cli -h ' + config.redis.host + ' get records_hourly');
-records_hourly = JSON.parse(result.stdout);
 console.log("Loading hourly records from redis...");
-//
+try {
+	records_hourly = JSON.parse(result.stdout);
+	console.log ("records loaded");
+} catch (error) {
+	console.log ("no records loaded");
+}
+
 result = execSync.exec('redis-cli -h ' + config.redis.host + ' get records_daily');
-records_daily = JSON.parse(result.stdout);
 console.log("Loading daily records from redis...");
+try {
+	records_daily = JSON.parse(result.stdout);
+	console.log ("records loaded");
+} catch (error) {
+	console.log ("no records loaded");
+}
 
 
 
