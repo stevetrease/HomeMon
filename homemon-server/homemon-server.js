@@ -140,6 +140,7 @@ mqttclient.on('connect', function() {
 			if (topic.beginsWith("sensors/power")) {
 				var name = null;
 				if (names[topic] != undefined) name = names[topic].name;
+				messageString = value.toFixed(0);
 				io.sockets.in("power").emit('data', { topic: topic, value: messageString, name: name });	
 			}
 			
