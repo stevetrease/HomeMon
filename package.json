@@ -8,7 +8,7 @@
   "dependencies": {
     "express": "3.2.6",
     "jade": "latest",
-    "execSync": "*",
+    "sync-exec": "*",
     "socket.io": "*",
     "redis": "*",
     "mqtt": "*"
