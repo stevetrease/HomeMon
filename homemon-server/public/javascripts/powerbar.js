@@ -20,7 +20,7 @@ function drawChart() {
 	
 	// Instantiate and draw our chart	 
 	var options = {height: 300,
-	               legend: {position: 'bottom'},
+	               legend: {position: 'none'},
 	               animation: { duration: 250, easing: 'linear'},
 	               isStacked: true};
 	
