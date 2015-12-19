@@ -23,6 +23,10 @@
 	"sensors/temperature/jeenode-15": { "name": "Study" },
 	"sensors/temperature/garage": { "name": "Garage" },
 	"sensors/temperature/attic": { "name": "Attic" },
+	
+	"sensors/temperature/300021000447343233323032": { "name": "Lounge" },
+	"sensors/humidity/300021000447343233323032": { "name": "Lounge" },
+	
 	"sensors/pressure/attic": { "name": "Attic" },
 	"sensors/pressure/egpd": { "name": "Aberdeen Airport" },
 	"sensors/temperature/egpd": { "name": "Aberdeen Airport" },
