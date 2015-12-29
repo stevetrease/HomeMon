@@ -145,7 +145,7 @@ mqttclient.on('connect', function() {
 			}
 			
 			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/total")
-			|| topic.beginsWith("sensors/power") || topic.beginsWith("sensors/co/") 
+			|| topic.beginsWith("sensors/power") || topic.beginsWith("sensors/co/") || topic.beginsWith("sensors/co2/")
 			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
 				var name = null;
 				if (names[topic] != undefined) name = names[topic].name;
