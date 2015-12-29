@@ -34,6 +34,8 @@ socket.on('data', function(data) {
 			var table=document.getElementById("myTableHumidity");
 		} else if (data.topic.beginsWith("sensors/co/")) {
 			var table=document.getElementById("myTableCO");
+		} else if (data.topic.beginsWith("sensors/co2/")) {
+			var table=document.getElementById("myTableCO2");
 		} else if (data.topic.beginsWith("sensors/no2/")) {
 			var table=document.getElementById("myTableNO2");
 		} else if (data.topic.beginsWith("sensors/pressure/")) {
