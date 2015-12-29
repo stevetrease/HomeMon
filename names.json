@@ -24,9 +24,17 @@
 	"sensors/temperature/garage": { "name": "Garage" },
 	"sensors/temperature/attic": { "name": "Attic" },
 	
+	"sensors/temperature/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
+	"sensors/humidity/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
+	"sensors/pressure/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
+	"sensors/co2/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
+	
+	"sensors/temperature/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
+	"sensors/humidity/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
+	
 	"sensors/temperature/300021000447343233323032": { "name": "Lounge" },
 	"sensors/humidity/300021000447343233323032": { "name": "Lounge" },
-	
+
 	"sensors/pressure/attic": { "name": "Attic" },
 	"sensors/pressure/egpd": { "name": "Aberdeen Airport" },
 	"sensors/temperature/egpd": { "name": "Aberdeen Airport" },
