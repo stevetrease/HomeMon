@@ -31,7 +31,7 @@
 	
 	"sensors/temperature/03:00:00:02:50:86": { "name": "Bedroom (netatmo)" },
 	"sensors/humidity/03:00:00:02:50:86": { "name": "Bedroom (netatmo)" },
-	"sensors/co2/03:00:00:02:50:86": { "name": "Bredroom (netatmp)" },
+	"sensors/co2/03:00:00:02:50:86": { "name": "Bedroom (netatmp)" },
 	
 	"sensors/temperature/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
 	"sensors/humidity/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
