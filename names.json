@@ -24,10 +24,14 @@
 	"sensors/temperature/garage": { "name": "Garage" },
 	"sensors/temperature/attic": { "name": "Attic" },
 	
-	"sensors/temperature/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
-	"sensors/humidity/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
-	"sensors/pressure/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
-	"sensors/co2/70:ee:50:12:c8:0e": { "name": "Netatmo base" },
+	"sensors/temperature/70:ee:50:12:c8:0e": { "name": "Kitchen (netatmo)" },
+	"sensors/humidity/70:ee:50:12:c8:0e": { "name": "Kitchen (netatmo)" },
+	"sensors/pressure/70:ee:50:12:c8:0e": { "name": "Kitchen (netatmo)" },
+	"sensors/co2/70:ee:50:12:c8:0e": { "name": "Kitchen (netatmo)" },
+	
+	"sensors/temperature/03:00:00:02:50:86": { "name": "Bedroom (netatmo)" },
+	"sensors/humidity/03:00:00:02:50:86": { "name": "Bedroom (netatmo)" },
+	"sensors/co2/03:00:00:02:50:86": { "name": "Bredroom (netatmp)" },
 	
 	"sensors/temperature/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
 	"sensors/humidity/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
