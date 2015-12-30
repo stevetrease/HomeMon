@@ -195,9 +195,10 @@ mqttclient2.on('connect', function() {
 	  	var time = new Date();
 	  	var jsonMessage = {
 		  	topic: topic,
-		  	value: message.toString(),
-		  	timeStamp: time
+		  	value: Number(message.toString()),
+		  	timeStamp: Number(time)
 	  	};
+	  	console.log (typeof(jsonMessage.value));
 		mqttclient2.publish("jsonsensors", JSON.stringify(jsonMessage)); 	
 	});
 });
