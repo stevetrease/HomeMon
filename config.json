@@ -1,13 +1,16 @@
 {
-    "host_url": "http://homemon.trease.eu",
-    "host_port": "8500",
-    "mqtt":
-    {
-        "host": "mqtt://mqtt.trease.eu"
+    "host_url": "http://droplet.trease.eu",
+    "host_port": "8501",
+    "mqtt": {
+        "host": "mqtt://localhost",
+        "options": {
+		"username": "mosquitto username",
+		"password": "mosquitto password"
+        }
     },
     "redis":
     {
-        "host": "redis.trease.eu",
+        "host": "localhost",
         "port": "6379"
     }
 }

@@ -55,7 +55,7 @@ try {
 
 // connect to to MQTT
 var mqtt = require('mqtt');
-var mqttclient = mqtt.connect(config.mqtt.host);
+var mqttclient = mqtt.connect(config.mqtt.host, config.mqtt.options);
 
 mqttclient.on('connect', function() {
 	mqttclient.subscribe('sensors/power/+');
@@ -185,7 +185,7 @@ mqttclient.on('connect', function() {
 
 
 var mqtt2 = require('mqtt');
-var mqttclient2 = mqtt2.connect(config.mqtt.host);
+var mqttclient2 = mqtt2.connect(config.mqtt.host, config.mqtt.options);
 
 mqttclient2.on('connect', function() {
 	mqttclient2.subscribe('sensors/#');

@@ -30,6 +30,7 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server, {'log level': 1});
 
 app.set('port', config.host_port);
+app.set('host', "127.0.0.1");
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.logger());
@@ -101,7 +102,7 @@ nsp.on('connection', function(socket){
 
 
 var mqtt = require('mqtt');
-var mqttclient = mqtt.connect(config.mqtt.host);
+var mqttclient = mqtt.connect(config.mqtt.host, config.mqtt.options);
 
 mqttclient.on('connect', function() {
         // mqttclient.subscribe('jsonsensors');
