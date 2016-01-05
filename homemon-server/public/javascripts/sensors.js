@@ -68,7 +68,7 @@ socket.on('data', function(data) {
 			document.getElementById(data.topic + "name").innerHTML = data.topic.slice(data.topic.lastIndexOf('/')+1);
 		}
 		document.getElementById(data.topic + "name").style.textAlign="left";
-		document.getElementById(data.topic + "name").style.width="75%";
+		document.getElementById(data.topic + "name").style.width="65%";
 	}
 	// new we know there is a target, update it
 	// console.log("Setting target " + data.topic + " to " + data.value);
