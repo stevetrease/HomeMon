@@ -43,7 +43,6 @@ var page_mqttstats = require('./routes/page_mqttstats');
 var page_power = require('./routes/page_power');
 var page_powerbar = require('./routes/page_powerbar');
 var page_pushmessage = require('./routes/page_pushmessage');
-var page_redisstats = require('./routes/page_redisstats');
 var page_sensors = require('./routes/page_sensors');
 var page_snmp = require('./routes/page_snmp');
 
@@ -56,7 +55,6 @@ app.get('/mqttstats', page_mqttstats.page);
 app.get('/power', page_power.page);
 app.get('/powerbar', page_powerbar.page);
 app.get('/pushmessage', page_pushmessage.page);
-app.get('/redisstats', page_redisstats.page);
 app.get('/sensors', page_sensors.page);
 app.get('/snmp', page_snmp.page);
 
@@ -187,34 +185,3 @@ mqttclient.on('connect', function() {
 			io.sockets.in("mqtt").emit('data', { topic: topic, value: message.toString() });			
        });
 });
-
-
-
-// emit redis stats periodically
-var redis = require('redis');
-var redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);	
-redisStats = function() {
-	redisClient.info(function (err, reply) {
-		var s = reply.split("\r\n");
-		for (var key in s) {
-			t = s[key].split(":")
-			if (t[0] != "" && typeof(t[1]) != "undefined") {
-				io.sockets.in("redisstats").emit('data', { topic: t[0], value: t[1]});
-			}
-		}
-  	});
-};
-var redisStatsPeriod = 14; // in seconds
-setInterval (redisStats, redisStatsPeriod * 1000);
-
-
-
-
-
-
-
-// listClients = function() {
-// 	console.log ("Currently connected clients: " + Object.keys(io.engine.clients));
-// };
-// var listClientsPeriod = 61; // in seconds
-// setInterval (listClients, listClientsPeriod * 1000);
