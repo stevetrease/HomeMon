@@ -12,7 +12,7 @@ socket.on('data', function(data) {
         // check the target topic exisits & if not create a target table entry
         if (!ElementExists (data.topic)) {
                 // console.log("Creating target " + data.topic);
-                var table=document.getElementById("messagetable");
+                var table=document.getElementById("messagetable").getElementsByTagName('tbody')[0];
 
 
                 // itertate through table to find out where to insert row in alpha order

@@ -20,19 +20,9 @@ socket.on('data', function(data) {
 		if (!(data.topic.substring(0,topictag.length) == topictag)) {
 			// console.log("Creating target " + data.topic);
 
-			var table=document.getElementById("myTablePower");
+			var table=document.getElementById("myTablePower").getElementsByTagName('tbody')[0];
 
-			// itertate through table to find out where to insert row in alpha order
-			var count = 3;
-			for (i = 3; i < table.rows.length; i++) {
-				var row = table.rows[i];
-				var col = row.cells[0];
-				if (col.firstChild.nodeValue < data.topic.slice(data.topic.lastIndexOf('/')+1)) {
-					count++;
-				}
-			} 
-
-			var row=table.insertRow(count);
+			var row=table.insertRow(table.rows.length);
 			var cell=row.insertCell(0);
 			cell.id = "cumulative/daily/" + data.topic;
 			var cell=row.insertCell(0);

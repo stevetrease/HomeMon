@@ -21,40 +21,31 @@ socket.on('data', function(data) {
 	if (!ElementExists (data.topic)) {
 		// console.log("Creating target " + data.topic);
 		if (data.topic.beginsWith("sensors/power/")) {
-			var table=document.getElementById("myTablePower");
+			var table=document.getElementById("myTablePower").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/boiler/")) {
-			var table=document.getElementById("myTableTemp");
+			var table=document.getElementById("myTableTemp").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("rate/sensors/snmp/router/")) {
-			var table=document.getElementById("myRouterRate");
+			var table=document.getElementById("myRouterRate").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/iosbattery/")) {
-			var table=document.getElementById("myBattery");
+			var table=document.getElementById("myBattery").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/temperature/")) {
-			var table=document.getElementById("myTableTemp");
+			var table=document.getElementById("myTableTemp").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/humidity/")) {
-			var table=document.getElementById("myTableHumidity");
+			var table=document.getElementById("myTableHumidity").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/co/")) {
-			var table=document.getElementById("myTableCO");
+			var table=document.getElementById("myTableCO").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/co2/")) {
-			var table=document.getElementById("myTableCO2");
+			var table=document.getElementById("myTableCO2").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/no2/")) {
-			var table=document.getElementById("myTableNO2");
+			var table=document.getElementById("myTableNO2").getElementsByTagName('tbody')[0];
 		} else if (data.topic.beginsWith("sensors/pressure/")) {
-			var table=document.getElementById("myTablePressure");
+			var table=document.getElementById("myTablePressure").getElementsByTagName('tbody')[0];
 		} else {
 			console.log ("topic " + data.topic + " not known");
 		}
 		
-		// itertate through table to find out where to insert row in alpha order
-		var count = 1;
-		for (i = 1; i < table.rows.length; i++) {
-			var row = table.rows[i];
-			var col = row.cells[0];
-			if (col.firstChild.nodeValue < data.topic.slice(data.topic.lastIndexOf('/')+1)) {
-				count++;
-			}
-		} 
-
-		var row=table.insertRow(count);
+		// var row=table.insertRow(count);
+		var row=table.insertRow(table.rows.length);
 		var cell=row.insertCell(0);
 		cell.id = data.topic;
 		var cell=row.insertCell(0);
