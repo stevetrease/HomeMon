@@ -44,6 +44,7 @@ var page_power = require('./routes/page_power');
 var page_powerbar = require('./routes/page_powerbar');
 var page_pushmessage = require('./routes/page_pushmessage');
 var page_sensors = require('./routes/page_sensors');
+var page_sensors2 = require('./routes/page_sensors2');
 var page_snmp = require('./routes/page_snmp');
 
 
@@ -56,6 +57,7 @@ app.get('/power', page_power.page);
 app.get('/powerbar', page_powerbar.page);
 app.get('/pushmessage', page_pushmessage.page);
 app.get('/sensors', page_sensors.page);
+app.get('/sensors2', page_sensors2.page);
 app.get('/snmp', page_snmp.page);
 
 
@@ -148,6 +150,15 @@ mqttclient.on('connect', function() {
 				if (names[topic] != undefined) name = names[topic].name;
 				io.sockets.in("sensors").emit('data', { topic: topic, value: messageString, name: name });	
 			}
+			
+			if (topic.beginsWith("sensors/co/") || topic.beginsWith("sensors/co2/")
+			|| topic.beginsWith("sensors/temperature/") || topic.beginsWith("sensors/humidity/")
+			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
+				var name = null;
+				if (names[topic] != undefined) name = names[topic].name;
+				io.sockets.in("sensors2").emit('data', { topic: topic, value: messageString, name: name });	
+			}
+
 
 			if (topic.beginsWith("sensors/iosbattery")) {
 				var name = null;
