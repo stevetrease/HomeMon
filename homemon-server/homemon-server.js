@@ -65,7 +65,7 @@ app.get('/snmp', page_snmp.page);
 app.use(function(req, res, next){
 	res.send(404, "This is not the webpage you are looking for.");
 });
-server.listen(config.host_port);
+server.listen(config.host_port, 'localhost');
 console.log('listening on port ' + config.host_port);
 
 

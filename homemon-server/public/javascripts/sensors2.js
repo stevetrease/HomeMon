@@ -24,7 +24,7 @@ socket.on('data', function(data) {
 		
 		// var row=table.insertRow(count);
 		device = data.topic.substring(data.topic.lastIndexOf('/')+1);
-		console.log("creating new row for " + device);
+		console.log("creating new row for " + device + " as " + data.name);
 		
 		var row=table.insertRow(table.rows.length);
 		
