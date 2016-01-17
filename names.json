@@ -38,6 +38,9 @@
 	
 	"sensors/temperature/300021000447343233323032": { "name": "Lounge" },
 	"sensors/humidity/300021000447343233323032": { "name": "Lounge" },
+	
+	"sensors/temperature/300017000447343232363230": { "name": "Attic" },
+	"sensors/humidity/300017000447343232363230": { "name": "Attic" },
 
 	"sensors/pressure/attic": { "name": "Attic" },
 	"sensors/pressure/egpd": { "name": "Aberdeen Airport" },
