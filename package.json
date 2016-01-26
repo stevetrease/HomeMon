@@ -11,6 +11,7 @@
     "sync-exec": "*",
     "socket.io": "*",
     "redis": "*",
-    "mqtt": "*"
+    "mqtt": "*",
+    "mongodb": "*"
   }
 }

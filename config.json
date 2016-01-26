@@ -8,6 +8,10 @@
 		"password": "mosquitto password"
         }
     },
+    "mongo":
+    {
+	 	"host": "mongodb://localhost:27017/home"   
+    },
     "redis":
     {
         "host": "localhost",

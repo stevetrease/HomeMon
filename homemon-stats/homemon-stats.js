@@ -183,6 +183,9 @@ mqttclient.on('connect', function() {
 });
 
 
+var MongoClient = require ("mongodb").MongoClient;
+
+
 
 var mqtt2 = require('mqtt');
 var mqttclient2 = mqtt2.connect(config.mqtt.host, config.mqtt.options);
@@ -198,7 +201,14 @@ mqttclient2.on('connect', function() {
 		  	value: Number(message.toString()),
 		  	timeStamp: Number(time)
 	  	};
+
 		mqttclient2.publish("jsonsensors", JSON.stringify(jsonMessage)); 	
+		
+
+		MongoClient.connect (config.mongo.host, function (err, db) {
+			db.collection ('homedata').insertOne (jsonMessage);	
+			db.close ();
+		});
 	});
 });
 	  
