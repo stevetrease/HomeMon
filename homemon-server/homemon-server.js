@@ -121,7 +121,8 @@ mqttclient.on('connect', function() {
 			}
 			
 			if (topic.beginsWith("$SYS/")) {
-				io.sockets.in("mqttstats").emit('data', { topic: topic, value: message.toString() });	
+				io.sockets.in("mqttstats").emit('data', { topic: topic, value: message.toString() })
+				return;
 			}
 			
 			if (topic.beginsWith("snmp")) {
