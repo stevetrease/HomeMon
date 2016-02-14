@@ -1,0 +1,49 @@
+{
+	"sensors/power/1": { "name": "IAM1" },
+	"sensors/power/2": { "name": "Server" },
+	"sensors/power/3": { "name": "Steve's PC" },
+	"sensors/power/4": { "name": "Julie's PC" },
+	"sensors/power/5": { "name": "Study network" },
+	"sensors/power/6": { "name": "Kitchen" },
+	"sensors/power/7": { "name": "Lounge" },
+	"sensors/power/8": { "name": "IAM8" },
+	"sensors/power/9": { "name": "IAM9" },
+	"sensors/power/U": { "name": "Unknown" },
+	"sensors/power/WeMo Insight A": { "name": "Kitchen kettle (WeMo A)" },
+	"sensors/power/WeMo Insight B": { "name": "Little lounge (WeMo B)" },
+	"sensors/power/WeMo Insight C": { "name": "WeMo Insight C" },
+	"sensors/power/WeMo Insight D": { "name": "WeMo Insight D" },
+	"sensors/humidity/jeenode-11": { "name": "Utility room" },
+	"sensors/humidity/jeenode-15": { "name": "Study" },
+	"sensors/co/jeenode-15": { "name": "Study" },
+	"sensors/no2/jeenode-15": { "name": "Study" },
+	"sensors/humidity/egpd": { "name": "Aberdeen Airport" },
+	"sensors/temperature/jeenode-11": { "name": "Utility room" },
+	"sensors/temperature/jeenode-13": { "name": "Kitchen" },
+	"sensors/temperature/jeenode-15": { "name": "Study" },
+	"sensors/temperature/garage": { "name": "Garage" },
+	"sensors/temperature/attic": { "name": "Attic" },
+	
+	"sensors/temperature/70:ee:50:12:c8:0e": { "name": "Kitchen" },
+	"sensors/humidity/70:ee:50:12:c8:0e": { "name": "Kitchen" },
+	"sensors/pressure/70:ee:50:12:c8:0e": { "name": "Kitchen" },
+	"sensors/co2/70:ee:50:12:c8:0e": { "name": "Kitchen" },
+	
+	"sensors/temperature/03:00:00:02:50:86": { "name": "Bedroom" },
+	"sensors/humidity/03:00:00:02:50:86": { "name": "Bedroom" },
+	"sensors/co2/03:00:00:02:50:86": { "name": "Bedroom" },
+	
+	"sensors/temperature/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
+	"sensors/humidity/02:00:00:12:d3:b6": { "name": "Netatmo outside" },
+	
+	"sensors/temperature/300021000447343233323032": { "name": "Lounge" },
+	"sensors/humidity/300021000447343233323032": { "name": "Lounge" },
+	
+	"sensors/temperature/300017000447343232363230": { "name": "Attic" },
+	"sensors/humidity/300017000447343232363230": { "name": "Attic" },
+
+	"sensors/pressure/attic": { "name": "Attic" },
+	"sensors/pressure/egpd": { "name": "Aberdeen Airport" },
+	"sensors/temperature/egpd": { "name": "Aberdeen Airport" },
+	"sensors/boiler/in": { "name": "Boiler" }
+}
