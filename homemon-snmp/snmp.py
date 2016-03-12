@@ -1,5 +1,5 @@
 import netsnmp
-import time
+# import time
 import datetime
 import os 
 import sys
@@ -53,5 +53,3 @@ while mqttc.loop() == 0:
 	bytes_up_old = bytes_up_new
 	bytes_down_old = bytes_down_new
 	oldtime = newtime
-
-	print

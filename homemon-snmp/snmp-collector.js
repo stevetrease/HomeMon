@@ -60,8 +60,8 @@ for (var key in snmp_data_array) {
 function executeSNMP (x) {
 	x.session.get (x.oids, function (error, varbinds) {
 		if (error) {
-	    	console.log (error);
-	    } else {
+			console.log (error);
+		} else {
 			// console.log(x.host, varbinds[0].value, varbinds[1].value);
 			
 			var now = new Date();
@@ -92,4 +92,5 @@ function executeSNMP (x) {
 			x.lastDown = down;
 		}
 	});
-};
+}
+
