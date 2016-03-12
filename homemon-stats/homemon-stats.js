@@ -1,19 +1,19 @@
 // service settings file
 console.log("process.env.NODE_ENV:" + process.env.NODE_ENV);
 switch (process.env.NODE_ENV) {
-	case 'development':
+	case "development":
 		console.log ("development mode");
-		var config = require('../config.json');
+		var config = require("../config.json");
 		break;
-	case 'production':
+	case "production":
 	default:
 		console.log ("production mode");
-		var config = require('../config.json');
+		var config = require("../config.json");
 }
 
 
 
-var redis = require('redis')
+var redis = require("redis")
 	,redisClient = redis.createClient(parseInt(config.redis.port,10), config.redis.host);
 
 
@@ -31,9 +31,9 @@ var recordsLastValue = {};
 
 // get last stored values from Redis
 // needs to be blocking to get everything initialised nicely when starting
-var execSync = require('sync-exec');
+var execSync = require("sync-exec");
 
-var result = execSync('redis-cli -h ' + config.redis.host + ' get recordsHourly');
+var result = execSync("redis-cli -h " + config.redis.host + " get recordsHourly");
 console.log("Loading hourly records from redis...");
 try {
 	recordsHourly = JSON.parse(result.stdout);
@@ -42,7 +42,7 @@ try {
 	console.log ("no records loaded");
 }
 
-result = execSync('redis-cli -h ' + config.redis.host + ' get recordsDaily');
+result = execSync("redis-cli -h " + config.redis.host + " get recordsDaily");
 console.log("Loading daily records from redis...");
 try {
 	recordsDaily = JSON.parse(result.stdout);
@@ -54,18 +54,18 @@ try {
 
 
 // connect to to MQTT
-var mqtt = require('mqtt');
+var mqtt = require("mqtt");
 var mqttclient = mqtt.connect(config.mqtt.host, config.mqtt.options);
 
-mqttclient.on('connect', function() {
-	mqttclient.subscribe('sensors/power/+');
-	console.log('subscribing to sensors/power/+ on ' + config.mqtt.host);
-	mqttclient.subscribe('sensors/snmp/+/+');
-	console.log('subscribing to sensors/snmp/+/+ on ' + config.mqtt.host);
-	mqttclient.subscribe('sensors/temperature/+');
-	console.log('subscribing to sensors/temperature/+ on ' + config.mqtt.host);
+mqttclient.on("connect", function() {
+	mqttclient.subscribe("sensors/power/+");
+	console.log("subscribing to sensors/power/+ on " + config.mqtt.host);
+	mqttclient.subscribe("sensors/snmp/+/+");
+	console.log("subscribing to sensors/snmp/+/+ on " + config.mqtt.host);
+	mqttclient.subscribe("sensors/temperature/+");
+	console.log("subscribing to sensors/temperature/+ on " + config.mqtt.host);
 
-	mqttclient.on('message', function(topic, message) {
+	mqttclient.on("message", function(topic, message) {
 		var currenttime = new Date();
 
 		// have we seen this mesage before? 
@@ -187,14 +187,14 @@ mqttclient.on('connect', function() {
 
 
 
-var mqtt2 = require('mqtt');
+var mqtt2 = require("mqtt");
 var mqttclient2 = mqtt2.connect(config.mqtt.host, config.mqtt.options);
 
-mqttclient2.on('connect', function() {
-	mqttclient2.subscribe('sensors/#');
-	console.log('subscribing to sensors/# on ' + config.mqtt.host);
+mqttclient2.on("connect", function() {
+	mqttclient2.subscribe("sensors/#");
+	console.log("subscribing to sensors/# on " + config.mqtt.host);
 
-	mqttclient2.on('message', function(topic, message) {
+	mqttclient2.on("message", function(topic, message) {
 		var time = new Date();
 		var jsonMessage = {
 			topic: topic,
@@ -205,7 +205,7 @@ mqttclient2.on('connect', function() {
 		mqttclient2.publish("jsonsensors", JSON.stringify(jsonMessage));
 
 		// MongoClient.connect (config.mongo.host, function (err, db) {
-		// 	db.collection ('homedata').insertOne (jsonMessage);
+		// 	db.collection ("homedata").insertOne (jsonMessage);
 		// 	db.close ();
 		// });
 	});
@@ -224,4 +224,4 @@ savestate = function() {
 // frequently store cumulative date to preserve it across restarts, etc.
 var savePeriod = 65; // in seconds
 setInterval (savestate, savePeriod * 1000);
-process.on('SIGUSR1', savestate);	// and save on signal
+process.on("SIGUSR1", savestate);	// and save on signal

@@ -108,7 +108,7 @@ mqttclient.on("connect", function() {
 		mqttclient.subscribe("$SYS/#");
 		mqttclient.on("message", function(topic, message) {    
 			var value = Number(message);
-			messageString = value.toString();
+			var messageString = value.toString();
 			// console.log (topic + "     " + message.toString());
 
 			if (topic == "push/alert") {
