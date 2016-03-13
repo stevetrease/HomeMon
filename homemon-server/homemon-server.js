@@ -78,7 +78,7 @@ io.sockets.on("connection", function (socket) {
 		var length = 0;		
 		var emitted = 0;		
 		// since this is a new subscription, emit all historised messages to setup client with initial values
-		for (i in topicHistory) {
+		for (var i in topicHistory) {
 			length++;
 			// only emit if less that 30 seconds old
 			if (((time - topicHistoryTimeStamp[i]) / 1000) < 300) { 
@@ -139,16 +139,20 @@ mqttclient.on("connect", function() {
 
 			if (topic.beginsWith("sensors/power")) {
 				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				messageString = value.toFixed(0);
-				io.sockets.in("power").emit("data", { topic: topic, value: messageString, name: name });
+				io.sockets.in("power").emit("data", { topic: topic, value: messageString, name: name1 });
 			}
 
 			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/total")
 			|| topic.beginsWith("sensors/power") || topic.beginsWith("sensors/co/") || topic.beginsWith("sensors/co2/")
 			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
-				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				var name1 = null;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				io.sockets.in("sensors").emit("data", { topic: topic, value: messageString, name: name });
 			}
 
@@ -156,13 +160,17 @@ mqttclient.on("connect", function() {
 			|| topic.beginsWith("sensors/temperature/") || topic.beginsWith("sensors/humidity/")
 			|| topic.beginsWith("sensors/no2") || topic.beginsWith("sensors/pressure")) {
 				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				io.sockets.in("sensors2").emit("data", { topic: topic, value: messageString, name: name });
 			}
 
 			if (topic.beginsWith("sensors/iosbattery")) {
 				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				var p = value * 100;
 				messageString = p.toFixed(0);
 				io.sockets.in("sensors").emit("data", { topic: topic, value: messageString, name: name });
@@ -170,7 +178,9 @@ mqttclient.on("connect", function() {
 
 			if (topic.beginsWith("sensors/humidity")) {
 				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				messageString = value.toFixed(0) + "%";
 				io.sockets.in("sensors").emit("data", { topic: topic, value: messageString, name: name });
 				io.sockets.in("humidity").emit("data", { topic: topic, value: messageString, name: name });
@@ -178,7 +188,9 @@ mqttclient.on("connect", function() {
 
 			if (topic.beginsWith("sensors/temperature") || topic.beginsWith("sensors/boiler")) {
 				var name = null;
-				if (names[topic] != undefined) name = names[topic].name;
+				if (names[topic] != undefined) {
+					name = names[topic].name;
+				}
 				messageString = value.toFixed(1);
 				io.sockets.in("sensors").emit("data", { topic: topic, value: messageString, name: name });
 				io.sockets.in("temperature").emit("data", { topic: topic, value: messageString, name: name });
