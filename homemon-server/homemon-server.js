@@ -111,11 +111,11 @@ mqttclient.on("connect", function() {
 			var messageString = value.toString();
 			// console.log (topic + "     " + message.toString());
 
-			if (topic == "push/alert") {
+			if (topic === "push/alert") {
 				io.sockets.in("pushmessage").emit("data", { topic: message.toString() });	        
 			}
 
-			if (topic == "jsonsensors") {
+			if (topic === "jsonsensors") {
 				// var messageData = JSON.parse(message.toString());
 				//io.sockets.in("mqtt").emit("data", { topic: messageData.topic, value: messageData.value });				
 			}
@@ -143,7 +143,7 @@ mqttclient.on("connect", function() {
 					name = names[topic].name;
 				}
 				messageString = value.toFixed(0);
-				io.sockets.in("power").emit("data", { topic: topic, value: messageString, name: name1 });
+				io.sockets.in("power").emit("data", { topic: topic, value: messageString, name: name });
 			}
 
 			if (topic.beginsWith("sensors/power") || topic.beginsWith("rate/sensors/snmp/router/total")
