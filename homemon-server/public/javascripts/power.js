@@ -5,7 +5,6 @@ BeginsWith = function(needle, haystack) {
 	return (haystack.substr(0, needle.length) == needle);
 }
 
-var myvalues = [];
 var updates = 0;
 
 var socket = io.connect("http://homemon.trease.eu:8500/");

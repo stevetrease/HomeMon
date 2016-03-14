@@ -17,7 +17,7 @@ socket.on('data', function(data) {
 
                 // itertate through table to find out where to insert row in alpha order
                 var count = 1;
-                if (document.getElementById("messagetable").rows.length != 1) {
+                if (document.getElementById("messagetable").rows.length !== 1) {
                         for (i = 1; i < document.getElementById("messagetable").rows.length; i++) {
                                 var row = table.rows[i];
                                 var col = row.cells[0];
@@ -30,7 +30,7 @@ socket.on('data', function(data) {
                 var row=table.insertRow(count);
                 var cell=row.insertCell(0);
                 cell.id = data.topic;
-                var cell=row.insertCell(0);
+                cell=row.insertCell(0);
                 cell.id = data.topic + "name";
                 document.getElementById(data.topic).style.textAlign="right"
                 document.getElementById(data.topic).style.wordWrap="normal"

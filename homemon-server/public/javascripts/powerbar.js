@@ -2,7 +2,7 @@ ElementExists = function(id) {
 	return !!document.getElementById(id);
 };
 BeginsWith = function(needle, haystack) {
-	return (haystack.substr(0, needle.length) == needle);
+	return (haystack.substr(0, needle.length) === needle);
 }
 
 // Load the Visualization API and the piechart package.

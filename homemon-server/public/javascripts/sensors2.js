@@ -30,22 +30,22 @@ socket.on("data", function(data) {
 		var cell=row.insertCell(0);
 		cell.id = "sensors/co2/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = "sensors/co/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = "sensors/no2/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = "sensors/humidity/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = "sensors/pressure/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = "sensors/temperature/" + device;
 
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = device + "name";
 
 

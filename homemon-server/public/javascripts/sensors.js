@@ -8,7 +8,6 @@ String.prototype.beginsWith = function (string) {
 };
 
 
-var myvalues = [];
 var updates = 0;
 
 
@@ -48,7 +47,7 @@ socket.on("data", function(data) {
 		var row=table.insertRow(table.rows.length);
 		var cell=row.insertCell(0);
 		cell.id = data.topic;
-		var cell=row.insertCell(0);
+		cell=row.insertCell(0);
 		cell.id = data.topic + "name";
 
 		document.getElementById(data.topic).style.textAlign="right";

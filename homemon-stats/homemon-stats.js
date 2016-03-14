@@ -78,7 +78,7 @@ mqttclient.on("connect", function() {
 		if(recordsDaily[topic] == undefined) {
 			recordsDaily[topic] = 0;
 		}
-		if(recordsLastValue[topic] == undefined) {
+		if(recordsLastValue[topic] === undefined) {
 			recordsLastValue[topic] = 0;
 		}
 
@@ -166,11 +166,11 @@ mqttclient.on("connect", function() {
 		}
 
 		// each time we get power/0 caculate then publish the "unknown power draw" and publish to power/U
-		if(topic == "sensors/power/0") {
+		if(topic === "sensors/power/0") {
 			var known = 0;
 			for (var key in recordsLastValue) {
 				// only it it matches sensors/power/[0-9]
-				if (key.length == 15 && key != "sensors/power/0" && key != "sensors/power/U") {
+				if (key.length === 15 && key != "sensors/power/0" && key != "sensors/power/U") {
 					// console.log(key, known, recordsLastValue[key]);
 					known += recordsLastValue[key]; 
 				}
