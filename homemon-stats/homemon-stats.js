@@ -19,7 +19,7 @@ var redis = require("redis")
 
 
 BeginsWith = function(needle, haystack) {
-	return (haystack.substr(0, needle.length) == needle);
+	return (haystack.substr(0, needle.length) === needle);
 }
 
 
