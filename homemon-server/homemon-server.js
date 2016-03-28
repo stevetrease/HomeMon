@@ -24,6 +24,7 @@ var topicHistoryTimeStamp = {};
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
+var favicon = require('serve-favicon');
 var app = express();
 var http = require("http");
 var server = http.createServer(app);
@@ -33,8 +34,7 @@ app.set("port", config.host_port);
 app.set("host", "127.0.0.1");
 app.set("views", __dirname + "/views");
 app.set("view engine", "jade");
-app.use(express.logger());
-app.use(express.favicon(__dirname + "/public/favicon.ico"));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(express.static(path.join(__dirname, "public")));
 
 var routes = require("./routes");
