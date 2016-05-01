@@ -49,7 +49,8 @@ var page_snmp = require("./routes/page_snmp");
 
 
 
-app.get("/", routes.index);
+// app.get("/", routes.index);
+app.get("/", page_sensors.page);
 app.get("/mqtt", page_mqtt.page);
 app.get("/pushmessage", page_pushmessage.page);
 app.get("/mqttstats", page_mqttstats.page);
