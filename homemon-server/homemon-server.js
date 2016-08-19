@@ -105,6 +105,7 @@ var mqttclient = mqtt.connect(config.mqtt.host, config.mqtt.options);
 
 mqttclient.on("connect", function() {
 		// mqttclient.subscribe("jsonsensors");
+		mqttclient.subscribe("snmpdata");
 		mqttclient.subscribe("#");
 		mqttclient.subscribe("$SYS/#");
 		mqttclient.on("message", function(topic, message) {    
@@ -126,9 +127,9 @@ mqttclient.on("connect", function() {
 				return;
 			}
 
-			if (topic.beginsWith("snmp")) {
-				// console.log(message.toString());
-				io.sockets.in("snmp").emit("data", { message: message.toString() });	
+			if (topic.beginsWith("snmpdata")) {
+				console.log(message.toString());
+				io.sockets.in("snmpdata").emit("data", { message: message.toString() });	
 			}
 
 			// retain messages so that we have starting data for new clients
