@@ -108,18 +108,18 @@ mqttclient.on("connect", function() {
 		mqttclient.subscribe("snmpdata");
 		mqttclient.subscribe("#");
 		mqttclient.subscribe("$SYS/#");
-		mqttclient.on("message", function(topic, message) {    
+		mqttclient.on("message", function(topic, message) {
 			var value = Number(message);
 			var messageString = value.toString();
 			// console.log (topic + "     " + message.toString());
 
 			if (topic === "push/alert") {
-				io.sockets.in("pushmessage").emit("data", { topic: message.toString() });	        
+				io.sockets.in("pushmessage").emit("data", { topic: message.toString() });
 			}
 
 			if (topic === "jsonsensors") {
 				// var messageData = JSON.parse(message.toString());
-				//io.sockets.in("mqtt").emit("data", { topic: messageData.topic, value: messageData.value });				
+				//io.sockets.in("mqtt").emit("data", { topic: messageData.topic, value: messageData.value });
 			}
 
 			if (topic.beginsWith("$SYS/")) {
@@ -128,8 +128,8 @@ mqttclient.on("connect", function() {
 			}
 
 			if (topic.beginsWith("snmpdata")) {
-				console.log(message.toString());
-				io.sockets.in("snmpdata").emit("data", { message: message.toString() });	
+				// console.log(message.toString());
+				io.sockets.in("snmpdata").emit("data", { message: message.toString() });
 			}
 
 			// retain messages so that we have starting data for new clients
