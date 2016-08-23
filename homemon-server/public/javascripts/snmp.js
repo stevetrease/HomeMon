@@ -19,40 +19,54 @@ socket.on('data', function(data) {
 	// console.log("Message received " + data.message);
 	var decodedData = JSON.parse (data.message);
 	
-	if (ElementExists (decodedData.device)) {
-		// table exists
-		// console.log ("table exists: " + decodedData.device);
-		if (ElementExists (decodedData.device+"-"+decodedData.interface)) {
-			// table-row exists
-			// console.log ("interface exists: " + decodedData.interface);
-			console.log ("updating " + decodedData.device+" "+decodedData.interface);
-			cell = document.getElementById(decodedData.device+"-"+decodedData.interface);
-			cell.innerHTML = data.message;
-		} else {
-			// table-tow does not exist - create it
+	if (!ElementExists (decodedData.device+"-"+decodedData.interface)) {
+		// device/interface element does not exist, so create it
+		if (!ElementExists (decodedData.device)) {
+			// create table
+			console.log ("creating table: " + decodedData.device);
+			var div = document.createElement("div");
+			div.className = "row well ";
+			var div2 = document.createElement("div");
+			var title = document.createElement("h4");
+			title.innerHTML = decodedData.device;
+			var tbl = document.createElement("TABLE");
+			tbl.id = decodedData.device;
+
+			document.getElementById("tables").appendChild(div);
+			div.appendChild(div2);
+			div2.appendChild(title);
+			div2.appendChild(tbl);
+		}
+		
+		if (!ElementExists (decodedData.device+"-"+decodedData.interface)) {
+			// create row
 			console.log ("creating interface: " + decodedData.interface);
 			var tbl = document.getElementById(decodedData.device);
 			var row = tbl.insertRow();
 			row.id = decodedData.device+"-"+decodedData.interface;
 			var cell = row.insertCell(0);
-			cell.innerHTML = data.message;
+			cell.id = decodedData.device+"-"+decodedData.interface+"-ifInOctets";
+			cell = row.insertCell(0);
+			cell.id = decodedData.device+"-"+decodedData.interface+"-ifOutOctets";
+			cell = row.insertCell(0);
+			cell.id = decodedData.device+"-"+decodedData.interface+"-ifName";
+			cell = row.insertCell(0);
+			cell.id = decodedData.device+"-"+decodedData.interface+"-interface";
 		}
-	} else {
-		// no table, create one
-		console.log ("creating table: " + decodedData.device);
-		var div = document.createElement("div");
-		div.className = "row well ";
-		var div2 = document.createElement("div");
-		var title = document.createElement("h4");
-		title.innerHTML = decodedData.device;
-		var tbl = document.createElement("TABLE");
-		tbl.id = decodedData.device;
-
-		document.getElementById("tables").appendChild(div);
-		div.appendChild(div2);
-		div2.appendChild(title);
-		div2.appendChild(tbl)
 	}
+	
+	// update cells now we are sure they exist
+	var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
+	updateCell.innerHTML = decodedData.interface;
+	
+	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
+	updateCell.innerHTML = decodedData.ifName;
+	
+	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifInOctets");
+	updateCell.innerHTML = decodedData.ifInOctets;
+
+	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifOutOctets");
+	updateCell.innerHTML = decodedData.ifOutOctets;
 
 	// print the time the refresh happened
 	var dt = new Date();
