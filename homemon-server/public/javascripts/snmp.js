@@ -19,7 +19,6 @@ socket.on('data', function(data) {
 	// console.log("Message received " + data.message);
 	var decodedData = JSON.parse (data.message);
 	
-	
 	if (ElementExists (decodedData.device)) {
 		// table exists
 		// console.log ("table exists: " + decodedData.device);
@@ -41,9 +40,18 @@ socket.on('data', function(data) {
 	} else {
 		// no table, create one
 		console.log ("creating table: " + decodedData.device);
+		var div = document.createElement("div");
+		div.className = "row well ";
+		var div2 = document.createElement("div");
+		var title = document.createElement("h4");
+		title.innerHTML = decodedData.device;
 		var tbl = document.createElement("TABLE");
 		tbl.id = decodedData.device;
-		document.getElementById("tables").appendChild(tbl);
+
+		document.getElementById("tables").appendChild(div);
+		div.appendChild(div2);
+		div2.appendChild(title);
+		div2.appendChild(tbl)
 	}
 
 	// print the time the refresh happened
