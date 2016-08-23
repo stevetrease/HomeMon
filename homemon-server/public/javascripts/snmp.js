@@ -24,17 +24,15 @@ socket.on('data', function(data) {
 		if (!ElementExists (decodedData.device)) {
 			// create table
 			console.log ("creating table: " + decodedData.device);
-			var div = document.createElement("div");
-			div.className = "row well ";
 			var div2 = document.createElement("div");
+			div2.className = "row well ";
 			var title = document.createElement("h4");
 			title.innerHTML = decodedData.device;
 			var tbl = document.createElement("TABLE");
 			tbl.className = "table";
 			tbl.id = decodedData.device;
 
-			document.getElementById("tables").appendChild(div);
-			div.appendChild(div2);
+			document.getElementById("tables").appendChild(div2);
 			div2.appendChild(title);
 			div2.appendChild(tbl);
 		}
