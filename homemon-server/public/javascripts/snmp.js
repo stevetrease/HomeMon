@@ -30,6 +30,7 @@ socket.on('data', function(data) {
 			var title = document.createElement("h4");
 			title.innerHTML = decodedData.device;
 			var tbl = document.createElement("TABLE");
+			tbl.className = "table";
 			tbl.id = decodedData.device;
 
 			document.getElementById("tables").appendChild(div);
