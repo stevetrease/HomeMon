@@ -13,6 +13,8 @@ function readablizeBytes(bytes) {
 
 var updates = 0;
 
+var snmpHistory = {};
+
 var socket = io.connect("http://homemon.trease.eu:8500/");
 socket.emit("subscribe", { room: "snmpdata" });
 socket.on('data', function(data) {
@@ -39,7 +41,7 @@ socket.on('data', function(data) {
 		
 		if (!ElementExists (decodedData.device+"-"+decodedData.interface)) {
 			// create row
-			console.log ("creating interface: " + decodedData.interface);
+			// console.log ("creating interface: " + decodedData.interface);
 			var tbl = document.getElementById(decodedData.device);
 			var row = tbl.insertRow();
 			row.id = decodedData.device+"-"+decodedData.interface;
@@ -51,21 +53,31 @@ socket.on('data', function(data) {
 			cell.id = decodedData.device+"-"+decodedData.interface+"-ifName";
 			cell = row.insertCell(0);
 			cell.id = decodedData.device+"-"+decodedData.interface+"-interface";
-		}
-	}
-	
-	// update cells now we are sure they exist
-	var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
-	updateCell.innerHTML = decodedData.interface;
-	
-	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
-	updateCell.innerHTML = decodedData.ifName;
-	
-	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifInOctets");
-	updateCell.innerHTML = decodedData.ifInOctets;
+			
+			var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
+			updateCell.innerHTML = decodedData.interface;
 
-	updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifOutOctets");
-	updateCell.innerHTML = decodedData.ifOutOctets;
+			updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
+			updateCell.innerHTML = decodedData.ifName;
+			
+			snmpHistory[decodedData.device+"-"+decodedData.interface] = decodedData;
+		}
+	} else {
+		// update cells now we are sure they exist
+		var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
+		updateCell.innerHTML = decodedData.interface;
+
+		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
+		updateCell.innerHTML = decodedData.ifName;
+
+		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifInOctets");
+		var inBytes = decodedData.ifInOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifInOctets;
+		updateCell.innerHTML = readablizeBytes(inBytes) + "/sec";
+
+		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifOutOctets");
+		var outBytes = decodedData.ifOutOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifOutOctets;
+		updateCell.innerHTML = readablizeBytes(outBytes) + "/sec";
+	}
 
 	// print the time the refresh happened
 	var dt = new Date();
