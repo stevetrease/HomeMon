@@ -20,6 +20,7 @@ socket.emit("subscribe", { room: "snmpdata" });
 socket.on('data', function(data) {
 	// console.log("Message received " + data.message);
 	var decodedData = JSON.parse (data.message);
+	var updateCell = "";
 	
 	if (!ElementExists (decodedData.device+"-"+decodedData.interface)) {
 		// device/interface element does not exist, so create it
@@ -54,7 +55,7 @@ socket.on('data', function(data) {
 			cell = row.insertCell(0);
 			cell.id = decodedData.device+"-"+decodedData.interface+"-interface";
 			
-			var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
+			updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
 			updateCell.innerHTML = decodedData.interface;
 
 			updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
@@ -64,7 +65,7 @@ socket.on('data', function(data) {
 		}
 	} else {
 		// update cells now we are sure they exist
-		var updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
+		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-interface");
 		updateCell.innerHTML = decodedData.interface;
 
 		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifName");
@@ -73,7 +74,7 @@ socket.on('data', function(data) {
 		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifInOctets");
 		var timeDelta = decodedData.timestamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;
 		var inBytes = decodedData.ifInOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifInOctets;
-		if (inBytes == 0) {
+		if (inBytes === 0) {
 			updateCell.innerHTML = "";
 		} else {
 			updateCell.innerHTML = readablizeBytes(inBytes / timeDelta) + "/sec";
@@ -82,7 +83,7 @@ socket.on('data', function(data) {
 		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifOutOctets");
 		timeDelta = decodedData.timestamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;		
 		var outBytes = decodedData.ifOutOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifOutOctets;
-		if (outBytes == 0) {
+		if (outBytes === 0) {
 			updateCell.innerHTML = "";
 		} else {
 			updateCell.innerHTML = readablizeBytes(outBytes / timeDelta) + "/sec";
