@@ -71,14 +71,22 @@ socket.on('data', function(data) {
 		updateCell.innerHTML = decodedData.ifName;
 
 		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifInOctets");
-		var timeDelta = decodedData.timeStamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;
+		var timeDelta = decodedData.timestamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;
 		var inBytes = decodedData.ifInOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifInOctets;
-		updateCell.innerHTML = readablizeBytes(inBytes / timeDelta) + "/sec";
+		if (inBytes == 0) {
+			updateCell.innerHTML = "";
+		} else {
+			updateCell.innerHTML = readablizeBytes(inBytes / timeDelta) + "/sec";
+		}
 
 		updateCell = document.getElementById(decodedData.device+"-"+decodedData.interface+"-ifOutOctets");
-		timeDelta = decodedData.timeStamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;		
+		timeDelta = decodedData.timestamp - snmpHistory[decodedData.device+"-"+decodedData.interface].timestamp;		
 		var outBytes = decodedData.ifOutOctets - snmpHistory[decodedData.device+"-"+decodedData.interface].ifOutOctets;
-		updateCell.innerHTML = readablizeBytes(outBytes / timeDelta) + "/sec";
+		if (outBytes == 0) {
+			updateCell.innerHTML = "";
+		} else {
+			updateCell.innerHTML = readablizeBytes(outBytes / timeDelta) + "/sec";
+		}
 	}
 
 	// print the time the refresh happened
