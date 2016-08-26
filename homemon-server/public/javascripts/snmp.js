@@ -88,7 +88,13 @@ socket.on('data', function(data) {
 		} else {
 			updateCell.innerHTML = readablizeBytes(outBytes / timeDelta) + "/sec";
 		}
+		if (inBytes === 0 && outBytes === 0) {
+			document.getElementById(decodedData.device+"-"+decodedData.interface).style.display = "none";
+		} else {
+			document.getElementById(decodedData.device+"-"+decodedData.interface).style.visibility = "visible";
+		}
 	}
+
 
 	// print the time the refresh happened
 	var dt = new Date();
