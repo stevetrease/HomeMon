@@ -37,10 +37,10 @@ socket.on("data", function(data) {
 		cell.id = "sensors/no2/" + device;
 
 		cell=row.insertCell(0);
-		cell.id = "sensors/humidity/" + device;
+		cell.id = "sensors/pressure/" + device;
 
 		cell=row.insertCell(0);
-		cell.id = "sensors/pressure/" + device;
+		cell.id = "sensors/humidity/" + device;
 
 		cell=row.insertCell(0);
 		cell.id = "sensors/temperature/" + device;
