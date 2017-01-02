@@ -25,18 +25,12 @@ socket.on("data", function(data) {
 			var table=document.getElementById("myTableTemp").getElementsByTagName("tbody")[0];
 		} else if (data.topic.beginsWith("rate/sensors/snmp/router/")) {
 			var table=document.getElementById("myRouterRate").getElementsByTagName("tbody")[0];
-		} else if (data.topic.beginsWith("sensors/iosbattery/")) {
-			var table=document.getElementById("myBattery").getElementsByTagName("tbody")[0];
 		} else if (data.topic.beginsWith("sensors/temperature/")) {
 			var table=document.getElementById("myTableTemp").getElementsByTagName("tbody")[0];
 		} else if (data.topic.beginsWith("sensors/humidity/")) {
 			var table=document.getElementById("myTableHumidity").getElementsByTagName("tbody")[0];
-		} else if (data.topic.beginsWith("sensors/co/")) {
-			var table=document.getElementById("myTableCO").getElementsByTagName("tbody")[0];
 		} else if (data.topic.beginsWith("sensors/co2/")) {
 			var table=document.getElementById("myTableCO2").getElementsByTagName("tbody")[0];
-		} else if (data.topic.beginsWith("sensors/no2/")) {
-			var table=document.getElementById("myTableNO2").getElementsByTagName("tbody")[0];
 		} else if (data.topic.beginsWith("sensors/pressure/")) {
 			var table=document.getElementById("myTablePressure").getElementsByTagName("tbody")[0];
 		} else {
