@@ -31,12 +31,6 @@ socket.on("data", function(data) {
 		cell.id = "sensors/co2/" + device;
 
 		cell=row.insertCell(0);
-		cell.id = "sensors/co/" + device;
-
-		cell=row.insertCell(0);
-		cell.id = "sensors/no2/" + device;
-
-		cell=row.insertCell(0);
 		cell.id = "sensors/pressure/" + device;
 
 		cell=row.insertCell(0);
