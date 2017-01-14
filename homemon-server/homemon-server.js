@@ -16,7 +16,7 @@ String.prototype.beginsWith = function (string) {
 	return(this.indexOf(string) === 0);
 };
 
-var names = require("../names.json");
+var names = require("../../mappings.json");
 var topicHistory = {};
 var topicHistoryTimeStamp = {};
 
