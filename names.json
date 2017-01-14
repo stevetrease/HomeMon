@@ -121,17 +121,17 @@
   "sensors/temperature/03:00:00:03:8c:82": {
     "file": "030000038c82-temperature.rrd",
     "ds": "one",
-    "name": "Bathroom"
+    "name": "Lounge"
   },
   "sensors/humidity/03:00:00:03:8c:82": {
     "file": "030000038c82-humidity.rrd",
     "ds": "one",
-    "name": "Bathroom"
+    "name": "Lounge"
   },
   "sensors/co2/03:00:00:03:8c:82": {
     "file": "030000038c82-co2.rrd",
     "ds": "one",
-    "name": "Bathroom"
+    "name": "Lounge"
   },
 
   "sensors/co2/70:ee:50:12:c8:0e": {
@@ -169,16 +169,6 @@
     "file": "attic-humidity.rrd",
     "ds": "one",
     "name": "Attic"
-  },
-  "sensors/temperature/300021000447343233323032": {
-    "file": "300021000447343233323032-temperature.rrd",
-    "ds": "one",
-    "name": "Lounge"
-  },
-  "sensors/humidity/300021000447343233323032": {
-    "file": "300021000447343233323032-humidity.rrd",
-    "ds": "one",
-    "name": "Lounge"
   },
   "sensors/temperature/garage": {
     "file": "currentcost-temp.rrd",
